@@ -1,0 +1,41 @@
+.cooked .policy, .d-editor-preview .policy {
+  position: relative;
+  padding: 5px 10px;
+  border: 1px solid $primary-low;
+  border-radius: 5px;
+  button.accept, button.revoke{
+    float: right;
+    margin-left: 10px;
+  }
+
+  .policy-header {
+    display: block;
+    position: relative;
+    margin-bottom: 30px;
+  }
+
+  .policy-footer {
+    display: block;
+    margin-top: 30px;
+
+    &::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
+  }
+
+  .toggle.not-accepted {
+    position: absolute;
+    right: 10px;
+    .fa-user-times {
+      margin-right: 4px;
+    }
+  }
+
+  .users.not-accepted, .users.accepted {
+    float: left;
+    margin-top: 10px;
+  }
+
+}

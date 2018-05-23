@@ -1,0 +1,4 @@
+plugins:
+  policy_enabled:
+    default: true
+    client: true
