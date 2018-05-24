@@ -8,10 +8,18 @@
     margin-left: 10px;
   }
 
+  &::after {
+    content: "";
+    clear: both;
+    display: table;
+  }
+
   .policy-header {
     display: block;
     position: relative;
-    margin-bottom: 30px;
+    float: right;
+    padding-bottom: 5px;
+    margin-bottom: 5px;
 
     a {
       float: right;
@@ -54,6 +62,7 @@
       position: relative;
       top: 2px;
     }
+
   }
 
   .users.not-accepted, .users.accepted {
