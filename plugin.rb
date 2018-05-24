@@ -58,9 +58,11 @@ after_initialize do
       end
 
       if type == :add
-        post.custom_fields[DiscoursePolicy::AcceptedBy] ||= []
-        post.custom_fields[DiscoursePolicy::AcceptedBy] << current_user.id
-        post.save_custom_fields
+        PostCustomField.create(
+          post_id: post.id,
+          name: DiscoursePolicy::AcceptedBy,
+          value: current_user.id
+        )
       else
         # API needs love here...
         PostCustomField.where(
@@ -106,8 +108,8 @@ after_initialize do
     end
   end
 
-  on(:post_created) do |post|
-  end
+  # on(:post_created) do |post|
+  # end
 
   TopicView.default_post_custom_fields << DiscoursePolicy::AcceptedBy
   TopicView.default_post_custom_fields << DiscoursePolicy::PolicyGroup
