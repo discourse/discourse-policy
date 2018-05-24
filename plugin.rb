@@ -107,11 +107,6 @@ after_initialize do
   end
 
   on(:post_created) do |post|
-    # MessageBus.publish("/polls/#{post.topic_id}", post_id: post.id, polls: post.custom_fields[DiscoursePoll::POLLS_CUSTOM_FIELD])
-  end
-
-  on(:merging_users) do |source_user, target_user|
-    # TODO
   end
 
   TopicView.default_post_custom_fields << DiscoursePolicy::AcceptedBy

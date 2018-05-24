@@ -12,6 +12,29 @@
     display: block;
     position: relative;
     margin-bottom: 30px;
+
+    a {
+      float: right;
+      display: block;
+      margin-left: 15px;
+      i {
+        margin-right: 5px;
+      }
+    }
+
+    a.toggle-not-accepted {
+      color: red;
+    }
+
+    a.toggle-accepted {
+      color: green;
+    }
+
+    &::after {
+      content: "";
+      clear: both;
+      display: table;
+    }
   }
 
   .policy-footer {
@@ -23,13 +46,13 @@
       clear: both;
       display: table;
     }
-  }
 
-  .toggle.not-accepted {
-    position: absolute;
-    right: 10px;
     .fa-user-times {
-      margin-right: 4px;
+      color: red;
+      font-size: 18px;
+      margin-right: 5px;
+      position: relative;
+      top: 2px;
     }
   }
 
