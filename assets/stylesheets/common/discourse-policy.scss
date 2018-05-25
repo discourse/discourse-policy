@@ -31,7 +31,7 @@
     }
 
     a.toggle-not-accepted {
-      color: red;
+      color: dark-light-choose($primary-medium, $secondary-medium);
     }
 
     a.toggle-accepted {
@@ -56,7 +56,7 @@
     }
 
     .fa-user-times {
-      color: red;
+      color: dark-light-choose($primary-medium, $secondary-medium);
       font-size: 18px;
       margin-right: 5px;
       position: relative;
