@@ -10,7 +10,7 @@ describe 'markdown' do
     MD
 
     cooked = (<<~HTML).strip
-      <div class="policy" data-group="team" data-reminder="weekly">
+      <div class="policy" data-group="team" data-version="1" data-reminder="weekly">
       <p>I always open <strong>doors</strong>!</p>
       </div>
     HTML
@@ -35,5 +35,36 @@ describe 'markdown' do
     post = Post.find(post.id)
 
     expect(post.custom_fields['policy_group']).to eq(nil)
+  end
+
+  it "resets list of accepted users if version is bumped" do
+
+    user = Fabricate(:admin)
+
+    raw = <<~MD
+     [policy group=staff reminder=weekly]
+     I always open **doors**!
+     [/policy]
+    MD
+
+    post = create_post(raw: raw)
+
+    PostCustomField.create!(post_id: post.id, name: DiscoursePolicy::AcceptedBy, value: user.id)
+
+    post = Post.find(post.id)
+
+    expect(post.custom_fields[DiscoursePolicy::AcceptedBy]).to eq([user.id])
+
+    raw = <<~MD
+     [policy group=staff version=2 reminder=weekly]
+     I always open **doors**!
+     [/policy]
+    MD
+
+    post.revise(post.user, raw: raw)
+
+    post = Post.find(post.id)
+    expect(post.custom_fields[DiscoursePolicy::AcceptedBy]).to eq(nil)
+
   end
 end

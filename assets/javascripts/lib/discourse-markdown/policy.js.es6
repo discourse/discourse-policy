@@ -10,7 +10,8 @@ const rule = {
 
     token.attrs = [
       ['class', 'policy'],
-      ['data-group', info.attrs.group]
+      ['data-group', info.attrs.group],
+      ['data-version', info.attrs.version || 1]
     ];
 
     if (info.attrs.reminder) {

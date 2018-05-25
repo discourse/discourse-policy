@@ -16,6 +16,7 @@ after_initialize do
 
     AcceptedBy = "PolicyAcceptedBy"
     PolicyGroup = "PolicyGroup"
+    PolicyVersion = "PolicyVersion"
 
     class Engine < ::Rails::Engine
       engine_name PLUGIN_NAME
@@ -92,17 +93,28 @@ after_initialize do
   end
 
   on(:post_process_cooked) do |doc, post|
+    has_group = false
+
     if policy = doc.search('.policy')&.first
       if group = policy["data-group"]
         if Group.where(name: group).exists
           post.custom_fields[DiscoursePolicy::PolicyGroup] = group
           post.save_custom_fields
-          return
+          has_group = true
+        end
+      end
+
+      if version = policy["data-version"]
+        old_version = post.custom_fields[DiscoursePolicy::PolicyVersion] || "1"
+        if version != old_version
+          post.custom_fields[DiscoursePolicy::AcceptedBy] = []
+          post.custom_fields[DiscoursePolicy::PolicyVersion] = version
+          post.save_custom_fields
         end
       end
     end
 
-    if post.custom_fields[DiscoursePolicy::PolicyGroup]
+    if !has_group && post.custom_fields[DiscoursePolicy::PolicyGroup]
       post.custom_fields[DiscoursePolicy::PolicyGroup] = nil
       post.save_custom_fields
     end
