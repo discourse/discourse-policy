@@ -39,6 +39,8 @@ describe 'markdown' do
 
   it "resets list of accepted users if version is bumped" do
 
+    freeze_time
+
     user = Fabricate(:admin)
 
     raw = <<~MD
@@ -54,6 +56,8 @@ describe 'markdown' do
     post = Post.find(post.id)
 
     expect(post.custom_fields[DiscoursePolicy::AcceptedBy]).to eq([user.id])
+    expect(post.custom_fields[DiscoursePolicy::PolicyReminder]).to eq("weekly")
+    expect(post.custom_fields[DiscoursePolicy::LastRemindedAt]).to eq(Time.now.to_i)
 
     raw = <<~MD
      [policy group=staff version=2 reminder=weekly]

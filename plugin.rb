@@ -17,6 +17,8 @@ after_initialize do
     AcceptedBy = "PolicyAcceptedBy"
     PolicyGroup = "PolicyGroup"
     PolicyVersion = "PolicyVersion"
+    PolicyReminder = "PolicyReminder"
+    LastRemindedAt = "LastRemindedAt"
 
     class Engine < ::Rails::Engine
       engine_name PLUGIN_NAME
@@ -24,7 +26,10 @@ after_initialize do
     end
   end
 
+  require File.expand_path("../jobs/scheduled/check_policy.rb", __FILE__)
+
   Post.register_custom_field_type DiscoursePolicy::AcceptedBy, [:integer]
+  Post.register_custom_field_type DiscoursePolicy::LastRemindedAt, :integer
 
   require_dependency "application_controller"
   class DiscoursePolicy::PolicyController < ::ApplicationController
@@ -111,6 +116,12 @@ after_initialize do
           post.custom_fields[DiscoursePolicy::PolicyVersion] = version
           post.save_custom_fields
         end
+      end
+
+      if reminder = policy["data-reminder"]
+        post.custom_fields[DiscoursePolicy::PolicyReminder] = reminder
+        post.custom_fields[DiscoursePolicy::LastRemindedAt] ||= Time.now.to_i
+        post.save_custom_fields
       end
     end
 
