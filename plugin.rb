@@ -48,19 +48,27 @@ after_initialize do
     private
 
     def change_accepted(type)
+      if !SiteSetting.policy_enabled
+        raise Discourse::NotFound
+      end
+
       params.require(:post_id)
 
       post = Post.find(params[:post_id])
       unless group_name = post.custom_fields[DiscoursePolicy::PolicyGroup]
-        return json_error(message: "no policy exists on post")
+        return json_error(message: I18n.t("discourse_policy.no_policy"))
       end
 
       unless group = Group.find_by(name: group_name)
-        return json_error(message: "group not found for policy")
+        return json_error(message: I18n.t("discourse_policy.group_not_found"))
       end
 
       unless group.group_users.where(user_id: current_user.id)
-        return json_error(message: "user does not exist in group")
+        return json_error(message: I18n.t("discourse_policy.user_missing"))
+      end
+
+      if group.user_count > SiteSetting.policy_max_group_size
+        return json_error(message: I18n.t("discourse_policy.too_large"))
       end
 
       if type == :add
@@ -175,7 +183,9 @@ after_initialize do
       return @policy_group == :nil ? nil : @policy_group if @policy_group
       @policy_group = :nil
       if group_name = post_custom_fields[DiscoursePolicy::PolicyGroup]
-        @policy_group = Group.find_by(name: group_name) || :nil
+        @policy_group = Group.where(name: group_name)
+          .where('user_count < ?', SiteSetting.policy_max_group_size)
+          .first || :nil
       end
     end
   end

@@ -2,3 +2,4 @@ plugins:
   policy_enabled:
     default: true
     client: true
+  policy_max_group_size: 200

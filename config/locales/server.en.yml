@@ -1,0 +1,10 @@
+en:
+  site_settings:
+    policy_enabled: "Allow policies?"
+    policy_max_group_size: "Maximum number of users in a group that can have a policy applied"
+  discourse_policy:
+    errors:
+      too_large: "Group is too large, it can not accept policies"
+      user_missing: "User does not exist in group"
+      group_not_found: "Group not found for policy"
+      no_policy: "No policy exists for post"
