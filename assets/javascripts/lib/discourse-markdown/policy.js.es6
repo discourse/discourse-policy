@@ -11,7 +11,7 @@ const rule = {
     token.attrs = [
       ['class', 'policy'],
       ['data-group', info.attrs.group],
-      ['data-version', info.attrs.version || 1]
+      ['data-version', info.attrs.version || 1],
     ];
 
     if (info.attrs.reminder) {
@@ -19,21 +19,17 @@ const rule = {
     }
 
     return true;
-  }
+  },
 };
 
 export function setup(helper) {
-  helper.whiteList([
-    'div.policy'
-  ]);
+  helper.whiteList(['div.policy']);
 
   helper.registerOptions((opts, siteSettings) => {
     opts.features.policy = !!siteSettings.policy_enabled;
   });
 
-
   helper.registerPlugin(md => {
     md.block.bbcode.ruler.push('policy', rule);
   });
 }
-

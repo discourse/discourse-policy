@@ -1,15 +1,17 @@
-.cooked .policy, .d-editor-preview .policy {
+.cooked .policy,
+.d-editor-preview .policy {
   position: relative;
   padding: 5px 10px;
   border: 1px solid $primary-low;
   border-radius: 5px;
-  button.accept, button.revoke{
+  button.accept,
+  button.revoke {
     float: right;
     margin-left: 10px;
   }
 
   &::after {
-    content: "";
+    content: '';
     clear: both;
     display: table;
   }
@@ -39,7 +41,7 @@
     }
 
     &::after {
-      content: "";
+      content: '';
       clear: both;
       display: table;
     }
@@ -50,7 +52,7 @@
     margin-top: 30px;
 
     &::after {
-      content: "";
+      content: '';
       clear: both;
       display: table;
     }
@@ -62,12 +64,11 @@
       position: relative;
       top: 2px;
     }
-
   }
 
-  .users.not-accepted, .users.accepted {
+  .users.not-accepted,
+  .users.accepted {
     float: left;
     margin-top: 10px;
   }
-
 }

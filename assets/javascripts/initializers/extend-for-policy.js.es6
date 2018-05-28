@@ -1,13 +1,12 @@
-import { withPluginApi } from 'discourse/lib/plugin-api';
-import { renderAvatar } from 'discourse/helpers/user-avatar';
-import { ajax } from 'discourse/lib/ajax';
-import { popupAjaxError } from 'discourse/lib/ajax-error';
-import { escapeExpression } from 'discourse/lib/utilities';
+import {withPluginApi} from 'discourse/lib/plugin-api';
+import {renderAvatar} from 'discourse/helpers/user-avatar';
+import {ajax} from 'discourse/lib/ajax';
+import {popupAjaxError} from 'discourse/lib/ajax-error';
+import {escapeExpression} from 'discourse/lib/utilities';
 
 let currentUser;
 
 function initializePolicy(api) {
-
   currentUser = api.getCurrentUser();
 
   function loadPolicyUsers(users) {
@@ -16,13 +15,11 @@ function initializePolicy(api) {
     }
 
     return users.map(u => {
-      return renderAvatar(u, { imageSize: 'tiny' });
+      return renderAvatar(u, {imageSize: 'tiny'});
     });
-
   }
 
-  function render( $policy, post ) {
-
+  function render($policy, post) {
     $policy.find('.policy-header, .policy-footer').remove();
 
     let notAccepted = post.get('policy_not_accepted_by');
@@ -38,37 +35,57 @@ function initializePolicy(api) {
       post.set('policy_accepted_by', accepted);
     }
 
-    const notAcceptedHtml = $("<div class='users not-accepted'><i class='fa fa-user-times'></i>" + loadPolicyUsers(notAccepted).join('') + "</div>");
-    const acceptedHtml = $("<div class='users accepted'>" + loadPolicyUsers(accepted).join('') + "</div>");
+    const notAcceptedHtml = $(
+      "<div class='users not-accepted'><i class='fa fa-user-times'></i>" +
+        loadPolicyUsers(notAccepted).join('') +
+        '</div>',
+    );
+    const acceptedHtml = $(
+      "<div class='users accepted'>" +
+        loadPolicyUsers(accepted).join('') +
+        '</div>',
+    );
 
-    let countNotAcceptedHtml = "";
+    let countNotAcceptedHtml = '';
     if (notAccepted.length > 0) {
-      let title = escapeExpression(I18n.t('discourse_policy.not_accepted_tooltip'));
-      countNotAcceptedHtml = `<a class='toggle-not-accepted' title='${title}'><i class='toggle-not-accepted fa fa-user-times'></i>${notAccepted.length}</a>`;
+      let title = escapeExpression(
+        I18n.t('discourse_policy.not_accepted_tooltip'),
+      );
+      countNotAcceptedHtml = `<a class='toggle-not-accepted' title='${title}'><i class='toggle-not-accepted fa fa-user-times'></i>${
+        notAccepted.length
+      }</a>`;
     }
 
-    let countAcceptedHtml = "";
+    let countAcceptedHtml = '';
     if (accepted.length > 0) {
       let title = escapeExpression(I18n.t('discourse_policy.accepted_tooltip'));
-      countAcceptedHtml = `<a class='toggle-accepted' title='${title}'><i class='toggle-accepted fa fa-user'></i>${accepted.length}</a>`;
+      countAcceptedHtml = `<a class='toggle-accepted' title='${title}'><i class='toggle-accepted fa fa-user'></i>${
+        accepted.length
+      }</a>`;
     }
 
     const $header = $('<div class="policy-header"></div>');
     $header.append(countNotAcceptedHtml);
     $header.append(countAcceptedHtml);
 
-    const revokeText = escapeExpression(I18n.t('discourse_policy.revoke_policy'));
-    const acceptText = escapeExpression(I18n.t('discourse_policy.accept_policy'));
+    const revokeText = escapeExpression(
+      I18n.t('discourse_policy.revoke_policy'),
+    );
+    const acceptText = escapeExpression(
+      I18n.t('discourse_policy.accept_policy'),
+    );
     const $footer = $('<div class="policy-footer"></div>');
     $footer
       .append(acceptedHtml)
       .append(notAcceptedHtml)
-      .append(`<button class='btn btn-danger revoke btn-revoke-policy'>${revokeText}</button>`)
-      .append(`<button class='btn btn-primary accept btn-accept-policy'>${acceptText}</button>`);
+      .append(
+        `<button class='btn btn-danger revoke btn-revoke-policy'>${revokeText}</button>`,
+      )
+      .append(
+        `<button class='btn btn-primary accept btn-accept-policy'>${acceptText}</button>`,
+      );
 
-    $policy
-      .prepend($header)
-      .append($footer);
+    $policy.prepend($header).append($footer);
 
     let currentAccepted, currentNotAccepted;
 
@@ -86,16 +103,15 @@ function initializePolicy(api) {
     }
 
     if (currentAccepted) {
-       $policy.find('.btn.revoke').show();
+      $policy.find('.btn.revoke').show();
     }
 
     if (currentNotAccepted) {
-       $policy.find('.btn.accept').show();
+      $policy.find('.btn.accept').show();
     }
   }
 
-  function attachPolicy( $elem, helper ) {
-
+  function attachPolicy($elem, helper) {
     const $policy = $elem.find('.policy');
 
     if ($policy.length === 0) {
@@ -106,7 +122,6 @@ function initializePolicy(api) {
   }
 
   function revokePolicy($policy, post) {
-
     let notAccepted = post.get('policy_not_accepted_by');
     let accepted = post.get('policy_accepted_by');
 
@@ -117,17 +132,16 @@ function initializePolicy(api) {
       notAccepted.addObject(elem);
       render($policy, post);
     }
-    ajax("/policy/unaccept", {
+    ajax('/policy/unaccept', {
       type: 'put',
       data: {
-        post_id: post.get('id')
-      }
+        post_id: post.get('id'),
+      },
     }).catch(popupAjaxError);
     return false;
   }
 
   function acceptPolicy($policy, post) {
-
     let notAccepted = post.get('policy_not_accepted_by');
     let accepted = post.get('policy_accepted_by');
 
@@ -138,36 +152,32 @@ function initializePolicy(api) {
       accepted.addObject(elem);
       render($policy, post);
     }
-    ajax("/policy/accept", {
+    ajax('/policy/accept', {
       type: 'put',
       data: {
-        post_id: post.get('id')
-      }
+        post_id: post.get('id'),
+      },
     }).catch(popupAjaxError);
     return false;
   }
 
   function policyChanged(topicsController, message) {
-
-    const stream = topicsController.get("model.postStream");
+    const stream = topicsController.get('model.postStream');
     const post = stream.findLoadedPost(message.id);
 
     const $policy = $(`article[data-post-id=${message.id}] .policy`);
 
     if (post && $policy.length > 0) {
-
-      ajax(`/posts/${message.id}.json`).then((data) => {
+      ajax(`/posts/${message.id}.json`).then(data => {
         post.set('policy_accepted_by', data.policy_accepted_by || []);
         post.set('policy_not_accepted_by', data.policy_not_accepted_by || []);
         render($policy, post);
       });
-
     }
   }
 
-
-  api.decorateCooked(attachPolicy, { onlyStream: true });
-  api.registerCustomPostMessageCallback("policy_change", policyChanged);
+  api.decorateCooked(attachPolicy, {onlyStream: true});
+  api.registerCustomPostMessageCallback('policy_change', policyChanged);
 
   api.modifyClass('component:discourse-topic', {
     click: function(arg) {
@@ -175,7 +185,7 @@ function initializePolicy(api) {
 
       const findPost = () => {
         const postId = $target.closest('article').attr('data-post-id');
-        return this.get("postStream").findLoadedPost(postId);
+        return this.get('postStream').findLoadedPost(postId);
       };
 
       if ($target.hasClass('btn-accept-policy')) {
@@ -189,7 +199,7 @@ function initializePolicy(api) {
 
       if ($target.hasClass('btn-revoke-policy')) {
         const $policy = $target.closest('.policy');
-        const post= findPost();
+        const post = findPost();
 
         revokePolicy($policy, post);
 
@@ -203,7 +213,6 @@ function initializePolicy(api) {
         $policy.removeAttr('data-show-unaccepted');
 
         render($policy, post);
-
       }
 
       if ($target.hasClass('toggle-not-accepted')) {
@@ -215,16 +224,15 @@ function initializePolicy(api) {
         render($policy, post);
       }
 
-
       this._super(arg);
-    }
+    },
   });
 }
 
 export default {
-  name: "extend-for-policy",
+  name: 'extend-for-policy',
 
   initialize() {
     withPluginApi('0.8.7', initializePolicy);
-  }
+  },
 };
