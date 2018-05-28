@@ -19,6 +19,9 @@ describe 'markdown' do
   end
 
   it "sets the custom attribute on posts with policies" do
+
+    SiteSetting.policy_restrict_to_staff_posts = false
+
     raw = <<~MD
      [policy group=staff reminder=weekly]
      I always open **doors**!
@@ -38,6 +41,8 @@ describe 'markdown' do
   end
 
   it "resets list of accepted users if version is bumped" do
+
+    SiteSetting.policy_restrict_to_staff_posts = false
 
     freeze_time
 

@@ -18,7 +18,7 @@ describe DiscoursePolicy::CheckPolicy do
      [/policy]
     MD
 
-    post = create_post(raw: raw)
+    post = create_post(raw: raw, user: Fabricate(:admin))
 
     DiscoursePolicy::CheckPolicy.new.execute
 

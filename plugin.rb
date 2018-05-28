@@ -56,19 +56,23 @@ after_initialize do
 
       post = Post.find(params[:post_id])
       unless group_name = post.custom_fields[DiscoursePolicy::PolicyGroup]
-        return json_error(message: I18n.t("discourse_policy.no_policy"))
+        return render_json_error(I18n.t("discourse_policy.errors.no_policy"))
       end
 
       unless group = Group.find_by(name: group_name)
-        return json_error(message: I18n.t("discourse_policy.group_not_found"))
+        return render_json_error(I18n.t("discourse_policy.error.group_not_found"))
       end
 
       unless group.group_users.where(user_id: current_user.id)
-        return json_error(message: I18n.t("discourse_policy.user_missing"))
+        return render_json_error(I18n.t("discourse_policy.errors.user_missing"))
       end
 
       if group.user_count > SiteSetting.policy_max_group_size
-        return json_error(message: I18n.t("discourse_policy.too_large"))
+        return render_json_error(I18n.t("discourse_policy.errors.too_large"))
+      end
+
+      if SiteSetting.policy_restrict_to_staff_posts && !post.user&.staff?
+        return render_json_error(I18n.t("discourse_policy.errors.staff_only"))
       end
 
       if type == :add
@@ -108,28 +112,30 @@ after_initialize do
   on(:post_process_cooked) do |doc, post|
     has_group = false
 
-    if policy = doc.search('.policy')&.first
-      if group = policy["data-group"]
-        if Group.where(name: group).exists
-          post.custom_fields[DiscoursePolicy::PolicyGroup] = group
-          post.save_custom_fields
-          has_group = true
+    if !SiteSetting.policy_restrict_to_staff_posts || post&.user&.staff?
+      if policy = doc.search('.policy')&.first
+        if group = policy["data-group"]
+          if Group.where(name: group).exists
+            post.custom_fields[DiscoursePolicy::PolicyGroup] = group
+            post.save_custom_fields
+            has_group = true
+          end
         end
-      end
 
-      if version = policy["data-version"]
-        old_version = post.custom_fields[DiscoursePolicy::PolicyVersion] || "1"
-        if version != old_version
-          post.custom_fields[DiscoursePolicy::AcceptedBy] = []
-          post.custom_fields[DiscoursePolicy::PolicyVersion] = version
+        if version = policy["data-version"]
+          old_version = post.custom_fields[DiscoursePolicy::PolicyVersion] || "1"
+          if version != old_version
+            post.custom_fields[DiscoursePolicy::AcceptedBy] = []
+            post.custom_fields[DiscoursePolicy::PolicyVersion] = version
+            post.save_custom_fields
+          end
+        end
+
+        if reminder = policy["data-reminder"]
+          post.custom_fields[DiscoursePolicy::PolicyReminder] = reminder
+          post.custom_fields[DiscoursePolicy::LastRemindedAt] ||= Time.now.to_i
           post.save_custom_fields
         end
-      end
-
-      if reminder = policy["data-reminder"]
-        post.custom_fields[DiscoursePolicy::PolicyReminder] = reminder
-        post.custom_fields[DiscoursePolicy::LastRemindedAt] ||= Time.now.to_i
-        post.save_custom_fields
       end
     end
 

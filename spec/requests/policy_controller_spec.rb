@@ -19,13 +19,14 @@ describe DiscoursePolicy::PolicyController do
      [/policy]
     MD
 
-    post = create_post(raw: raw)
+    post = create_post(raw: raw, user: Fabricate(:moderator))
 
     SiteSetting.policy_max_group_size = 1
 
     put "/policy/accept.json", params: { post_id: post.id }
 
     expect(response.status).not_to eq(200)
+    expect(response.body).to include('too large')
   end
 
   it 'can allows users to accept/reject policy' do
@@ -45,7 +46,7 @@ describe DiscoursePolicy::PolicyController do
      [/policy]
     MD
 
-    post = create_post(raw: raw)
+    post = create_post(raw: raw, user: Fabricate(:moderator))
 
     put "/policy/accept.json", params: { post_id: post.id }
 
