@@ -2,6 +2,7 @@ import { withPluginApi } from 'discourse/lib/plugin-api';
 import { renderAvatar } from 'discourse/helpers/user-avatar';
 import { ajax } from 'discourse/lib/ajax';
 import { popupAjaxError } from 'discourse/lib/ajax-error';
+import { escapeExpression } from 'discourse/lib/utilities';
 
 let currentUser;
 
@@ -42,24 +43,28 @@ function initializePolicy(api) {
 
     let countNotAcceptedHtml = "";
     if (notAccepted.length > 0) {
-      countNotAcceptedHtml = `<a class='toggle-not-accepted'><i class='toggle-not-accepted fa fa-user-times'></i>${notAccepted.length}</a>`;
+      let title = escapeExpression(I18n.t('discourse_policy.not_accepted_tooltip'));
+      countNotAcceptedHtml = `<a class='toggle-not-accepted' title='${title}'><i class='toggle-not-accepted fa fa-user-times'></i>${notAccepted.length}</a>`;
     }
 
     let countAcceptedHtml = "";
     if (accepted.length > 0) {
-      countAcceptedHtml = `<a class='toggle-accepted'><i class='toggle-accepted fa fa-user'></i>${accepted.length}</a>`;
+      let title = escapeExpression(I18n.t('discourse_policy.accepted_tooltip'));
+      countAcceptedHtml = `<a class='toggle-accepted' title='${title}'><i class='toggle-accepted fa fa-user'></i>${accepted.length}</a>`;
     }
 
     const $header = $('<div class="policy-header"></div>');
     $header.append(countNotAcceptedHtml);
     $header.append(countAcceptedHtml);
 
+    const revokeText = escapeExpression(I18n.t('discourse_policy.revoke_policy'));
+    const acceptText = escapeExpression(I18n.t('discourse_policy.accept_policy'));
     const $footer = $('<div class="policy-footer"></div>');
     $footer
       .append(acceptedHtml)
       .append(notAcceptedHtml)
-      .append("<button class='btn btn-danger revoke btn-revoke-policy'>Revoke Policy</button>")
-      .append("<button class='btn btn-primary accept btn-accept-policy'>Accept Policy</button>");
+      .append(`<button class='btn btn-danger revoke btn-revoke-policy'>${revokeText}</button>`)
+      .append(`<button class='btn btn-primary accept btn-accept-policy'>${acceptText}</button>`);
 
     $policy
       .prepend($header)
