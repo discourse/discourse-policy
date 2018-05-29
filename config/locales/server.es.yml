@@ -1,0 +1,12 @@
+es:
+  site_settings:
+    policy_enabled: "¿Permitir Políticas?"
+    policy_max_group_size: "Número máximo de usuarios en un grupo que pueden tener una política aplicada"
+    policy_restrict_to_staff_posts: "Las políticas solo pueden aparecer en los posts del staff"
+  discourse_policy:
+    errors:
+      too_large: "Grupo muy grande, no puede aceptar políticas"
+      user_missing: "El usuario no existe en el grupo"
+      group_not_found: "Grupo no encontrado para la política"
+      no_policy: "No existe la política para publicar"
+      staff_only: "Las políticas solo aplican a posts del staff"

@@ -1,0 +1,7 @@
+es:
+  js:
+    discourse_policy:
+      accepted_tooltip: "Usuarios que aceptaron esta política"
+      not_accepted_tooltip: "Usuarios que no aceptaron esta política"
+      accept_policy: "Aceptar la Política"
+      revoke_policy: "Rechazar la Política"
