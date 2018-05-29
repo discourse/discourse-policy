@@ -18,6 +18,14 @@ const rule = {
       token.attrs.push(['data-reminder', info.attrs.reminder]);
     }
 
+    if (info.attrs.accept) {
+      token.attrs.push(['data-accept', info.attrs.accept]);
+    }
+
+    if (info.attrs.revoke) {
+      token.attrs.push(['data-revoke', info.attrs.revoke]);
+    }
+
     return true;
   },
 };

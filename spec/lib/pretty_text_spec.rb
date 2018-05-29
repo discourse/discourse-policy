@@ -4,13 +4,13 @@ describe 'markdown' do
 
   it "can properly decorate policies" do
     raw = <<~MD
-     [policy group=team reminder=weekly]
+     [policy group=team reminder=weekly accept=banana revoke=apple]
      I always open **doors**!
      [/policy]
     MD
 
     cooked = (<<~HTML).strip
-      <div class="policy" data-group="team" data-version="1" data-reminder="weekly">
+      <div class="policy" data-group="team" data-version="1" data-reminder="weekly" data-accept="banana" data-revoke="apple">
       <p>I always open <strong>doors</strong>!</p>
       </div>
     HTML

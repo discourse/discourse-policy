@@ -69,10 +69,10 @@ function initializePolicy(api) {
     $header.append(countAcceptedHtml);
 
     const revokeText = escapeExpression(
-      I18n.t('discourse_policy.revoke_policy'),
+      $policy.data('revoke') || I18n.t('discourse_policy.revoke_policy'),
     );
     const acceptText = escapeExpression(
-      I18n.t('discourse_policy.accept_policy'),
+      $policy.data('accept') || I18n.t('discourse_policy.accept_policy'),
     );
     const $footer = $('<div class="policy-footer"></div>');
     $footer
