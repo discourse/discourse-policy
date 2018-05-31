@@ -2,7 +2,7 @@ require 'rails_helper'
 
 describe DiscoursePolicy::CheckPolicy do
   it "will correctly notify users" do
-
+    SiteSetting.queue_jobs = false
     freeze_time
 
     group = Fabricate(:group)

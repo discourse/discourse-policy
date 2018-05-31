@@ -1,6 +1,9 @@
 require "rails_helper"
 
 describe DiscoursePolicy::PolicyController do
+  before do
+    SiteSetting.queue_jobs = false
+  end
 
   it 'can not apply a policy to groups that are too big' do
 

@@ -1,6 +1,9 @@
 require 'rails_helper'
 
 describe 'markdown' do
+  before do
+    SiteSetting.queue_jobs = false
+  end
 
   it "can properly decorate policies" do
     raw = <<~MD

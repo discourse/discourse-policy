@@ -2,6 +2,7 @@ require 'rails_helper'
 
 describe 'post serializer' do
   it 'includes users in the serializer' do
+    SiteSetting.queue_jobs = false
     group = Fabricate(:group)
     user1 = Fabricate(:user)
     user2 = Fabricate(:user)
