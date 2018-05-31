@@ -1,0 +1,7 @@
+ru:
+  js:
+    discourse_policy:
+      accepted_tooltip: "Пользователи, принявшие эту политику"
+      not_accepted_tooltip: "Пользователи, которые не приняли эту политику"
+      accept_policy: "Принять Политику"
+      revoke_policy: "Отзыв Политики"
