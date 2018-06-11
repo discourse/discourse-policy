@@ -2,7 +2,7 @@
 # about: apply policies to Discourse topics
 # version: 0.1
 # authors: Sam Saffron
-# url:
+# url: https://github.com/discourse/discourse-policy
 
 register_asset "stylesheets/common/discourse-policy.scss"
 
