@@ -26,11 +26,11 @@ module Jobs
           ))
       SQL
 
-      post_ids = Post.exec_sql(
+      post_ids = DB.query_single(
         sql,
         weekly: 1.week.ago.to_i,
         daily: 1.day.ago.to_i
-      ).values.flatten
+      )
 
       if post_ids.length > 0
         Post.where(id: post_ids).each do |post|
