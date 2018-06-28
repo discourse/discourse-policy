@@ -1,74 +1,80 @@
 .cooked .policy,
 .d-editor-preview .policy {
   position: relative;
-  padding: 5px 10px;
+  padding: 0;
   border: 1px solid $primary-low;
-  border-radius: 5px;
   button.accept,
   button.revoke {
-    float: right;
     margin-left: 10px;
+    float: left;
   }
 
   &::after {
-    content: '';
+    content: "";
     clear: both;
     display: table;
   }
 
-  .policy-header {
-    display: block;
-    position: relative;
-    float: right;
-    padding-bottom: 5px;
-    margin-bottom: 5px;
+  .policy-body {
+    padding: 10px;
+  }
 
-    a {
+  .policy-footer {
+    display: block;
+    padding: 10px 0;
+
+    border-top: 1px solid $primary-low;
+    margin-top: 30px;
+
+    .user-lists {
       float: right;
-      display: block;
-      margin-left: 15px;
-      i {
+      a.toggle {
+        font-size: 18px;
+        position: relative;
+        top: 4px;
+        i {
+          margin-right: 3px;
+        }
+      }
+      .seperator {
+        height: 28px;
+        width: 3px;
+        position: absolute;
+        border-right: 2px solid $primary-low;
+      }
+
+      .users {
         margin-right: 5px;
+        img {
+          margin-right: 1px;
+        }
       }
     }
 
     a.toggle-not-accepted {
       color: dark-light-choose($primary-medium, $secondary-medium);
+      margin-left: 15px;
+      margin-right: 5px;
     }
 
     a.toggle-accepted {
       color: green;
+      margin-right: 5px;
     }
 
     &::after {
-      content: '';
-      clear: both;
-      display: table;
-    }
-  }
-
-  .policy-footer {
-    display: block;
-    margin-top: 30px;
-
-    &::after {
-      content: '';
+      content: "";
       clear: both;
       display: table;
     }
 
     .fa-user-times {
       color: dark-light-choose($primary-medium, $secondary-medium);
-      font-size: 18px;
-      margin-right: 5px;
-      position: relative;
-      top: 2px;
     }
-  }
 
-  .users.not-accepted,
-  .users.accepted {
-    float: left;
-    margin-top: 10px;
+    .users.not-accepted,
+    .users.accepted {
+      display: inline-block;
+    }
   }
 }
