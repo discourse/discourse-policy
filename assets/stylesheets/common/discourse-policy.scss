@@ -3,43 +3,40 @@
   position: relative;
   padding: 0;
   border: 1px solid $primary-low;
-  button.accept,
-  button.revoke {
-    margin-left: 10px;
-    float: left;
-  }
-
-  &::after {
-    content: "";
-    clear: both;
-    display: table;
-  }
 
   .policy-body {
     padding: 10px;
   }
 
   .policy-footer {
-    display: block;
-    padding: 10px 0;
-
     border-top: 1px solid $primary-low;
+    padding: 10px 8px;
     margin-top: 30px;
 
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
     .user-lists {
-      float: right;
+      padding-left: 10px;
+      display: flex;
+      align-items: center;
       a.toggle {
+        display: flex;
+        align-items: center;
         font-size: 18px;
         position: relative;
-        top: 4px;
+        top: 2px;
         i {
-          margin-right: 3px;
+          margin-right: 5px;
+          position: relative;
+          top: -1px;
         }
+        margin-right: 10px;
       }
       .seperator {
         height: 28px;
         width: 3px;
-        position: absolute;
         border-right: 2px solid $primary-low;
       }
 
@@ -60,12 +57,6 @@
     a.toggle-accepted {
       color: green;
       margin-right: 5px;
-    }
-
-    &::after {
-      content: "";
-      clear: both;
-      display: table;
     }
 
     .fa-user-times {
