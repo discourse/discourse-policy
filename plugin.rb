@@ -115,7 +115,7 @@ after_initialize do
     if !SiteSetting.policy_restrict_to_staff_posts || post&.user&.staff?
       if policy = doc.search('.policy')&.first
         if group = policy["data-group"]
-          if Group.where(name: group).exists
+          if Group.exists?(name: group)
             post.custom_fields[DiscoursePolicy::PolicyGroup] = group
             post.save_custom_fields
             has_group = true
