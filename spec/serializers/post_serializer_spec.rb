@@ -17,6 +17,7 @@ describe 'post serializer' do
     MD
 
     post = create_post(raw: raw, user: Fabricate(:admin))
+    post.reload
 
     json = PostSerializer.new(post, scope: Guardian.new).as_json
     accepted = json[:post][:policy_accepted_by]
