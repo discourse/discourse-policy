@@ -19,6 +19,7 @@ after_initialize do
     PolicyVersion = "PolicyVersion"
     PolicyReminder = "PolicyReminder"
     LastRemindedAt = "LastRemindedAt"
+    PolicyRenewDays = "PolicyRenewDays"
 
     class Engine < ::Rails::Engine
       engine_name PLUGIN_NAME
@@ -120,6 +121,13 @@ after_initialize do
             post.save_custom_fields
             has_group = true
           end
+        end
+
+        if (expiry_days = policy["data-renew"].to_i) > 0
+          post.custom_fields[DiscoursePolicy::PolicyRenewDays] = expiry_days
+          post.save_custom_fields
+        else
+          PostCustomField.where(post_id: post.id, name: DiscoursePolicy::PolicyRenewDays).destroy_all
         end
 
         if version = policy["data-version"]

@@ -43,6 +43,33 @@ describe 'markdown' do
     expect(post.custom_fields['policy_group']).to eq(nil)
   end
 
+  it "allows policy to expire for end users on demand" do
+
+    SiteSetting.policy_restrict_to_staff_posts = false
+
+    freeze_time
+
+    user = Fabricate(:admin)
+
+    raw = <<~MD
+     [policy group=staff renew=200]
+     I always open **doors**!
+     [/policy]
+    MD
+
+    post = create_post(raw: raw)
+    PostCustomField.create!(post_id: post.id, name: DiscoursePolicy::AcceptedBy, value: user.id)
+
+    freeze_time(199.days.from_now)
+    ::DiscoursePolicy::CheckPolicy.new.execute(nil)
+    expect(PostCustomField.where(post_id: post.id, name: DiscoursePolicy::AcceptedBy).count).to eq(1)
+
+    freeze_time(2.days.from_now)
+    ::DiscoursePolicy::CheckPolicy.new.execute(nil)
+    expect(PostCustomField.where(post_id: post.id, name: DiscoursePolicy::AcceptedBy).count).to eq(0)
+
+  end
+
   it "resets list of accepted users if version is bumped" do
 
     SiteSetting.policy_restrict_to_staff_posts = false

@@ -14,6 +14,10 @@ const rule = {
       ["data-version", info.attrs.version || 1]
     ];
 
+    if (info.attrs["renew"]) {
+      token.attrs.push(["data-renew", info.attrs["renew"]]);
+    }
+
     if (info.attrs.reminder) {
       token.attrs.push(["data-reminder", info.attrs.reminder]);
     }

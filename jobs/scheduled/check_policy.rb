@@ -49,6 +49,22 @@ module Jobs
         end
       end
 
+      sql = <<~SQL
+      DELETE FROM post_custom_fields p
+      USING post_custom_fields p2
+      WHERE p.post_id = p2.post_id AND
+        p.name = :accepted_by AND
+        p2.name = :renew_days AND
+        p2.created_at < :now::timestamp - ( INTERVAL '1 day' *  p2.value::int )
+      SQL
+
+      DB.exec(
+        sql,
+        accepted_by: DiscoursePolicy::AcceptedBy,
+        renew_days: DiscoursePolicy::PolicyRenewDays,
+        now: Time.zone.now
+      )
+
     end
 
     def missing_users(post)
