@@ -3,6 +3,7 @@ import { renderAvatar } from "discourse/helpers/user-avatar";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import { escapeExpression } from "discourse/lib/utilities";
+import { iconHTML } from "discourse-common/lib/icon-library";
 
 let currentUser;
 
@@ -54,7 +55,8 @@ function initializePolicy(api) {
       if (accepted.length > 0) {
         countNotAcceptedHtml = "<span class='seperator'></span>";
       }
-      countNotAcceptedHtml += `<a class='toggle toggle-not-accepted' title='${title}'><i class='toggle-not-accepted fa fa-user-times'></i>${
+      let iconN = iconHTML("user-times", { class: "toggle-not-accepted" });
+      countNotAcceptedHtml += `<a class='toggle toggle-not-accepted' title='${title}'>${iconN} ${
         notAccepted.length
       }</a>`;
     }
@@ -62,7 +64,8 @@ function initializePolicy(api) {
     let countAcceptedHtml = "";
     if (accepted.length > 0) {
       let title = escapeExpression(I18n.t("discourse_policy.accepted_tooltip"));
-      countAcceptedHtml = `<a class='toggle toggle-accepted' title='${title}'><i class='toggle-accepted fa fa-user'></i>${
+      let iconA = iconHTML("user", { class: "toggle-accepted" });
+      countAcceptedHtml = `<a class='toggle toggle-accepted' title='${title}'>${iconA} ${
         accepted.length
       }</a>`;
     }
