@@ -68,4 +68,60 @@
       display: inline-block;
     }
   }
+
+  .see-policy-settings-btn,
+  .edit-policy-settings-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    background: none;
+    color: $primary-medium;
+
+    &:hover {
+      color: $primary-very-low;
+      background: $primary-medium;
+    }
+  }
+
+  .policy-settings {
+    border-top: 1px solid $primary-low;
+    padding: 10px 8px;
+    display: none;
+    flex-direction: column;
+
+    .visible-settings {
+      color: $primary-medium;
+    }
+
+    .save-policy-settings-btn {
+      margin-left: auto;
+      margin-top: 10px;
+    }
+  }
+
+  .settings-list {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+
+    .setting {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      margin-bottom: 5px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .policy-setting-name {
+        flex: 1;
+        margin-right: 5px;
+      }
+
+      .policy-setting-value {
+        flex: 4;
+      }
+    }
+  }
 }

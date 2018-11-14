@@ -5,3 +5,4 @@ en:
       not_accepted_tooltip: "Users who have not accepted this policy"
       accept_policy: "Accept Policy"
       revoke_policy: "Revoke Policy"
+      edit_reason: "Policy settings have been modified"
