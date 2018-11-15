@@ -216,7 +216,7 @@ function initializePolicy(api) {
 
   function _saveSettings($list, existingSettings, post) {
     const newSettings = _getSettingsValueFromForm($list);
-    const endpoint = `/posts/${post.id}`;
+    const endpoint = Discourse.getURL(`/posts/${post.id}`);
     const options = { type: "GET", cache: false };
     return ajax(endpoint, options).then(result => {
       const raw = result.raw;
@@ -331,7 +331,9 @@ function initializePolicy(api) {
       notAccepted.addObject(elem);
       render($policy, post);
     }
-    ajax("/policy/unaccept", {
+
+    const endpoint = Discourse.getURL("/policy/unaccept");
+    ajax(endpoint, {
       type: "put",
       data: {
         post_id: post.get("id")
@@ -351,7 +353,8 @@ function initializePolicy(api) {
       accepted.addObject(elem);
       render($policy, post);
     }
-    ajax("/policy/accept", {
+    const endpoint = Discourse.getURL("/policy/accept");
+    ajax(endpoint, {
       type: "put",
       data: {
         post_id: post.get("id")
@@ -367,7 +370,8 @@ function initializePolicy(api) {
     const $policy = $(`article[data-post-id=${message.id}] .policy`);
 
     if (post && $policy.length > 0) {
-      ajax(`/posts/${message.id}.json`).then(data => {
+      const endpoint = Discourse.getURL(`/posts/${message.id}.json`);
+      ajax(endpoint).then(data => {
         post.set("policy_accepted_by", data.policy_accepted_by || []);
         post.set("policy_not_accepted_by", data.policy_not_accepted_by || []);
         render($policy, post);
