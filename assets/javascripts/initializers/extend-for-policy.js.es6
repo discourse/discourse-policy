@@ -134,7 +134,7 @@ function initializePolicy(api) {
     $policy.append($policySettings);
     const existingSettings = _extractSettingsFromCookedContainer($policy);
     const currentUserCanManagePolicy =
-      currentUser.staff || currentUser.admin || currentUser.id === post.user_id;
+      currentUser.staff || currentUser.id === post.user_id;
     if (currentUserCanManagePolicy) {
       _attachEditSettingsUI($policy, $policySettings, existingSettings, post);
     } else {
