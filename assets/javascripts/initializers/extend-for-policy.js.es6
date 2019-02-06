@@ -269,9 +269,13 @@ function initializePolicy(api) {
         const regexp = new RegExp(`(${setting.name}=)".*?"`, "gm");
         policyString = policyString.replace(regexp, `$1"${newSetting}"`);
       }
-
-      raw = raw.replace(policyRegex, `[policy ${policyString}]`);
     });
+
+    if (!policyString.match(/version/gm)) {
+      policyString = `${policyString} version="1"`;
+    }
+
+    raw = raw.replace(policyRegex, `[policy ${policyString}]`);
 
     return settingReplaced ? raw : false;
   }

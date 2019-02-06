@@ -10,12 +10,15 @@ const rule = {
 
     token.attrs = [
       ["class", "policy"],
-      ["data-group", info.attrs.group],
-      ["data-version", info.attrs.version || 1]
+      ["data-group", info.attrs.group]
     ];
 
+    if (info.attrs["version"]) {
+      token.attrs.push(["data-version", info.attrs.version]);
+    }
+
     if (info.attrs["renew"]) {
-      token.attrs.push(["data-renew", info.attrs["renew"]]);
+      token.attrs.push(["data-renew", info.attrs.renew]);
     }
 
     if (info.attrs.reminder) {
