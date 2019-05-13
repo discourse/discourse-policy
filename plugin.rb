@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # name: discourse-policy
 # about: apply policies to Discourse topics
 # version: 0.1
