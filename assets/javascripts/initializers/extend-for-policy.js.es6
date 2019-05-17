@@ -300,13 +300,15 @@ function initializePolicy(api) {
   }
 
   function _attachSettingInput($container, setting, value) {
-    const $label = $(`<span class="policy-setting-name">${setting.name}</span>`);
+    const $label = $(
+      `<span class="policy-setting-name">${setting.name}</span>`
+    );
     const $input = $(
       `<input class="input policy-setting-value" id="policy-setting-${
         setting.name
       }" value="${value}" placeholder="${
         setting.optional ? "optional" : "required"
-      }">`
+      }" type="text">`
     );
     const $setting = $(`<div class="setting"></div>`);
 
