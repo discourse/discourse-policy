@@ -1,7 +1,67 @@
+// Policy in post styles
 .cooked .policy {
   position: relative;
   border: 1px solid $primary-low;
-  line-height: $line-height-small;
+
+  .policy-body {
+    padding: 0.75em;
+    margin-bottom: 2em;
+  }
+
+  .policy-footer {
+    border-top: 1px solid $primary-low;
+    padding: 0.75em;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .toggle {
+    display: flex;
+    align-items: center;
+
+    &.toggle-accepted {
+      color: $success;
+    }
+
+    &.toggle-not-accepted {
+      color: $primary-medium;
+    }
+
+    .user-count {
+      display: flex;
+      align-items: center;
+      margin-right: 0.25em;
+    }
+
+    .d-icon {
+      line-height: $line-height-large;
+    }
+  }
+
+  .user-lists {
+    padding-left: 0.75em;
+    display: flex;
+    font-size: $font-up-1;
+
+    .users {
+      margin-left: 0.5em;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+
+      .avatar {
+        margin: 1px;
+      }
+    }
+  }
+
+  .seperator {
+    padding: 1em 0;
+    border-right: 2px solid $primary-low;
+    margin: 0 0.5em;
+    padding: 0.75em 0em;
+  }
 
   .see-policy-settings-btn,
   .edit-policy-settings-btn {
@@ -16,77 +76,14 @@
       background: $primary-medium;
     }
   }
-
-  .policy-body {
-    line-height: $line-height-large;
-    padding: 0.75em;
-    margin-bottom: 2em;
-  }
-
-  .policy-footer {
-    border-top: 1px solid $primary-low;
-    padding: 0.75em;
-
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .toggle {
-    display: flex;
-    align-items: center;
-  }
-
-  .toggle-not-accepted {
-    color: dark-light-choose($primary-medium, $secondary-medium);
-  }
-
-  .toggle-accepted {
-    color: $success;
-  }
-
-  .toggle-accepted,
-  .toggle-not-accepted {
-    .user-count {
-      display: flex;
-      align-items: center;
-      margin-right: 0.25em;
-    }
-  }
-
-  .users.not-accepted,
-  .users.accepted {
-    display: inline-block;
-  }
-
-  .user-lists {
-    padding-left: 0.75em;
-    display: flex;
-    align-items: center;
-    font-size: $font-up-1;
-
-    .users {
-      margin-left: 0.5em;
-
-      img {
-        margin: 1px;
-      }
-    }
-  }
-
-  .seperator {
-    border-right: 2px solid $primary-low;
-    margin: 0 0.5em;
-    height: 28px;
-  }
 }
 
 // Policy settings styles
 .cooked .policy {
   .policy-settings {
+    display: none; // JS override kicks in when needed.
     border-top: 1px solid $primary-low;
     padding: 0.75em;
-    display: none;
     flex-direction: column;
 
     .visible-settings {
@@ -95,7 +92,6 @@
 
     .save-policy-settings-btn {
       margin-left: auto;
-      margin-top: 0.75em;
     }
   }
 
@@ -106,11 +102,7 @@
     .setting {
       display: flex;
       align-items: center;
-      margin-bottom: 0.5em;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
+      margin-bottom: 0.75em;
     }
 
     .policy-setting-name {
@@ -124,7 +116,7 @@
   }
 }
 
-// Editor styles
+// Policy in editor styles
 .d-editor-preview .policy {
   padding: 0 0.5em;
   border: 1px solid $primary-low;
