@@ -81,7 +81,10 @@
       background: $primary-medium;
     }
   }
+}
 
+// Policy settings styles
+.cooked .policy {
   .policy-settings {
     border-top: 1px solid $primary-low;
     padding: 10px 8px;
@@ -126,8 +129,7 @@
   }
 }
 
-// editor styles
-
+// Editor styles
 .d-editor-preview .policy {
   padding: 0 0.5em;
   border: 1px solid $primary-low;
