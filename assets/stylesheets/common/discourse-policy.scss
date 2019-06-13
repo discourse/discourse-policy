@@ -111,22 +111,21 @@
     .setting {
       display: flex;
       align-items: center;
-      justify-content: flex-start;
       margin-bottom: 5px;
 
       &:last-child {
         margin-bottom: 0;
       }
+    }
 
-      .policy-setting-name {
-        flex: 1;
-        margin-right: 5px;
-      }
+    .policy-setting-name {
+      flex: 1;
+      margin-right: 5px;
+    }
 
-      .policy-setting-value {
-        flex: 4;
-        margin-bottom: 0;
-      }
+    .policy-setting-value {
+      flex: 4;
+      margin-bottom: 0;
     }
   }
 }
