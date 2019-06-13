@@ -14,6 +14,10 @@
     align-items: center;
     display: flex;
     justify-content: space-between;
+
+    .btn {
+      white-space: nowrap;
+    }
   }
 
   .toggle {
