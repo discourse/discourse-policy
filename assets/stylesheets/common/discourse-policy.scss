@@ -30,28 +30,9 @@
     justify-content: space-between;
   }
 
-  .user-lists {
-    padding-left: 10px;
+  a.toggle {
     display: flex;
     align-items: center;
-    font-size: $font-up-1;
-    a.toggle {
-      display: flex;
-      align-items: center;
-    }
-    .seperator {
-      border-right: 2px solid $primary-low;
-      margin: 0 10px;
-      height: 28px;
-    }
-
-    .users {
-      margin-left: 10px;
-
-      img {
-        margin: 1px;
-      }
-    }
   }
 
   a.toggle-not-accepted {
@@ -80,6 +61,27 @@
   .users.not-accepted,
   .users.accepted {
     display: inline-block;
+  }
+
+  .user-lists {
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    font-size: $font-up-1;
+
+    .users {
+      margin-left: 10px;
+
+      img {
+        margin: 1px;
+      }
+    }
+  }
+
+  .seperator {
+    border-right: 2px solid $primary-low;
+    margin: 0 10px;
+    height: 28px;
   }
 }
 
