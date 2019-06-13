@@ -74,7 +74,7 @@ function initializePolicy(api) {
     let countAcceptedHtml = "";
     if (accepted.length > 0) {
       let title = escapeExpression(I18n.t("discourse_policy.accepted_tooltip"));
-      let iconA = iconHTML("user", { class: "toggle-accepted" });
+      let iconA = iconHTML("user-check", { class: "toggle-accepted" });
       countAcceptedHtml = `<a class='toggle toggle-accepted' title='${title}'>${iconA}<span class="user-count">${
         accepted.length
       }</span></a>`;

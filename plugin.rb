@@ -8,6 +8,8 @@
 
 register_asset "stylesheets/common/discourse-policy.scss"
 
+register_svg_icon "user-check" if respond_to?(:register_svg_icon)
+
 enabled_site_setting :policy_enabled
 
 PLUGIN_NAME ||= "discourse_policy".freeze
