@@ -66,7 +66,7 @@ function initializePolicy(api) {
         countNotAcceptedHtml = "<span class='seperator'></span>";
       }
       let iconN = iconHTML("user-times", { class: "toggle-not-accepted" });
-      countNotAcceptedHtml += `<a class='toggle toggle-not-accepted' title='${title}'>${iconN} ${
+      countNotAcceptedHtml += `<a class='toggle toggle-not-accepted' title='${title}'>${iconN}${
         notAccepted.length
       }</a>`;
     }
@@ -75,7 +75,7 @@ function initializePolicy(api) {
     if (accepted.length > 0) {
       let title = escapeExpression(I18n.t("discourse_policy.accepted_tooltip"));
       let iconA = iconHTML("user", { class: "toggle-accepted" });
-      countAcceptedHtml = `<a class='toggle toggle-accepted' title='${title}'>${iconA} ${
+      countAcceptedHtml = `<a class='toggle toggle-accepted' title='${title}'>${iconA}${
         accepted.length
       }</a>`;
     }
