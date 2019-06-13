@@ -1,5 +1,4 @@
-.cooked .policy,
-.d-editor-preview .policy {
+.cooked .policy {
   position: relative;
   border: 1px solid $primary-low;
 
@@ -125,4 +124,11 @@
       }
     }
   }
+}
+
+// editor styles
+
+.d-editor-preview .policy {
+  padding: 0 0.5em;
+  border: 1px solid $primary-low;
 }
