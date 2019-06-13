@@ -66,18 +66,18 @@ function initializePolicy(api) {
         countNotAcceptedHtml = "<span class='seperator'></span>";
       }
       let iconN = iconHTML("user-times", { class: "toggle-not-accepted" });
-      countNotAcceptedHtml += `<a class='toggle toggle-not-accepted' title='${title}'>${iconN}${
+      countNotAcceptedHtml += `<a class='toggle toggle-not-accepted' title='${title}'>${iconN}<span class="user-count">${
         notAccepted.length
-      }</a>`;
+      }</span></a>`;
     }
 
     let countAcceptedHtml = "";
     if (accepted.length > 0) {
       let title = escapeExpression(I18n.t("discourse_policy.accepted_tooltip"));
       let iconA = iconHTML("user", { class: "toggle-accepted" });
-      countAcceptedHtml = `<a class='toggle toggle-accepted' title='${title}'>${iconA}${
+      countAcceptedHtml = `<a class='toggle toggle-accepted' title='${title}'>${iconA}<span class="user-count">${
         accepted.length
-      }</a>`;
+      }</span></a>`;
     }
     const revokeText = escapeExpression(
       $policy.data("revoke") || I18n.t("discourse_policy.revoke_policy")
