@@ -2,10 +2,6 @@
   position: relative;
   border: 1px solid $primary-low;
 
-  .policy-body {
-    padding: 10px;
-  }
-
   .see-policy-settings-btn,
   .edit-policy-settings-btn {
     position: absolute;
@@ -19,10 +15,14 @@
     }
   }
 
+  .policy-body {
+    padding: 10px;
+    margin-bottom: 30px;
+  }
+
   .policy-footer {
     border-top: 1px solid $primary-low;
     padding: 10px;
-    margin-top: 30px;
     line-height: $line-height-small;
     align-items: center;
     display: flex;
