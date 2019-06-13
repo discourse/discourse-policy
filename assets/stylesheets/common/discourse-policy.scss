@@ -6,68 +6,6 @@
     padding: 10px;
   }
 
-  .policy-footer {
-    border-top: 1px solid $primary-low;
-    padding: 10px;
-    margin-top: 30px;
-    line-height: $line-height-small;
-    align-items: center;
-    display: flex;
-    justify-content: space-between;
-
-    .user-lists {
-      padding-left: 10px;
-      display: flex;
-      align-items: center;
-      font-size: $font-up-1;
-      a.toggle {
-        display: flex;
-        align-items: center;
-      }
-      .seperator {
-        border-right: 2px solid $primary-low;
-        margin: 0 10px;
-        height: 28px;
-      }
-
-      .users {
-        margin-left: 10px;
-
-        img {
-          margin: 1px;
-        }
-      }
-    }
-
-    a.toggle-not-accepted {
-      color: dark-light-choose($primary-medium, $secondary-medium);
-    }
-
-    a.toggle-accepted {
-      color: green;
-    }
-
-    a.toggle-accepted,
-    a.toggle-not-accepted {
-      height: 20px;
-      .user-count {
-        display: flex;
-        align-items: center;
-        margin-right: 6px;
-        margin-top: auto;
-      }
-    }
-
-    .d-icon-user-times {
-      color: dark-light-choose($primary-medium, $secondary-medium);
-    }
-
-    .users.not-accepted,
-    .users.accepted {
-      display: inline-block;
-    }
-  }
-
   .see-policy-settings-btn,
   .edit-policy-settings-btn {
     position: absolute;
@@ -80,6 +18,68 @@
       color: $primary-very-low;
       background: $primary-medium;
     }
+  }
+
+  .policy-footer {
+    border-top: 1px solid $primary-low;
+    padding: 10px;
+    margin-top: 30px;
+    line-height: $line-height-small;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .user-lists {
+    padding-left: 10px;
+    display: flex;
+    align-items: center;
+    font-size: $font-up-1;
+    a.toggle {
+      display: flex;
+      align-items: center;
+    }
+    .seperator {
+      border-right: 2px solid $primary-low;
+      margin: 0 10px;
+      height: 28px;
+    }
+
+    .users {
+      margin-left: 10px;
+
+      img {
+        margin: 1px;
+      }
+    }
+  }
+
+  a.toggle-not-accepted {
+    color: dark-light-choose($primary-medium, $secondary-medium);
+  }
+
+  a.toggle-accepted {
+    color: green;
+  }
+
+  a.toggle-accepted,
+  a.toggle-not-accepted {
+    height: 20px;
+    .user-count {
+      display: flex;
+      align-items: center;
+      margin-right: 6px;
+      margin-top: auto;
+    }
+  }
+
+  .d-icon-user-times {
+    color: dark-light-choose($primary-medium, $secondary-medium);
+  }
+
+  .users.not-accepted,
+  .users.accepted {
+    display: inline-block;
   }
 }
 
