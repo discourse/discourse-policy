@@ -63,7 +63,7 @@ function initializePolicy(api) {
         I18n.t("discourse_policy.not_accepted_tooltip")
       );
       if (accepted.length > 0) {
-        countNotAcceptedHtml = "<span class='seperator'></span>";
+        countNotAcceptedHtml = "<div class='seperator'></div>";
       }
       let iconN = iconHTML("user-times");
       countNotAcceptedHtml += `<a class='toggle toggle-not-accepted' title='${title}'>
