@@ -1,13 +1,15 @@
 .cooked .policy {
   position: relative;
   border: 1px solid $primary-low;
+  line-height: $line-height-small;
 
   .see-policy-settings-btn,
   .edit-policy-settings-btn {
     position: absolute;
-    top: 5px;
-    right: 5px;
+    top: 0.25em;
+    right: 0.25em;
     background: none;
+    padding: 0.5em;
 
     &:hover {
       color: $primary-very-low;
@@ -16,45 +18,40 @@
   }
 
   .policy-body {
-    padding: 10px;
-    margin-bottom: 30px;
+    line-height: $line-height-large;
+    padding: 0.75em;
+    margin-bottom: 2em;
   }
 
   .policy-footer {
     border-top: 1px solid $primary-low;
-    padding: 10px;
-    line-height: $line-height-small;
+    padding: 0.75em;
+
     align-items: center;
     display: flex;
     justify-content: space-between;
   }
 
-  a.toggle {
+  .toggle {
     display: flex;
     align-items: center;
   }
 
-  a.toggle-not-accepted {
+  .toggle-not-accepted {
     color: dark-light-choose($primary-medium, $secondary-medium);
   }
 
-  a.toggle-accepted {
-    color: green;
+  .toggle-accepted {
+    color: $success;
   }
 
-  a.toggle-accepted,
-  a.toggle-not-accepted {
-    height: 20px;
+  .toggle-accepted,
+  .toggle-not-accepted {
     .user-count {
       display: flex;
       align-items: center;
-      margin-right: 6px;
-      margin-top: auto;
+      margin-right: 0.25em;
     }
-  }
-
-  .d-icon-user-times {
-    color: dark-light-choose($primary-medium, $secondary-medium);
   }
 
   .users.not-accepted,
@@ -63,13 +60,13 @@
   }
 
   .user-lists {
-    padding-left: 10px;
+    padding-left: 0.75em;
     display: flex;
     align-items: center;
     font-size: $font-up-1;
 
     .users {
-      margin-left: 10px;
+      margin-left: 0.5em;
 
       img {
         margin: 1px;
@@ -79,7 +76,7 @@
 
   .seperator {
     border-right: 2px solid $primary-low;
-    margin: 0 10px;
+    margin: 0 0.5em;
     height: 28px;
   }
 }
@@ -88,7 +85,7 @@
 .cooked .policy {
   .policy-settings {
     border-top: 1px solid $primary-low;
-    padding: 10px;
+    padding: 0.75em;
     display: none;
     flex-direction: column;
 
@@ -98,7 +95,7 @@
 
     .save-policy-settings-btn {
       margin-left: auto;
-      margin-top: 10px;
+      margin-top: 0.75em;
     }
   }
 
@@ -109,7 +106,7 @@
     .setting {
       display: flex;
       align-items: center;
-      margin-bottom: 5px;
+      margin-bottom: 0.5em;
 
       &:last-child {
         margin-bottom: 0;
