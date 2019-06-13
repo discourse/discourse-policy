@@ -105,7 +105,6 @@
 
   .settings-list {
     display: flex;
-    flex: 1;
     flex-direction: column;
 
     .setting {
@@ -120,7 +119,6 @@
 
     .policy-setting-name {
       flex: 1;
-      margin-right: 5px;
     }
 
     .policy-setting-value {
