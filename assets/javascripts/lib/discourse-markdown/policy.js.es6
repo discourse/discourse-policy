@@ -8,10 +8,7 @@ const rule = {
       return false;
     }
 
-    token.attrs = [
-      ["class", "policy"],
-      ["data-group", info.attrs.group]
-    ];
+    token.attrs = [["class", "policy"], ["data-group", info.attrs.group]];
 
     token.attrs.push(["data-version", info.attrs.version || 1]);
 
