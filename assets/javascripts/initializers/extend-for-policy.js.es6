@@ -63,21 +63,27 @@ function initializePolicy(api) {
         I18n.t("discourse_policy.not_accepted_tooltip")
       );
       if (accepted.length > 0) {
-        countNotAcceptedHtml = "<span class='seperator'></span>";
+        countNotAcceptedHtml = "<div class='seperator'></div>";
       }
-      let iconN = iconHTML("user-times", { class: "toggle-not-accepted" });
-      countNotAcceptedHtml += `<a class='toggle toggle-not-accepted' title='${title}'>${iconN} ${
-        notAccepted.length
-      }</a>`;
+      let iconN = iconHTML("user-times");
+      countNotAcceptedHtml += `<a class='toggle toggle-not-accepted' title='${title}'>
+                                 <span class="user-count">
+                                   ${notAccepted.length}
+                                 </span>
+                                 ${iconN}
+                               </a>`;
     }
 
     let countAcceptedHtml = "";
     if (accepted.length > 0) {
       let title = escapeExpression(I18n.t("discourse_policy.accepted_tooltip"));
-      let iconA = iconHTML("user", { class: "toggle-accepted" });
-      countAcceptedHtml = `<a class='toggle toggle-accepted' title='${title}'>${iconA} ${
-        accepted.length
-      }</a>`;
+      let iconA = iconHTML("user-check");
+      countAcceptedHtml = `<a class='toggle toggle-accepted' title='${title}'>
+                             <span class="user-count">
+                               ${accepted.length}
+                             </span>
+                             ${iconA}
+                           </a>`;
     }
     const revokeText = escapeExpression(
       $policy.data("revoke") || I18n.t("discourse_policy.revoke_policy")
@@ -415,7 +421,10 @@ function initializePolicy(api) {
         return false;
       }
 
-      if ($target.hasClass("toggle-accepted")) {
+      if (
+        $target.hasClass("toggle-accepted") ||
+        $target.parent().hasClass("toggle-accepted")
+      ) {
         const $policy = $target.closest(".policy");
         const post = findPost();
 
@@ -424,7 +433,10 @@ function initializePolicy(api) {
         render($policy, post);
       }
 
-      if ($target.hasClass("toggle-not-accepted")) {
+      if (
+        $target.hasClass("toggle-not-accepted") ||
+        $target.parent().hasClass("toggle-not-accepted")
+      ) {
         const $policy = $target.closest(".policy");
         const post = findPost();
 
