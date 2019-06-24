@@ -391,7 +391,7 @@ function initializePolicy(api) {
     }
   }
 
-  api.decorateCooked(attachPolicy, { onlyStream: true, id: 'discouse-policy' });
+  api.decorateCooked(attachPolicy, { onlyStream: true, id: "discouse-policy" });
   api.registerCustomPostMessageCallback("policy_change", policyChanged);
 
   api.modifyClass("component:discourse-topic", {
