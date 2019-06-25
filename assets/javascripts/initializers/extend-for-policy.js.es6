@@ -277,7 +277,7 @@ function initializePolicy(api) {
       }
     });
 
-    if (!policyString.match(/version/gm)) {
+    if (policyString.indexOf("version=") < 0) {
       policyString = `${policyString} version="1"`;
     }
 
