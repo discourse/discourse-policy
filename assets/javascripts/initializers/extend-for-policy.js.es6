@@ -156,7 +156,7 @@ function initializePolicy(api) {
   ) {
     const $editPolicySettingsBtn = $(
       `<button class="btn no-text btn-default edit-policy-settings-btn">${iconHTML(
-        "gear"
+        "cog"
       )}</button>`
     );
     $policy.append($editPolicySettingsBtn);
