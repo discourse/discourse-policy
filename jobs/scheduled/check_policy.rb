@@ -2,7 +2,7 @@
 
 module Jobs
 
-  class ::DiscoursePolicy::CheckPolicy < Jobs::Scheduled
+  class ::DiscoursePolicy::CheckPolicy < ::Jobs::Scheduled
 
     every 6.hours
 
