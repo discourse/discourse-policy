@@ -8,37 +8,33 @@ module Jobs
 
     def execute(args = nil)
       sql = <<~SQL
-        SELECT p.id FROM post_custom_fields f
-        JOIN post_custom_fields f2 ON f2.post_id = f.post_id
-          AND f2.name = '#{::DiscoursePolicy::LastRemindedAt}'
-        JOIN posts p ON p.id = f.post_id
+        SELECT p.id FROM post_policies pp
+        JOIN posts p ON p.id = pp.post_id
         JOIN topics t ON t.id = p.topic_id
         WHERE t.deleted_at IS NULL
           AND p.deleted_at IS NULL
           AND t.archetype = 'regular'
-          AND f.name = '#{::DiscoursePolicy::PolicyReminder}'
           AND (
           (
-            f.value = 'weekly' AND
-            f2.value::integer < :weekly
+            reminder = 'weekly' AND
+            last_reminded_at < :weekly
           ) OR
           (
-            f.value = 'daily' AND
-            f2.value::integer < :daily
+            reminder = 'daily' AND
+            last_reminded_at < :daily
           ))
       SQL
 
       post_ids = DB.query_single(
         sql,
-        weekly: 1.week.ago.to_i,
-        daily: 1.day.ago.to_i
+        weekly: 1.week.ago,
+        daily: 1.day.ago
       )
 
       if post_ids.length > 0
         Post.where(id: post_ids).each do |post|
 
-          post.custom_fields[DiscoursePolicy::LastRemindedAt] = Time.now.to_i
-          post.save_custom_fields
+          post.post_policy.update(last_reminded_at: Time.zone.now)
 
           missing_users(post).each do |user|
             user.notifications.create!(
@@ -51,30 +47,39 @@ module Jobs
         end
       end
 
+      PostPolicy.where('next_renew_at < ?', Time.zone.now).each do |policy|
+        PostCustomField.where(name: DiscoursePolicy::AcceptedBy, post_id: policy.post_id).delete_all
+        next_renew = policy.renew_start
+        if policy.renew_days < 1
+          Rails.logger.warn("Invalid policy on post #{policy.post_id}")
+        else
+          while next_renew < Time.zone.now
+            next_renew += policy.renew_days.days
+          end
+        end
+        policy.update(next_renew_at: next_renew)
+      end
+
       sql = <<~SQL
       DELETE FROM post_custom_fields p
-      USING post_custom_fields p2
-      WHERE p.post_id = p2.post_id AND
+      USING post_policies pp
+      WHERE p.post_id = pp.post_id AND
+        pp.renew_start IS NULL AND
         p.name = :accepted_by AND
-        p2.name = :renew_days AND
-        p2.created_at < :now::timestamp - ( INTERVAL '1 day' *  p2.value::int )
+        pp.created_at < :now::timestamp - ( INTERVAL '1 day' *  pp.renew_days )
       SQL
 
       DB.exec(
         sql,
         accepted_by: DiscoursePolicy::AcceptedBy,
-        renew_days: DiscoursePolicy::PolicyRenewDays,
         now: Time.zone.now
       )
 
     end
 
     def missing_users(post)
-      if !group_name = post.custom_fields[DiscoursePolicy::PolicyGroup]
-        return []
-      end
 
-      group = Group.find_by(name: group_name)
+      group = post.post_policy.group
 
       if !group
         return []

@@ -28,6 +28,10 @@ const rule = {
       token.attrs.push(["data-revoke", info.attrs.revoke]);
     }
 
+    if (info.attrs.start) {
+      token.attrs.push(["data-renew-start", info.attrs.start]);
+    }
+
     return true;
   }
 };

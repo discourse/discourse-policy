@@ -9,13 +9,13 @@ describe 'markdown' do
 
   it "can properly decorate policies" do
     raw = <<~MD
-     [policy group=team reminder=weekly accept=banana revoke=apple]
+     [policy group=team renew-start="01-01-2010" reminder=weekly accept=banana revoke=apple]
      I always open **doors**!
      [/policy]
     MD
 
     cooked = (<<~HTML).strip
-      <div class="policy" data-group="team" data-version="1" data-reminder="weekly" data-accept="banana" data-revoke="apple">
+      <div class="policy" data-group="team" data-version="1" data-reminder="weekly" data-accept="banana" data-revoke="apple" data-renew-start="01-01-2010">
       <p>I always open <strong>doors</strong>!</p>
       </div>
     HTML
@@ -36,13 +36,13 @@ describe 'markdown' do
     post = create_post(raw: raw)
     post = Post.find(post.id)
 
-    expect(post.custom_fields[DiscoursePolicy::PolicyGroup]).to eq('staff')
+    expect(post.post_policy.group.name).to eq('staff')
 
     post.revise(post.user, raw: "i am new raw")
 
     post = Post.find(post.id)
 
-    expect(post.custom_fields['policy_group']).to eq(nil)
+    expect(post.post_policy).to eq(nil)
   end
 
   it "allows policy to expire for end users on demand" do
@@ -93,8 +93,9 @@ describe 'markdown' do
     post = Post.find(post.id)
 
     expect(post.custom_fields[DiscoursePolicy::AcceptedBy]).to eq([user.id])
-    expect(post.custom_fields[DiscoursePolicy::PolicyReminder]).to eq("weekly")
-    expect(post.custom_fields[DiscoursePolicy::LastRemindedAt]).to eq(Time.now.to_i)
+
+    expect(post.post_policy.reminder).to eq("weekly")
+    expect(post.post_policy.last_reminded_at).to eq_time(Time.zone.now)
 
     raw = <<~MD
      [policy group=staff version=2 reminder=weekly]

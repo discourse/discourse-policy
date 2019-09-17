@@ -3,16 +3,79 @@
 require 'rails_helper'
 
 describe DiscoursePolicy::CheckPolicy do
+
+  before do
+    Jobs.run_immediately!
+  end
+
+  fab!(:user1) do
+    Fabricate(:user)
+  end
+
+  fab!(:user2) do
+    Fabricate(:user)
+  end
+
+  fab!(:group) do
+    group = Fabricate(:group)
+    group.add(user1)
+    group.add(user2)
+    group
+  end
+
+  it "correctly renews policies" do
+
+    freeze_time Time.utc(2019)
+
+    raw = <<~MD
+     [policy group=#{group.name} renew=100 renew-start="17-10-2020"]
+     I always open **doors**!
+     [/policy]
+    MD
+
+    post = create_post(raw: raw, user: Fabricate(:admin))
+
+    [user1, user2].each do |u|
+      PostCustomField.create!(
+        post_id: post.id,
+        name: DiscoursePolicy::AcceptedBy,
+        value: u.id
+      )
+    end
+
+    freeze_time Time.utc(2020)
+    DiscoursePolicy::CheckPolicy.new.execute
+
+    post.reload
+    # did not hit renew start
+    expect(post.custom_fields[DiscoursePolicy::AcceptedBy].length).to eq(2)
+
+    freeze_time Time.utc(2020, 10, 18)
+
+    DiscoursePolicy::CheckPolicy.new.execute
+
+    post.reload
+    expect(post.custom_fields[DiscoursePolicy::AcceptedBy]).to eq(nil)
+
+    [user1, user2].each do |u|
+      PostCustomField.create!(
+        post_id: post.id,
+        name: DiscoursePolicy::AcceptedBy,
+        value: u.id
+      )
+    end
+
+    freeze_time (Time.utc(2020, 10, 17) + 101.days)
+
+    DiscoursePolicy::CheckPolicy.new.execute
+
+    post.reload
+    expect(post.custom_fields[DiscoursePolicy::AcceptedBy]).to eq(nil)
+  end
+
   it "will correctly notify users" do
     SiteSetting.queue_jobs = false
     freeze_time
-
-    group = Fabricate(:group)
-    user1 = Fabricate(:user)
-    user2 = Fabricate(:user)
-
-    group.add(user1)
-    group.add(user2)
 
     raw = <<~MD
      [policy group=#{group.name} reminder=weekly]

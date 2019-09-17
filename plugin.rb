@@ -15,15 +15,10 @@ enabled_site_setting :policy_enabled
 PLUGIN_NAME ||= "discourse_policy".freeze
 
 after_initialize do
-
   module ::DiscoursePolicy
 
     AcceptedBy = "PolicyAcceptedBy"
-    PolicyGroup = "PolicyGroup"
-    PolicyVersion = "PolicyVersion"
-    PolicyReminder = "PolicyReminder"
-    LastRemindedAt = "LastRemindedAt"
-    PolicyRenewDays = "PolicyRenewDays"
+    HasPolicy = "HasPolicy"
 
     class Engine < ::Rails::Engine
       engine_name PLUGIN_NAME
@@ -31,10 +26,17 @@ after_initialize do
     end
   end
 
-  require File.expand_path("../jobs/scheduled/check_policy.rb", __FILE__)
+  [
+    "../jobs/scheduled/check_policy.rb",
+    "../app/models/post_policy",
+  ].each { |path| require File.expand_path(path, __FILE__) }
+
+  require 'post'
+  class ::Post
+    has_one :post_policy, dependent: :destroy
+  end
 
   Post.register_custom_field_type DiscoursePolicy::AcceptedBy, [:integer]
-  Post.register_custom_field_type DiscoursePolicy::LastRemindedAt, :integer
 
   require_dependency "application_controller"
   class DiscoursePolicy::PolicyController < ::ApplicationController
@@ -60,11 +62,12 @@ after_initialize do
       params.require(:post_id)
 
       post = Post.find(params[:post_id])
-      unless group_name = post.custom_fields[DiscoursePolicy::PolicyGroup]
+
+      if !post.post_policy
         return render_json_error(I18n.t("discourse_policy.errors.no_policy"))
       end
 
-      unless group = Group.find_by(name: group_name)
+      unless group = post.post_policy.group
         return render_json_error(I18n.t("discourse_policy.error.group_not_found"))
       end
 
@@ -119,41 +122,66 @@ after_initialize do
 
     if !SiteSetting.policy_restrict_to_staff_posts || post&.user&.staff?
       if policy = doc.search('.policy')&.first
+
+        post_policy = post.post_policy || post.build_post_policy
+
         if group = policy["data-group"]
-          if Group.exists?(name: group)
-            post.custom_fields[DiscoursePolicy::PolicyGroup] = group
-            post.save_custom_fields
+          if group = Group.find_by(name: group)
+            post_policy.group_id = group.id
             has_group = true
           end
         end
 
-        if (expiry_days = policy["data-renew"].to_i) > 0
-          post.custom_fields[DiscoursePolicy::PolicyRenewDays] = expiry_days
-          post.save_custom_fields
+        if (renew_days = policy["data-renew"].to_i) > 0
+          post_policy.renew_days = renew_days
+          post_policy.renew_start = nil
+
+          if (renew_start = policy["data-renew-start"])
+            begin
+              renew_start = Date.parse(renew_start)
+              post_policy.renew_start = renew_start
+              if !post_policy.next_renew_at ||
+                  post_policy.next_renew_at < renew_start
+                post_policy.next_renew_at = renew_start
+              end
+            rescue ArgumentError
+              # already nil
+            end
+          end
         else
-          PostCustomField.where(post_id: post.id, name: DiscoursePolicy::PolicyRenewDays).destroy_all
+          post_policy.renew_days = nil
+          post_policy.renew_start = nil
+          post_policy.next_renew_at = nil
         end
 
         if version = policy["data-version"]
-          old_version = post.custom_fields[DiscoursePolicy::PolicyVersion] || "1"
+          old_version = post_policy.version || "1"
           if version != old_version
             post.custom_fields[DiscoursePolicy::AcceptedBy] = []
-            post.custom_fields[DiscoursePolicy::PolicyVersion] = version
+            post_policy.version = version
             post.save_custom_fields
           end
         end
 
         if reminder = policy["data-reminder"]
-          post.custom_fields[DiscoursePolicy::PolicyReminder] = reminder
-          post.custom_fields[DiscoursePolicy::LastRemindedAt] ||= Time.now.to_i
-          post.save_custom_fields
+          post_policy.reminder = reminder
+          post_policy.last_reminded_at ||= Time.zone.now
+        end
+
+        if has_group
+          if !post.custom_fields[DiscoursePolicy::HasPolicy]
+            post.custom_fields[DiscoursePolicy::HasPolicy] = true
+            post.save_custom_fields
+          end
+          post_policy.save!
         end
       end
     end
 
-    if !has_group && post.custom_fields[DiscoursePolicy::PolicyGroup]
-      post.custom_fields[DiscoursePolicy::PolicyGroup] = nil
+    if !has_group && (post.custom_fields[DiscoursePolicy::HasPolicy] || !post_policy.new_record?)
+      post.custom_fields[DiscoursePolicy::HasPolicy] = nil
       post.save_custom_fields
+      PostPolicy.where(post_id: post.id).destroy_all
     end
   end
 
@@ -161,7 +189,7 @@ after_initialize do
   # end
 
   TopicView.default_post_custom_fields << DiscoursePolicy::AcceptedBy
-  TopicView.default_post_custom_fields << DiscoursePolicy::PolicyGroup
+  TopicView.default_post_custom_fields << DiscoursePolicy::HasPolicy
 
   require_dependency 'post_serializer'
   class ::PostSerializer
@@ -200,9 +228,11 @@ after_initialize do
     def policy_group
       return @policy_group == :nil ? nil : @policy_group if @policy_group
       @policy_group = :nil
-      if group_name = post_custom_fields[DiscoursePolicy::PolicyGroup]
-        @policy_group = Group.where(name: group_name)
+
+      if post_custom_fields[DiscoursePolicy::HasPolicy]
+        @policy_group = Group
           .where('user_count < ?', SiteSetting.policy_max_group_size)
+          .where('id in (SELECT group_id FROM post_policies WHERE post_id = ?)', self.id)
           .first || :nil
       end
     end
