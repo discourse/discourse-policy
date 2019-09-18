@@ -61,12 +61,12 @@ module Jobs
       end
 
       sql = <<~SQL
-      DELETE FROM post_custom_fields p
+      DELETE FROM post_custom_fields f
       USING post_policies pp
-      WHERE p.post_id = pp.post_id AND
+      WHERE f.post_id = pp.post_id AND
         pp.renew_start IS NULL AND
-        p.name = :accepted_by AND
-        pp.created_at < :now::timestamp - ( INTERVAL '1 day' *  pp.renew_days )
+        f.name = :accepted_by AND
+        f.created_at < :now::timestamp - ( INTERVAL '1 day' *  pp.renew_days )
       SQL
 
       DB.exec(

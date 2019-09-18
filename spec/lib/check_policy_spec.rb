@@ -23,6 +23,43 @@ describe DiscoursePolicy::CheckPolicy do
     group
   end
 
+  def accept_policy(post)
+    [user1, user2].each do |u|
+      PostCustomField.create!(
+        post_id: post.id,
+        name: DiscoursePolicy::AcceptedBy,
+        value: u.id
+      )
+    end
+  end
+
+  it "correctly renews policise with no renew-start" do
+    freeze_time Time.utc(2019)
+
+    raw = <<~MD
+     [policy group=#{group.name} renew=400]
+     I always open **doors**!
+     [/policy]
+    MD
+
+    post = create_post(raw: raw, user: Fabricate(:admin))
+
+    freeze_time Time.utc(2021)
+    accept_policy(post)
+
+    freeze_time Time.utc(2022)
+    DiscoursePolicy::CheckPolicy.new.execute
+
+    post.reload
+    expect(post.custom_fields[DiscoursePolicy::AcceptedBy].length).to eq(2)
+
+    freeze_time Time.utc(2023)
+    DiscoursePolicy::CheckPolicy.new.execute
+
+    post.reload
+    expect(post.custom_fields[DiscoursePolicy::AcceptedBy]).to eq(nil)
+  end
+
   it "correctly renews policies" do
 
     freeze_time Time.utc(2019)
@@ -35,13 +72,7 @@ describe DiscoursePolicy::CheckPolicy do
 
     post = create_post(raw: raw, user: Fabricate(:admin))
 
-    [user1, user2].each do |u|
-      PostCustomField.create!(
-        post_id: post.id,
-        name: DiscoursePolicy::AcceptedBy,
-        value: u.id
-      )
-    end
+    accept_policy(post)
 
     freeze_time Time.utc(2020)
     DiscoursePolicy::CheckPolicy.new.execute
@@ -57,13 +88,7 @@ describe DiscoursePolicy::CheckPolicy do
     post.reload
     expect(post.custom_fields[DiscoursePolicy::AcceptedBy]).to eq(nil)
 
-    [user1, user2].each do |u|
-      PostCustomField.create!(
-        post_id: post.id,
-        name: DiscoursePolicy::AcceptedBy,
-        value: u.id
-      )
-    end
+    accept_policy(post)
 
     freeze_time (Time.utc(2020, 10, 17) + 101.days)
 
