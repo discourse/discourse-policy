@@ -42,6 +42,12 @@ class MigratePostPolicyData < ActiveRecord::Migration[5.2]
     SQL
 
     execute(<<~SQL)
+      INSERT INTO post_custom_fields (post_id, name, value, created_at, updated_at)
+      SELECT post_id, 'HasPolicy', 'true', created_at, updated_at
+      FROM post_policies
+    SQL
+
+    execute(<<~SQL)
       DELETE FROM post_custom_fields
       WHERE name in (
         'PolicyGroup',
