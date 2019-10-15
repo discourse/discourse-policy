@@ -32,7 +32,7 @@ module Jobs
       )
 
       if post_ids.length > 0
-        Post.where(id: post_ids).each do |post|
+        Post.where(id: post_ids).find_each do |post|
 
           post.post_policy.update(last_reminded_at: Time.zone.now)
 
@@ -47,8 +47,8 @@ module Jobs
         end
       end
 
-      PostPolicy.where('next_renew_at < ?', Time.zone.now).each do |policy|
-        PostCustomField.where(name: DiscoursePolicy::AcceptedBy, post_id: policy.post_id).delete_all
+      PostPolicy.where('next_renew_at < ?', Time.zone.now).find_each do |policy|
+        policy.user_policy_logs.accepted.update_all(expired_at: Time.zone.now)
         next_renew = policy.renew_start
         if policy.renew_days < 1
           Rails.logger.warn("Invalid policy on post #{policy.post_id}")
@@ -61,34 +61,26 @@ module Jobs
       end
 
       sql = <<~SQL
-      DELETE FROM post_custom_fields f
-      USING post_policies pp
-      WHERE f.post_id = pp.post_id AND
-        pp.renew_start IS NULL AND
-        f.name = :accepted_by AND
-        f.created_at < :now::timestamp - ( INTERVAL '1 day' *  pp.renew_days )
+      UPDATE user_policy_logs
+      SET expired_at = :now
+      FROM user_policy_logs pl
+      INNER JOIN post_policies pp ON pp.id = pl.post_policy_id
+      WHERE pp.renew_start IS NULL AND
+      pp.renew_days IS NOT NULL AND
+      pl.accepted_at IS NOT NULL AND
+      pl.expired_at IS NULL AND
+      pl.revoked_at IS NULL AND
+      pl.accepted_at < :now::timestamp - ( INTERVAL '1 day' *  pp.renew_days )
       SQL
 
       DB.exec(
         sql,
-        accepted_by: DiscoursePolicy::AcceptedBy,
         now: Time.zone.now
       )
-
     end
 
     def missing_users(post)
-
-      group = post.post_policy.group
-
-      if !group
-        return []
-      end
-
-      User.joins(:group_users)
-        .where('group_users.group_id = ?', group.id)
-        .where('users.id NOT IN (?)', post.custom_fields[DiscoursePolicy::AcceptedBy] || [-1])
+      post.post_policy.not_accepted_by
     end
-
   end
 end

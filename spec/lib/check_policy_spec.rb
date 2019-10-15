@@ -25,11 +25,7 @@ describe DiscoursePolicy::CheckPolicy do
 
   def accept_policy(post)
     [user1, user2].each do |u|
-      PostCustomField.create!(
-        post_id: post.id,
-        name: DiscoursePolicy::AcceptedBy,
-        value: u.id
-      )
+      UserPolicyLog.add!(u, post.post_policy)
     end
   end
 
@@ -51,13 +47,13 @@ describe DiscoursePolicy::CheckPolicy do
     DiscoursePolicy::CheckPolicy.new.execute
 
     post.reload
-    expect(post.custom_fields[DiscoursePolicy::AcceptedBy].length).to eq(2)
+    expect(post.post_policy.accepted_by.sort).to eq([user1, user2])
 
     freeze_time Time.utc(2023)
     DiscoursePolicy::CheckPolicy.new.execute
 
     post.reload
-    expect(post.custom_fields[DiscoursePolicy::AcceptedBy]).to eq(nil)
+    expect(post.post_policy.accepted_by).to eq([])
   end
 
   it "correctly renews policies" do
@@ -79,14 +75,14 @@ describe DiscoursePolicy::CheckPolicy do
 
     post.reload
     # did not hit renew start
-    expect(post.custom_fields[DiscoursePolicy::AcceptedBy].length).to eq(2)
+    expect(post.post_policy.accepted_by.sort).to eq([user1, user2])
 
     freeze_time Time.utc(2020, 10, 18)
 
     DiscoursePolicy::CheckPolicy.new.execute
 
     post.reload
-    expect(post.custom_fields[DiscoursePolicy::AcceptedBy]).to eq(nil)
+    expect(post.post_policy.accepted_by.sort).to eq([])
 
     accept_policy(post)
 
@@ -95,7 +91,7 @@ describe DiscoursePolicy::CheckPolicy do
     DiscoursePolicy::CheckPolicy.new.execute
 
     post.reload
-    expect(post.custom_fields[DiscoursePolicy::AcceptedBy]).to eq(nil)
+    expect(post.post_policy.accepted_by.sort).to eq([])
   end
 
   it "will correctly notify users" do
