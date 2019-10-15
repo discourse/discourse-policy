@@ -60,15 +60,16 @@ describe 'markdown' do
     MD
 
     post = create_post(raw: raw)
-    PostCustomField.create!(post_id: post.id, name: DiscoursePolicy::AcceptedBy, value: user.id)
+    post.post_policy.group.users << user
+    UserPolicyLog.add!(user, post.post_policy)
 
     freeze_time(199.days.from_now)
     ::DiscoursePolicy::CheckPolicy.new.execute(nil)
-    expect(PostCustomField.where(post_id: post.id, name: DiscoursePolicy::AcceptedBy).count).to eq(1)
+    expect(post.post_policy.accepted_by).to eq([user])
 
     freeze_time(2.days.from_now)
     ::DiscoursePolicy::CheckPolicy.new.execute(nil)
-    expect(PostCustomField.where(post_id: post.id, name: DiscoursePolicy::AcceptedBy).count).to eq(0)
+    expect(post.post_policy.accepted_by).to eq([])
 
   end
 
@@ -87,12 +88,13 @@ describe 'markdown' do
     MD
 
     post = create_post(raw: raw)
+    post.post_policy.group.users << user
 
-    PostCustomField.create!(post_id: post.id, name: DiscoursePolicy::AcceptedBy, value: user.id)
+    UserPolicyLog.add!(user, post.post_policy)
 
     post = Post.find(post.id)
 
-    expect(post.custom_fields[DiscoursePolicy::AcceptedBy]).to eq([user.id])
+    expect(post.post_policy.accepted_by).to eq([user])
 
     expect(post.post_policy.reminder).to eq("weekly")
     expect(post.post_policy.last_reminded_at).to eq_time(Time.zone.now)
@@ -106,7 +108,6 @@ describe 'markdown' do
     post.revise(post.user, raw: raw)
 
     post = Post.find(post.id)
-    expect(post.custom_fields[DiscoursePolicy::AcceptedBy]).to eq(nil)
-
+    expect(post.post_policy.accepted_by).to eq([])
   end
 end
