@@ -30,7 +30,7 @@ describe 'post serializer' do
 
     expect(not_accepted.map { |u| u[:id] }.sort).to eq([user1.id, user2.id].sort)
 
-    UserPolicyLog.add!(user1, post.post_policy)
+    PolicyUser.add!(user1, post.post_policy)
 
     json = PostSerializer.new(post, scope: Guardian.new).as_json
 

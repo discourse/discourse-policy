@@ -48,7 +48,7 @@ module Jobs
       end
 
       PostPolicy.where('next_renew_at < ?', Time.zone.now).find_each do |policy|
-        policy.user_policy_logs.accepted.update_all(expired_at: Time.zone.now)
+        policy.policy_users.accepted.update_all(expired_at: Time.zone.now)
         next_renew = policy.renew_start
         if policy.renew_days < 1
           Rails.logger.warn("Invalid policy on post #{policy.post_id}")
@@ -61,16 +61,16 @@ module Jobs
       end
 
       sql = <<~SQL
-      UPDATE user_policy_logs
+      UPDATE policy_users
       SET expired_at = :now
-      FROM user_policy_logs pl
-      INNER JOIN post_policies pp ON pp.id = pl.post_policy_id
+      FROM policy_users pu
+      INNER JOIN post_policies pp ON pp.id = pu.post_policy_id
       WHERE pp.renew_start IS NULL AND
       pp.renew_days IS NOT NULL AND
-      pl.accepted_at IS NOT NULL AND
-      pl.expired_at IS NULL AND
-      pl.revoked_at IS NULL AND
-      pl.accepted_at < :now::timestamp - ( INTERVAL '1 day' *  pp.renew_days )
+      pu.accepted_at IS NOT NULL AND
+      pu.expired_at IS NULL AND
+      pu.revoked_at IS NULL AND
+      pu.accepted_at < :now::timestamp - ( INTERVAL '1 day' *  pp.renew_days )
       SQL
 
       DB.exec(

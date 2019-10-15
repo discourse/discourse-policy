@@ -25,7 +25,7 @@ describe DiscoursePolicy::CheckPolicy do
 
   def accept_policy(post)
     [user1, user2].each do |u|
-      UserPolicyLog.add!(u, post.post_policy)
+      PolicyUser.add!(u, post.post_policy)
     end
   end
 

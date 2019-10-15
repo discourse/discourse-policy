@@ -61,7 +61,7 @@ describe 'markdown' do
 
     post = create_post(raw: raw)
     post.post_policy.group.users << user
-    UserPolicyLog.add!(user, post.post_policy)
+    PolicyUser.add!(user, post.post_policy)
 
     freeze_time(199.days.from_now)
     ::DiscoursePolicy::CheckPolicy.new.execute(nil)
@@ -90,7 +90,7 @@ describe 'markdown' do
     post = create_post(raw: raw)
     post.post_policy.group.users << user
 
-    UserPolicyLog.add!(user, post.post_policy)
+    PolicyUser.add!(user, post.post_policy)
 
     post = Post.find(post.id)
 

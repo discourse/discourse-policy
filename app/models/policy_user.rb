@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class UserPolicyLog < ActiveRecord::Base
+class PolicyUser < ActiveRecord::Base
   belongs_to :post_policy
   belongs_to :user
 
@@ -18,7 +18,7 @@ class UserPolicyLog < ActiveRecord::Base
 
   def self.remove!(user, post_policy)
     post_policy
-      .user_policy_logs
+      .policy_users
       .accepted
       .with_version(post_policy.version)
       .where(user: user)

@@ -28,7 +28,7 @@ after_initialize do
   [
     "../jobs/scheduled/check_policy.rb",
     "../app/models/post_policy",
-    "../app/models/user_policy_log",
+    "../app/models/policy_user",
   ].each { |path| require File.expand_path(path, __FILE__) }
 
   require 'post'
@@ -82,9 +82,9 @@ after_initialize do
       end
 
       if type == :add
-        UserPolicyLog.add!(current_user, post.post_policy)
+        PolicyUser.add!(current_user, post.post_policy)
       else
-        UserPolicyLog.remove!(current_user, post.post_policy)
+        PolicyUser.remove!(current_user, post.post_policy)
       end
 
       post.publish_change_to_clients!(:policy_change)

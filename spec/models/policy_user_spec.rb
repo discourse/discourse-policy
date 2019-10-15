@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe UserPolicyLog do
+describe PolicyUser do
   before do
     SiteSetting.queue_jobs = false
   end

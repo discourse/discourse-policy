@@ -3,11 +3,11 @@
 class PostPolicy < ActiveRecord::Base
   belongs_to :post
   belongs_to :group
-  has_many :user_policy_logs
+  has_many :policy_users
 
   def accepted_by
     return [] if !policy_group
-    user_policy_logs
+    policy_users
       .accepted
       .with_version(version)
       .where(user_id: policy_group_users.map(&:id))
