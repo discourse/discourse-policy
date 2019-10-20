@@ -58,7 +58,7 @@ describe DiscoursePolicy::PolicyController do
     expect(response.status).to eq(200)
     post.reload
 
-    expect(post.custom_fields[DiscoursePolicy::AcceptedBy]).to eq([user1.id])
+    expect(post.post_policy.accepted_by.map(&:id)).to eq([user1.id])
 
     sign_in(user2)
     put "/policy/accept.json", params: { post_id: post.id }
@@ -66,13 +66,13 @@ describe DiscoursePolicy::PolicyController do
     expect(response.status).to eq(200)
     post.reload
 
-    expect(post.custom_fields[DiscoursePolicy::AcceptedBy].sort).to eq([user1.id, user2.id])
+    expect(post.post_policy.accepted_by.map(&:id).sort).to eq([user1.id, user2.id])
 
     put "/policy/unaccept.json", params: { post_id: post.id }
     expect(response.status).to eq(200)
 
     post = Post.find(post.id)
 
-    expect(post.custom_fields[DiscoursePolicy::AcceptedBy]).to eq([user1.id])
+    expect(post.post_policy.accepted_by.map(&:id)).to eq([user1.id])
   end
 end

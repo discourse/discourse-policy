@@ -17,7 +17,6 @@ PLUGIN_NAME ||= "discourse_policy".freeze
 after_initialize do
   module ::DiscoursePolicy
 
-    AcceptedBy = "PolicyAcceptedBy"
     HasPolicy = "HasPolicy"
 
     class Engine < ::Rails::Engine
@@ -29,14 +28,13 @@ after_initialize do
   [
     "../jobs/scheduled/check_policy.rb",
     "../app/models/post_policy",
+    "../app/models/policy_user",
   ].each { |path| require File.expand_path(path, __FILE__) }
 
   require 'post'
   class ::Post
     has_one :post_policy, dependent: :destroy
   end
-
-  Post.register_custom_field_type DiscoursePolicy::AcceptedBy, [:integer]
 
   require_dependency "application_controller"
   class DiscoursePolicy::PolicyController < ::ApplicationController
@@ -84,18 +82,9 @@ after_initialize do
       end
 
       if type == :add
-        PostCustomField.create(
-          post_id: post.id,
-          name: DiscoursePolicy::AcceptedBy,
-          value: current_user.id
-        )
+        PolicyUser.add!(current_user, post.post_policy)
       else
-        # API needs love here...
-        PostCustomField.where(
-          post_id: post.id,
-          name: DiscoursePolicy::AcceptedBy,
-          value: current_user.id
-        ).delete_all
+        PolicyUser.remove!(current_user, post.post_policy)
       end
 
       post.publish_change_to_clients!(:policy_change)
@@ -156,11 +145,7 @@ after_initialize do
 
         if version = policy["data-version"]
           old_version = post_policy.version || "1"
-          if version != old_version
-            post.custom_fields[DiscoursePolicy::AcceptedBy] = []
-            post_policy.version = version
-            post.save_custom_fields
-          end
+          post_policy.version = version if version != old_version
         end
 
         if reminder = policy["data-reminder"]
@@ -188,54 +173,26 @@ after_initialize do
   # on(:post_created) do |post|
   # end
 
-  TopicView.default_post_custom_fields << DiscoursePolicy::AcceptedBy
   TopicView.default_post_custom_fields << DiscoursePolicy::HasPolicy
 
   require_dependency 'post_serializer'
   class ::PostSerializer
     attributes :policy_not_accepted_by, :policy_accepted_by
 
-    def policy_not_accepted_by
-      return if !policy_group
+    delegate :post_policy, to: :object
 
-      accepted = post_custom_fields[DiscoursePolicy::AcceptedBy]
-      policy_group_users.reject do |u|
-        accepted&.include?(u.id)
-      end.map do |u|
+    def policy_not_accepted_by
+      return if !post_custom_fields[DiscoursePolicy::HasPolicy]
+      (post_policy.not_accepted_by).map do |u|
         BasicUserSerializer.new(u, root: false).as_json
       end
     end
 
     def policy_accepted_by
-      return if !policy_group
-
-      accepted = post_custom_fields[DiscoursePolicy::AcceptedBy]
-      policy_group_users.reject do |u|
-        !accepted&.include?(u.id)
-      end.map do |u|
+      return if !post_custom_fields[DiscoursePolicy::HasPolicy]
+      post_policy.accepted_by.map do |u|
         BasicUserSerializer.new(u, root: false).as_json
       end
     end
-
-    private
-
-    def policy_group_users
-      @policy_group_users ||= User.joins(:group_users)
-        .where('group_users.group_id = ?', policy_group.id)
-        .select(:id, :username, :uploaded_avatar_id).to_a
-    end
-
-    def policy_group
-      return @policy_group == :nil ? nil : @policy_group if @policy_group
-      @policy_group = :nil
-
-      if post_custom_fields[DiscoursePolicy::HasPolicy]
-        @policy_group = Group
-          .where('user_count < ?', SiteSetting.policy_max_group_size)
-          .where('id in (SELECT group_id FROM post_policies WHERE post_id = ?)', self.id)
-          .first || :nil
-      end
-    end
   end
-
 end
