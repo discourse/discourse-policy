@@ -10,6 +10,8 @@ class MigrateCustomFieldToPolicyUsers < ActiveRecord::Migration[6.0]
     WHERE post_custom_fields.name = 'PolicyAcceptedBy'
     SQL
 
-    PostCustomField.where(name: 'PolicyAcceptedBy').delete_all
+    execute(<<~SQL)
+    DELETE FROM post_custom_fields WHERE name = 'PolicyAcceptedBy'
+    SQL
   end
 end
