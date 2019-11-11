@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MigrateCustomFieldToPolicyUsers < ActiveRecord::Migration[6.0]
+class MigrateCustomFieldToPolicyUsers < ActiveRecord::Migration[5.2]
   def up
     execute(<<~SQL)
     INSERT INTO policy_users(post_policy_id, user_id, version, accepted_at, created_at, updated_at)

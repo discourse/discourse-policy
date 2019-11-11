@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class MigratePolicyUsersTable < ActiveRecord::Migration[6.0]
+class MigratePolicyUsersTable < ActiveRecord::Migration[5.2]
   def change
     create_table :policy_users do |t|
       t.integer :post_policy_id, null: false
