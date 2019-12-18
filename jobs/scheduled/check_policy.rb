@@ -52,9 +52,9 @@ module Jobs
         policy.update(next_renew_at: next_renew)
       end
 
-      DB.exec <<~SQL
+      DB.exec <<~SQL, now: Time.zone.now
         UPDATE policy_users pu
-           SET expired_at = now()
+           SET expired_at = :now
           FROM post_policies pp
          WHERE pp.id = pu.post_policy_id
            AND pp.renew_start IS NULL
@@ -62,7 +62,7 @@ module Jobs
            AND pu.accepted_at IS NOT NULL
            AND pu.expired_at  IS NULL
            AND pu.revoked_at  IS NULL
-           AND pu.accepted_at < now() - (INTERVAL '1 day' * pp.renew_days)
+           AND pu.accepted_at < :now::timestamp - (INTERVAL '1 day' * pp.renew_days)
       SQL
     end
 
