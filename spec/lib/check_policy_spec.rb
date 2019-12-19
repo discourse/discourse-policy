@@ -56,6 +56,58 @@ describe DiscoursePolicy::CheckPolicy do
     expect(post.post_policy.accepted_by).to eq([])
   end
 
+  it "expires only for user with expired policy" do
+    freeze_time Time.utc(2019)
+
+    raw = <<~MD
+     [policy group=#{group.name} renew=364]
+     I always open **doors**!
+     [/policy]
+    MD
+
+    post = create_post(raw: raw, user: Fabricate(:admin))
+
+    freeze_time Time.utc(2021)
+    accept_policy(post)
+
+    freeze_time Time.utc(2022)
+    PolicyUser.where(user_id: user2.id).update(accepted_at: Time.now)
+    DiscoursePolicy::CheckPolicy.new.execute
+
+    post.reload
+    expect(post.post_policy.accepted_by.sort).to eq([user2])
+  end
+
+  it "expires just for expired policy" do
+    freeze_time Time.utc(2019)
+
+    raw = <<~MD
+     [policy group=#{group.name} renew=364]
+     I always open **doors**!
+     [/policy]
+    MD
+
+    raw2 = <<~MD
+     [policy group=#{group.name} renew=1000]
+     I always open **doors**!
+     [/policy]
+    MD
+
+    post = create_post(raw: raw, user: Fabricate(:admin))
+    post2 = create_post(raw: raw2, user: Fabricate(:admin))
+
+    freeze_time Time.utc(2021)
+    accept_policy(post)
+    accept_policy(post2)
+
+    freeze_time Time.utc(2022)
+    DiscoursePolicy::CheckPolicy.new.execute
+
+    post.reload
+    expect(post.post_policy.accepted_by.sort).to eq([])
+    expect(post2.post_policy.accepted_by.sort).to eq([user1, user2])
+  end
+
   it "correctly renews policies" do
 
     freeze_time Time.utc(2019)
