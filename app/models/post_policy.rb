@@ -13,6 +13,7 @@ class PostPolicy < ActiveRecord::Base
       .where(user_id: policy_group_users.map(&:id))
       .includes(:user)
       .map(&:user)
+      .uniq
   end
 
   def not_accepted_by
