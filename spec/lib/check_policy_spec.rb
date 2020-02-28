@@ -140,10 +140,12 @@ describe DiscoursePolicy::CheckPolicy do
 
     freeze_time (Time.utc(2020, 10, 17) + 101.days)
 
+    PolicyUser.add!(user2, post.post_policy)
+
     DiscoursePolicy::CheckPolicy.new.execute
 
     post.reload
-    expect(post.post_policy.accepted_by.sort).to eq([])
+    expect(post.post_policy.accepted_by.sort).to eq([user2])
   end
 
   it "will correctly notify users" do
