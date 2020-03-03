@@ -395,58 +395,46 @@ function initializePolicy(api) {
   api.decorateCooked(attachPolicy, { onlyStream: true, id: "discouse-policy" });
   api.registerCustomPostMessageCallback("policy_change", policyChanged);
 
-  api.modifyClass("component:discourse-topic", {
-    click: function(arg) {
-      const $target = $(arg.target);
+  api.attachWidgetAction("post", "click", function(arg) {
+    const $target = $(arg.target);
+    const post = this.model;
 
-      const findPost = () => {
-        const postId = $target.closest("article").attr("data-post-id");
-        return this.get("postStream").findLoadedPost(postId);
-      };
+    if ($target.hasClass("btn-accept-policy")) {
+      const $policy = $target.closest(".policy");
 
-      if ($target.hasClass("btn-accept-policy")) {
-        const $policy = $target.closest(".policy");
-        const post = findPost();
+      acceptPolicy($policy, post);
 
-        acceptPolicy($policy, post);
+      return false;
+    }
 
-        return false;
-      }
+    if ($target.hasClass("btn-revoke-policy")) {
+      const $policy = $target.closest(".policy");
 
-      if ($target.hasClass("btn-revoke-policy")) {
-        const $policy = $target.closest(".policy");
-        const post = findPost();
+      revokePolicy($policy, post);
 
-        revokePolicy($policy, post);
+      return false;
+    }
 
-        return false;
-      }
+    if (
+      $target.hasClass("toggle-accepted") ||
+      $target.parent().hasClass("toggle-accepted")
+    ) {
+      const $policy = $target.closest(".policy");
 
-      if (
-        $target.hasClass("toggle-accepted") ||
-        $target.parent().hasClass("toggle-accepted")
-      ) {
-        const $policy = $target.closest(".policy");
-        const post = findPost();
+      $policy.removeAttr("data-show-unaccepted");
 
-        $policy.removeAttr("data-show-unaccepted");
+      render($policy, post);
+    }
 
-        render($policy, post);
-      }
+    if (
+      $target.hasClass("toggle-not-accepted") ||
+      $target.parent().hasClass("toggle-not-accepted")
+    ) {
+      const $policy = $target.closest(".policy");
 
-      if (
-        $target.hasClass("toggle-not-accepted") ||
-        $target.parent().hasClass("toggle-not-accepted")
-      ) {
-        const $policy = $target.closest(".policy");
-        const post = findPost();
+      $policy.attr("data-show-unaccepted", "true");
 
-        $policy.attr("data-show-unaccepted", "true");
-
-        render($policy, post);
-      }
-
-      this._super(arg);
+      render($policy, post);
     }
   });
 }
