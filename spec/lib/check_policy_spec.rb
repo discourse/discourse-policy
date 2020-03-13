@@ -148,6 +148,86 @@ describe DiscoursePolicy::CheckPolicy do
     expect(post.post_policy.accepted_by.sort).to eq([user2])
   end
 
+  %w(monthly quarterly yearly).each do |how_often|
+    it "sets correctly next_renew_at for #{how_often} when renew-start is set" do
+      period =
+        case how_often
+        when 'monthly'
+          1.month
+        when 'quarterly'
+          3.months
+        when 'yearly'
+          12.months
+        end
+      freeze_time Time.utc(2020, 10, 16)
+
+      raw = <<~MD
+     [policy group=#{group.name} renew=#{how_often} renew-start="17-10-2020"]
+     I always open **doors**!
+     [/policy]
+      MD
+
+      post = create_post(raw: raw, user: Fabricate(:admin))
+
+      accept_policy(post)
+
+      freeze_time Time.utc(2020, 10, 17)
+
+      DiscoursePolicy::CheckPolicy.new.execute
+
+      post.reload
+      expect(post.post_policy.accepted_by.sort).to eq([user1, user2])
+
+      freeze_time Time.utc(2020, 10, 18)
+
+      DiscoursePolicy::CheckPolicy.new.execute
+
+      post.reload
+      expect(post.post_policy.accepted_by.sort).to eq([])
+      expect(post.post_policy.next_renew_at.to_s).to eq((Time.utc(2020, 10, 17) + period).to_s)
+    end
+  end
+
+  %w(monthly quarterly yearly).each do |how_often|
+    it "expires policies when #{how_often}" do
+      period =
+        case how_often
+        when 'monthly'
+          1.month
+        when 'quarterly'
+          3.months
+        when 'yearly'
+          12.months
+        end
+      freeze_time Time.utc(2020, 10, 16)
+
+      raw = <<~MD
+     [policy group=#{group.name} renew=#{how_often}]
+     I always open **doors**!
+     [/policy]
+      MD
+
+      post = create_post(raw: raw, user: Fabricate(:admin))
+
+      accept_policy(post)
+
+      freeze_time Time.utc(2020, 10, 30)
+
+      DiscoursePolicy::CheckPolicy.new.execute
+
+      post.reload
+      expect(post.post_policy.accepted_by.sort).to eq([user1, user2])
+
+      freeze_time Time.utc(2020, 10, 16) + period + 1.day
+
+      DiscoursePolicy::CheckPolicy.new.execute
+
+      post.reload
+      expect(post.post_policy.accepted_by.sort).to eq([])
+      expect(post.post_policy.renew_start).to eq(nil)
+    end
+  end
+
   it "will correctly notify users" do
     SiteSetting.queue_jobs = false
     freeze_time

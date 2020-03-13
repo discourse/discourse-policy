@@ -5,6 +5,8 @@ class PostPolicy < ActiveRecord::Base
   belongs_to :group
   has_many :policy_users
 
+  enum renew_interval: { monthly: 0, quarterly: 1, yearly: 2 }
+
   def accepted_by
     return [] if !policy_group
     policy_users
