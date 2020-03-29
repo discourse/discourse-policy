@@ -42,28 +42,47 @@ module Jobs
       PostPolicy.where("next_renew_at < ?", Time.zone.now).find_each do |policy|
         policy.policy_users.accepted.where("accepted_at < ?", policy.next_renew_at).update_all(expired_at: Time.zone.now)
         next_renew = policy.renew_start
-        if policy.renew_days < 1
+        if policy.renew_days.to_i < 1 && !PostPolicy.renew_intervals.keys.include?(policy.renew_interval)
           Rails.logger.warn("Invalid policy on post #{policy.post_id}")
         else
           while next_renew < Time.zone.now
-            next_renew += policy.renew_days.days
+            next_renew = calculate_next_renew_date(next_renew, policy)
           end
         end
         policy.update(next_renew_at: next_renew)
       end
 
-      DB.exec <<~SQL, now: Time.zone.now
+      DB.exec <<~SQL, now: Time.zone.now, monthly: PostPolicy.renew_intervals['monthly'], quarterly: PostPolicy.renew_intervals['quarterly'], yearly: PostPolicy.renew_intervals['yearly']
         UPDATE policy_users pu
            SET expired_at = :now
           FROM post_policies pp
          WHERE pp.id = pu.post_policy_id
            AND pp.renew_start IS NULL
-           AND pp.renew_days  IS NOT NULL
+           AND (pp.renew_days  IS NOT NULL OR pp.renew_interval IS NOT NULL)
            AND pu.accepted_at IS NOT NULL
            AND pu.expired_at  IS NULL
            AND pu.revoked_at  IS NULL
-           AND pu.accepted_at < :now::timestamp - (INTERVAL '1 day' * pp.renew_days)
+           AND
+           (
+             (pp.renew_days IS NOT NULL AND pu.accepted_at < :now::timestamp - (INTERVAL '1 day' * pp.renew_days::integer)) OR
+             (pp.renew_interval = :monthly AND pu.accepted_at < :now::timestamp - (INTERVAL '1 month')) OR
+             (pp.renew_interval = :quarterly AND pu.accepted_at < :now::timestamp - (INTERVAL '1 month' * 3)) OR
+             (pp.renew_interval = :yearly AND pu.accepted_at < :now::timestamp - (INTERVAL '1 year'))
+           )
       SQL
+    end
+
+    def calculate_next_renew_date(date, policy)
+      case policy.renew_interval
+      when 'monthly'
+        date + 1.month
+      when 'quarterly'
+        date + 3.months
+      when 'yearly'
+        date + 1.year
+      else
+        date + policy.renew_days.to_i.days
+      end
     end
 
     def missing_users(post)

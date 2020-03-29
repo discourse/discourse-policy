@@ -121,8 +121,11 @@ after_initialize do
           end
         end
 
-        if (renew_days = policy["data-renew"].to_i) > 0
-          post_policy.renew_days = renew_days
+        renew_days = policy["data-renew"]
+        if (renew_days.to_i) > 0 || PostPolicy.renew_intervals.keys.include?(renew_days)
+          post_policy.renew_days = PostPolicy.renew_intervals.keys.include?(renew_days) ? nil : renew_days
+          post_policy.renew_interval = post_policy.renew_days.present? ? nil : renew_days
+
           post_policy.renew_start = nil
 
           if (renew_start = policy["data-renew-start"])
