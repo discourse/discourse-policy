@@ -20,7 +20,7 @@ describe 'markdown' do
       </div>
     HTML
 
-    expect(PrettyText.cook(raw).gsub("\n","")).to eq(cooked)
+    expect(PrettyText.cook(raw).gsub("\n", "")).to eq(cooked)
   end
 
   it "sets the custom attribute on posts with policies" do
