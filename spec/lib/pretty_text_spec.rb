@@ -14,13 +14,13 @@ describe 'markdown' do
      [/policy]
     MD
 
-    cooked = (<<~HTML).strip
+    cooked = (<<~HTML).strip.gsub("\n", "")
       <div class="policy" data-group="team" data-version="1" data-reminder="weekly" data-accept="banana" data-revoke="apple" data-renew-start="01-01-2010">
       <p>I always open <strong>doors</strong>!</p>
       </div>
     HTML
 
-    expect(PrettyText.cook raw).to eq(cooked)
+    expect(PrettyText.cook(raw).gsub("\n","")).to eq(cooked)
   end
 
   it "sets the custom attribute on posts with policies" do
