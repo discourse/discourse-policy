@@ -228,7 +228,7 @@ describe DiscoursePolicy::CheckPolicy do
     end
   end
 
-  it "will correctly notify users" do
+  it "will correctly notify users with high priority notifications" do
     SiteSetting.queue_jobs = false
     freeze_time
 
@@ -250,7 +250,11 @@ describe DiscoursePolicy::CheckPolicy do
     DiscoursePolicy::CheckPolicy.new.execute
     DiscoursePolicy::CheckPolicy.new.execute
 
-    expect(user1.notifications.where(notification_type: Notification.types[:topic_reminder], topic_id: post.topic_id, post_number: 1).count).to eq(1)
-    expect(user2.notifications.where(notification_type: Notification.types[:topic_reminder], topic_id: post.topic_id, post_number: 1).count).to eq(1)
+    user1_notifications = user1.notifications.where(notification_type: Notification.types[:topic_reminder], topic_id: post.topic_id, post_number: 1)
+    expect(user1_notifications.count).to eq(1)
+    expect(user1_notifications.first.high_priority).to eq(true)
+    user2_notifications = user2.notifications.where(notification_type: Notification.types[:topic_reminder], topic_id: post.topic_id, post_number: 1)
+    expect(user2_notifications.count).to eq(1)
+    expect(user2_notifications.first.high_priority).to eq(true)
   end
 end
