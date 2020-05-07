@@ -29,11 +29,13 @@ module Jobs
           post.post_policy.update(last_reminded_at: Time.zone.now)
 
           missing_users(post).each do |user|
+            clear_existing_notification(user, post)
             user.notifications.create!(
               notification_type: Notification.types[:topic_reminder],
               topic_id: post.topic_id,
               post_number: post.post_number,
-              data: { topic_title: post.topic.title, display_username: user.username }.to_json
+              data: { topic_title: post.topic.title, display_username: user.username }.to_json,
+              high_priority: true
             )
           end
         end
@@ -87,6 +89,17 @@ module Jobs
 
     def missing_users(post)
       post.post_policy.not_accepted_by
+    end
+
+    def clear_existing_notification(user, post)
+      existing_notification = Notification.find_by(
+        notification_type: Notification.types[:topic_reminder],
+        topic_id: post.topic_id,
+        post_number: post.post_number,
+        user: user
+      )
+      return if existing_notification.blank?
+      existing_notification.delete
     end
   end
 end
