@@ -257,4 +257,35 @@ describe DiscoursePolicy::CheckPolicy do
     expect(user2_notifications.count).to eq(1)
     expect(user2_notifications.first.high_priority).to eq(true)
   end
+
+  it "will delete the existing policy reminder notification before creating a new one" do
+    SiteSetting.queue_jobs = false
+    freeze_time
+
+    raw = <<~MD
+     [policy group=#{group.name} reminder=weekly]
+     I always open **doors**!
+     [/policy]
+    MD
+
+    post = create_post(raw: raw, user: Fabricate(:admin))
+
+    DiscoursePolicy::CheckPolicy.new.execute
+
+    expect(user1.notifications.where(notification_type: Notification.types[:topic_reminder]).count).to eq(0)
+
+    freeze_time 2.weeks.from_now
+
+    DiscoursePolicy::CheckPolicy.new.execute
+
+    user1_notification = user1.notifications.where(notification_type: Notification.types[:topic_reminder], topic_id: post.topic_id, post_number: 1).last
+    expect(user1_notification).not_to eq(nil)
+
+    freeze_time 2.weeks.from_now
+
+    DiscoursePolicy::CheckPolicy.new.execute
+
+    expect(user1.notifications.where(notification_type: Notification.types[:topic_reminder], topic_id: post.topic_id, post_number: 1).count).to eq(1)
+    expect(Notification.find_by(id: user1_notification.id)).to eq(nil)
+  end
 end
