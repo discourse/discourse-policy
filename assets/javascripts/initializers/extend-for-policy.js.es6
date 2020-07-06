@@ -5,6 +5,7 @@ import { popupAjaxError } from "discourse/lib/ajax-error";
 import { escapeExpression } from "discourse/lib/utilities";
 import { iconHTML } from "discourse-common/lib/icon-library";
 import TextLib from "discourse/lib/text";
+import getURL from "discourse-common/lib/get-url";
 
 let currentUser;
 
@@ -223,7 +224,7 @@ function initializePolicy(api) {
 
   function _saveSettings($list, existingSettings, post) {
     const newSettings = _getSettingsValueFromForm($list);
-    const endpoint = Discourse.getURL(`/posts/${post.id}`);
+    const endpoint = getURL(`/posts/${post.id}`);
     const options = { type: "GET", cache: false };
     return ajax(endpoint, options).then(result => {
       const raw = result.raw;
@@ -345,7 +346,7 @@ function initializePolicy(api) {
       render($policy, post);
     }
 
-    const endpoint = Discourse.getURL("/policy/unaccept");
+    const endpoint = getURL("/policy/unaccept");
     ajax(endpoint, {
       type: "put",
       data: {
@@ -366,7 +367,7 @@ function initializePolicy(api) {
       accepted.addObject(elem);
       render($policy, post);
     }
-    const endpoint = Discourse.getURL("/policy/accept");
+    const endpoint = getURL("/policy/accept");
     ajax(endpoint, {
       type: "put",
       data: {
@@ -383,7 +384,7 @@ function initializePolicy(api) {
     const $policy = $(`article[data-post-id=${message.id}] .policy`);
 
     if (post && $policy.length > 0) {
-      const endpoint = Discourse.getURL(`/posts/${message.id}.json`);
+      const endpoint = getURL(`/posts/${message.id}.json`);
       ajax(endpoint).then(data => {
         post.set("policy_accepted_by", data.policy_accepted_by || []);
         post.set("policy_not_accepted_by", data.policy_not_accepted_by || []);
