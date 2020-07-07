@@ -6,6 +6,7 @@ import { popupAjaxError } from "discourse/lib/ajax-error";
 import { escapeExpression } from "discourse/lib/utilities";
 import { iconHTML } from "discourse-common/lib/icon-library";
 import TextLib from "discourse/lib/text";
+import getURL from "discourse-common/lib/get-url";
 
 let currentUser;
 
