@@ -75,7 +75,7 @@
     padding: 0.5em;
 
     &:hover {
-      color: $primary-very-low;
+      color: var(--primary-very-low, $primary-very-low);
       background: var(--primary-medium, $primary-medium);
     }
   }
