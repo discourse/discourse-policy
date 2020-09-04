@@ -1,3 +1,4 @@
+import I18n from "I18n";
 import getURL from "discourse-common/lib/get-url";
 import { withPluginApi } from "discourse/lib/plugin-api";
 import { renderAvatar } from "discourse/helpers/user-avatar";
@@ -16,7 +17,7 @@ const SETTINGS = [
   { name: "renew-start", visible: true, optional: true },
   { name: "reminder", optional: true },
   { name: "accept", optional: true },
-  { name: "revoke", optional: true }
+  { name: "revoke", optional: true },
 ];
 
 function initializePolicy(api) {
@@ -27,7 +28,7 @@ function initializePolicy(api) {
       return [];
     }
 
-    return users.map(u => {
+    return users.map((u) => {
       return renderAvatar(u, { imageSize: "tiny" });
     });
   }
@@ -117,8 +118,8 @@ function initializePolicy(api) {
     let currentAccepted, currentNotAccepted;
 
     if (currentUser) {
-      currentAccepted = accepted.any(u => u.id === currentUser.id);
-      currentNotAccepted = notAccepted.any(u => u.id === currentUser.id);
+      currentAccepted = accepted.any((u) => u.id === currentUser.id);
+      currentNotAccepted = notAccepted.any((u) => u.id === currentUser.id);
     }
 
     $policy.find(".btn.accept, .btn.revoke").hide();
@@ -174,7 +175,7 @@ function initializePolicy(api) {
 
     $policySettings.append($settingsList).append($savePolicyBtn);
 
-    SETTINGS.forEach(setting => {
+    SETTINGS.forEach((setting) => {
       _attachSettingInput(
         $settingsList,
         setting,
@@ -211,8 +212,8 @@ function initializePolicy(api) {
         if ($policySettings.css("display") === "flex") {
           $policySettings.hide().empty();
         } else {
-          const settingsString = SETTINGS.filter(s => s.visible)
-            .map(s => `${s.name}: ${existingSettings[s.name]}`)
+          const settingsString = SETTINGS.filter((s) => s.visible)
+            .map((s) => `${s.name}: ${existingSettings[s.name]}`)
             .join(", ");
 
           $policySettings.html(`<span class="visible-settings"></span>`);
@@ -226,17 +227,17 @@ function initializePolicy(api) {
     const newSettings = _getSettingsValueFromForm($list);
     const endpoint = getURL(`/posts/${post.id}`);
     const options = { type: "GET", cache: false };
-    return ajax(endpoint, options).then(result => {
+    return ajax(endpoint, options).then((result) => {
       const raw = result.raw;
       const newRaw = _replaceSettingsInRaw(existingSettings, newSettings, raw);
 
       if (newRaw) {
         const props = {
           raw: newRaw,
-          edit_reason: I18n.t("discourse_policy.edit_reason")
+          edit_reason: I18n.t("discourse_policy.edit_reason"),
         };
 
-        return TextLib.cookAsync(raw).then(cooked => {
+        return TextLib.cookAsync(raw).then((cooked) => {
           props.cooked = cooked.string;
           post.save(props);
         });
@@ -258,7 +259,7 @@ function initializePolicy(api) {
         .replace(/(.*?\w+=)([\w]+)(.*?)/gm, `$1"$2"$3`);
     }
 
-    SETTINGS.forEach(setting => {
+    SETTINGS.forEach((setting) => {
       const existingSetting = existingSettings[setting.name];
       const newSetting = newSettings[setting.name];
 
@@ -290,7 +291,7 @@ function initializePolicy(api) {
 
   function _getSettingsValueFromForm($form) {
     let extractedSettings = {};
-    SETTINGS.forEach(setting => {
+    SETTINGS.forEach((setting) => {
       extractedSettings[setting.name] = $form
         .find(`#policy-setting-${setting.name}`)
         .val();
@@ -300,7 +301,7 @@ function initializePolicy(api) {
 
   function _extractSettingsFromCookedContainer($cooked) {
     let extractedSettings = {};
-    SETTINGS.forEach(setting => {
+    SETTINGS.forEach((setting) => {
       extractedSettings[setting.name] =
         $cooked.attr(`data-${setting.name}`) || "";
     });
@@ -350,8 +351,8 @@ function initializePolicy(api) {
     ajax(endpoint, {
       type: "put",
       data: {
-        post_id: post.get("id")
-      }
+        post_id: post.get("id"),
+      },
     }).catch(popupAjaxError);
     return false;
   }
@@ -371,8 +372,8 @@ function initializePolicy(api) {
     ajax(endpoint, {
       type: "put",
       data: {
-        post_id: post.get("id")
-      }
+        post_id: post.get("id"),
+      },
     }).catch(popupAjaxError);
     return false;
   }
@@ -385,7 +386,7 @@ function initializePolicy(api) {
 
     if (post && $policy.length > 0) {
       const endpoint = getURL(`/posts/${message.id}.json`);
-      ajax(endpoint).then(data => {
+      ajax(endpoint).then((data) => {
         post.set("policy_accepted_by", data.policy_accepted_by || []);
         post.set("policy_not_accepted_by", data.policy_not_accepted_by || []);
         render($policy, post);
@@ -396,7 +397,7 @@ function initializePolicy(api) {
   api.decorateCooked(attachPolicy, { onlyStream: true, id: "discouse-policy" });
   api.registerCustomPostMessageCallback("policy_change", policyChanged);
 
-  api.attachWidgetAction("post", "click", function(arg) {
+  api.attachWidgetAction("post", "click", function (arg) {
     const $target = $(arg.target);
     const post = this.model;
 
@@ -445,5 +446,5 @@ export default {
 
   initialize() {
     withPluginApi("0.8.7", initializePolicy);
-  }
+  },
 };

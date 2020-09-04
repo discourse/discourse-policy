@@ -3,14 +3,14 @@
 const rule = {
   tag: "policy",
 
-  wrap: function(token, info) {
+  wrap: function (token, info) {
     if (!info.attrs.group) {
       return false;
     }
 
     token.attrs = [
       ["class", "policy"],
-      ["data-group", info.attrs.group]
+      ["data-group", info.attrs.group],
     ];
 
     token.attrs.push(["data-version", info.attrs.version || 1]);
@@ -36,7 +36,7 @@ const rule = {
     }
 
     return true;
-  }
+  },
 };
 
 export function setup(helper) {
@@ -46,7 +46,7 @@ export function setup(helper) {
     opts.features.policy = !!siteSettings.policy_enabled;
   });
 
-  helper.registerPlugin(md => {
+  helper.registerPlugin((md) => {
     md.block.bbcode.ruler.push("policy", rule);
   });
 }
