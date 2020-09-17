@@ -1,3 +1,4 @@
+import { POLICY_SETTINGS } from "discourse/plugins/discourse-policy/lib/settings";
 /*eslint no-bitwise:0 */
 
 const rule = {
@@ -8,32 +9,17 @@ const rule = {
       return false;
     }
 
-    token.attrs = [
-      ["class", "policy"],
-      ["data-group", info.attrs.group],
-    ];
+    token.attrs = [["class", "policy"]];
 
-    token.attrs.push(["data-version", info.attrs.version || 1]);
-
-    if (info.attrs["renew"]) {
-      token.attrs.push(["data-renew", info.attrs.renew]);
-    }
-
-    if (info.attrs.reminder) {
-      token.attrs.push(["data-reminder", info.attrs.reminder]);
-    }
-
-    if (info.attrs.accept) {
-      token.attrs.push(["data-accept", info.attrs.accept]);
-    }
-
-    if (info.attrs.revoke) {
-      token.attrs.push(["data-revoke", info.attrs.revoke]);
-    }
-
-    if (info.attrs.start) {
-      token.attrs.push(["data-renew-start", info.attrs.start]);
-    }
+    POLICY_SETTINGS.forEach((element) => {
+      const key = element.name.split("-");
+      const value = info.attrs[key[key.length - 1]];
+      if (key === "version") {
+        token.attrs.push(["data-version", info.attrs.version || 1]);
+      } else if (value) {
+        token.attrs.push([`data-${element.name}`, value]);
+      }
+    });
 
     return true;
   },

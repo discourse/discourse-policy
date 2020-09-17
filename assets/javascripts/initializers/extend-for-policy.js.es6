@@ -7,18 +7,9 @@ import { popupAjaxError } from "discourse/lib/ajax-error";
 import { escapeExpression } from "discourse/lib/utilities";
 import { iconHTML } from "discourse-common/lib/icon-library";
 import TextLib from "discourse/lib/text";
+import { POLICY_SETTINGS } from "discourse/plugins/discourse-policy/lib/settings";
 
 let currentUser;
-
-const SETTINGS = [
-  { name: "group", visible: true },
-  { name: "version", visible: true, optional: true },
-  { name: "renew", visible: true, optional: true },
-  { name: "renew-start", visible: true, optional: true },
-  { name: "reminder", optional: true },
-  { name: "accept", optional: true },
-  { name: "revoke", optional: true },
-];
 
 function initializePolicy(api) {
   currentUser = api.getCurrentUser();
@@ -175,7 +166,7 @@ function initializePolicy(api) {
 
     $policySettings.append($settingsList).append($savePolicyBtn);
 
-    SETTINGS.forEach((setting) => {
+    POLICY_SETTINGS.forEach((setting) => {
       _attachSettingInput(
         $settingsList,
         setting,
@@ -212,7 +203,7 @@ function initializePolicy(api) {
         if ($policySettings.css("display") === "flex") {
           $policySettings.hide().empty();
         } else {
-          const settingsString = SETTINGS.filter((s) => s.visible)
+          const settingsString = POLICY_SETTINGS.filter((s) => s.visible)
             .map((s) => `${s.name}: ${existingSettings[s.name]}`)
             .join(", ");
 
@@ -259,7 +250,7 @@ function initializePolicy(api) {
         .replace(/(.*?\w+=)([\w]+)(.*?)/gm, `$1"$2"$3`);
     }
 
-    SETTINGS.forEach((setting) => {
+    POLICY_SETTINGS.forEach((setting) => {
       const existingSetting = existingSettings[setting.name];
       const newSetting = newSettings[setting.name];
 
@@ -291,7 +282,7 @@ function initializePolicy(api) {
 
   function _getSettingsValueFromForm($form) {
     let extractedSettings = {};
-    SETTINGS.forEach((setting) => {
+    POLICY_SETTINGS.forEach((setting) => {
       extractedSettings[setting.name] = $form
         .find(`#policy-setting-${setting.name}`)
         .val();
@@ -301,7 +292,7 @@ function initializePolicy(api) {
 
   function _extractSettingsFromCookedContainer($cooked) {
     let extractedSettings = {};
-    SETTINGS.forEach((setting) => {
+    POLICY_SETTINGS.forEach((setting) => {
       extractedSettings[setting.name] =
         $cooked.attr(`data-${setting.name}`) || "";
     });
