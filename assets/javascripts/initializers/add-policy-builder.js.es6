@@ -5,7 +5,7 @@ function initializePolicyBuilder(api) {
   const currentUser = api.getCurrentUser();
 
   api.addToolbarPopupMenuOptionsCallback(() => {
-    if (!currentUser || !currentUser.can_create_discourse_post_event) {
+    if (!currentUser) {
       return;
     }
 
