@@ -1,3 +1,4 @@
+import { isPresent } from "@ember/utils";
 import I18n from "I18n";
 import TextLib from "discourse/lib/text";
 import ModalFunctionality from "discourse/mixins/modal-functionality";
@@ -80,7 +81,7 @@ export default Controller.extend(ModalFunctionality, {
     Object.keys(form).forEach((key) => {
       const value = form[key];
 
-      if (value && value.length) {
+      if (value && isPresent(value)) {
         markdownParams.push(`${key}="${value}"`);
       }
     });
@@ -100,12 +101,12 @@ export default Controller.extend(ModalFunctionality, {
   },
 
   _validateForm(form) {
-    if (!form.group || !form.group.length) {
+    if (!form.group || !isPresent(form.group)) {
       this.flash(I18n.t("discourse_policy.builder.errors.group"), "error");
       return false;
     }
 
-    if (!form.version || !form.version.length) {
+    if (!form.version || !isPresent(form.version)) {
       this.flash(I18n.t("discourse_policy.builder.errors.version"), "error");
       return false;
     }
