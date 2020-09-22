@@ -87,12 +87,12 @@ export default Controller.extend(ModalFunctionality, {
   },
 
   _replaceRaw(form, raw) {
-    const eventRegex = new RegExp(`\\[policy\\s(.*?)\\]`, "m");
-    const policyMatches = raw.match(eventRegex);
+    const policyRegex = new RegExp(`\\[policy\\s(.*?)\\]`, "m");
+    const policyMatches = raw.match(policyRegex);
 
     if (policyMatches && policyMatches[1]) {
       const markdownParams = this._buildParams(form);
-      return raw.replace(eventRegex, `[policy ${markdownParams.join(" ")}]`);
+      return raw.replace(policyRegex, `[policy ${markdownParams.join(" ")}]`);
     }
 
     return false;
