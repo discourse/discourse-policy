@@ -19,8 +19,12 @@ export default Component.extend({
   siteGroups: computed("site.groups", function () {
     return (this.site.groups || [])
       .map((g) => {
-        if (g.id === 0) return; // prevents group "everyone" to be listed
-        if (g.automatic) return;
+        if (g.id === 0) {
+          return;
+        } // prevents group "everyone" to be listed
+        if (g.automatic) {
+          return;
+        }
         return g.name;
       })
       .filter(Boolean);
