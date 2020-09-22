@@ -178,6 +178,7 @@ function initializePolicy(api) {
 
     $policy.on("click", ".edit-policy-settings-btn", () => {
       showModal("policy-builder").setProperties({
+        insertMode: false,
         post,
         form,
       });

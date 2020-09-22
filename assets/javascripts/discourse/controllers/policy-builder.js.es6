@@ -11,6 +11,7 @@ export default Controller.extend(ModalFunctionality, {
   form: null,
   post: null,
   isSaving: false,
+  insertMode: true,
 
   onShow() {
     if (!this.form) {

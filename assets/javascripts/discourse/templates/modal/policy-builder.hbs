@@ -60,20 +60,20 @@
 {{/d-modal-body}}
 
 <div class="modal-footer">
-  {{#if post}}
+  {{#if insertMode}}
+    {{d-button
+      type="button"
+      class="btn-primary"
+      label="discourse_policy.builder.insert"
+      action=(action "insertPolicy")
+    }}
+  {{else}}
     {{d-button
       isLoading=isSaving
       type="button"
       class="btn-primary"
       label="discourse_policy.builder.save"
       action=(action "updatePolicy")
-    }}
-  {{else}}
-    {{d-button
-      type="button"
-      class="btn-primary"
-      label="discourse_policy.builder.insert"
-      action=(action "insertPolicy")
     }}
   {{/if}}
 </div>
