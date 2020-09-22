@@ -6,3 +6,32 @@ en:
       accept_policy: "Accept Policy"
       revoke_policy: "Revoke Policy"
       edit_reason: "Policy settings have been modified"
+      builder:
+        title: Policy
+        attach: Create Policy
+        save: Save changes
+        insert: Insert
+        errors:
+          group: Group is mandatory
+          version: Version is mandatory
+        group:
+          label: Group
+          description: The group associated to this policy
+        version:
+          label: Version
+          description: The version of the policy, bumping the version will force people to re-accept it
+        renew:
+          label: Renew
+          description: Renew the policy every x days
+        renew-start:
+          label: Renew Start
+          description: When the policy should be renewed
+        reminder:
+          label: Reminder
+          description: How often a reminder notification to accept the policy should be sent
+        accept:
+          label: Accept
+          description: Text used on the accept button
+        revoke:
+          label: Revoke
+          description: Text used on the revoke button

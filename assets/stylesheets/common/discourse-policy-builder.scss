@@ -1,0 +1,38 @@
+::-webkit-calendar-picker-indicator {
+  opacity: 1;
+}
+
+@media (prefers-color-scheme: dark) {
+  ::-webkit-calendar-picker-indicator {
+    @if is-light-color-scheme() {
+      filter: invert(0);
+    } @else {
+      filter: invert(1);
+    }
+  }
+}
+
+.policy-builder {
+  input,
+  .select-kit {
+    width: 100%;
+    margin: 0;
+  }
+
+  .policy-field {
+    margin-bottom: 0.5em;
+
+    &:last-child {
+      margin: 0;
+    }
+
+    .policy-field-label {
+      font-weight: 700;
+    }
+    .policy-field-control {
+    }
+    .policy-field-description {
+      font-size: $font-down-1;
+    }
+  }
+}

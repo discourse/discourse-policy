@@ -1,3 +1,5 @@
+import EmberObject from "@ember/object";
+import showModal from "discourse/lib/show-modal";
 import I18n from "I18n";
 import getURL from "discourse-common/lib/get-url";
 import { withPluginApi } from "discourse/lib/plugin-api";
@@ -6,7 +8,6 @@ import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import { escapeExpression } from "discourse/lib/utilities";
 import { iconHTML } from "discourse-common/lib/icon-library";
-import TextLib from "discourse/lib/text";
 
 let currentUser;
 
@@ -141,22 +142,33 @@ function initializePolicy(api) {
     $policy.find(".policy-settings").remove();
     const $policySettings = $(`<div class="policy-settings"></div>`);
     $policy.append($policySettings);
-    const existingSettings = _extractSettingsFromCookedContainer($policy);
+
     const currentUserCanManagePolicy =
       currentUser.staff || currentUser.id === post.user_id;
     if (currentUserCanManagePolicy) {
-      _attachEditSettingsUI($policy, $policySettings, existingSettings, post);
-    } else {
-      _attachReadSettingsUI($policy, $policySettings, existingSettings);
+      _attachEditSettingsUI(
+        $policy,
+        $policySettings,
+        post,
+        _buildForm($policy)
+      );
     }
   }
 
-  function _attachEditSettingsUI(
-    $policy,
-    $policySettings,
-    existingSettings,
-    post
-  ) {
+  function _buildForm($policy) {
+    const form = {};
+    SETTINGS.forEach((setting) => {
+      form[setting.name] = $policy.attr(`data-${setting.name}`) || "";
+    });
+
+    if (!form.version || parseInt(form.version, 10) < 1) {
+      form.version = 1;
+    }
+
+    return EmberObject.create(form);
+  }
+
+  function _attachEditSettingsUI($policy, $policySettings, post, form) {
     const $editPolicySettingsBtn = $(
       `<button class="btn no-text btn-default edit-policy-settings-btn">${iconHTML(
         "cog"
@@ -164,165 +176,12 @@ function initializePolicy(api) {
     );
     $policy.append($editPolicySettingsBtn);
 
-    const $settingsList = $(`<div class="settings-list"></div>`);
-
-    $policy.find(".save-policy-settings-btn").remove();
-    const $savePolicyBtn = $(
-      `<button class="btn btn-primary save-policy-settings-btn">${I18n.t(
-        "save"
-      )}</button>`
-    );
-
-    $policySettings.append($settingsList).append($savePolicyBtn);
-
-    SETTINGS.forEach((setting) => {
-      _attachSettingInput(
-        $settingsList,
-        setting,
-        existingSettings[setting.name]
-      );
-    });
-
-    $policy
-      .on("click", ".edit-policy-settings-btn", () => {
-        if ($policySettings.css("display") === "flex") {
-          $policySettings.hide();
-        } else {
-          $policySettings.show().css("display", "flex");
-        }
-      })
-      .on("click", ".save-policy-settings-btn", () =>
-        _saveSettings($settingsList, existingSettings, post).then(() =>
-          $policySettings.hide()
-        )
-      );
-  }
-
-  function _attachReadSettingsUI($policy, $policySettings, existingSettings) {
-    $policy.find(".see-policy-settings-btn").remove();
-    const $seePolicySettingsBtn = $(
-      `<button class="btn no-text btn-default see-policy-settings-btn">${iconHTML(
-        "info"
-      )}</button>`
-    );
-
-    $policy
-      .append($seePolicySettingsBtn)
-      .on("click", $seePolicySettingsBtn, () => {
-        if ($policySettings.css("display") === "flex") {
-          $policySettings.hide().empty();
-        } else {
-          const settingsString = SETTINGS.filter((s) => s.visible)
-            .map((s) => `${s.name}: ${existingSettings[s.name]}`)
-            .join(", ");
-
-          $policySettings.html(`<span class="visible-settings"></span>`);
-          $policySettings.find(".visible-settings").text(settingsString);
-          $policySettings.show().css("display", "flex");
-        }
+    $policy.on("click", ".edit-policy-settings-btn", () => {
+      showModal("policy-builder").setProperties({
+        post,
+        form,
       });
-  }
-
-  function _saveSettings($list, existingSettings, post) {
-    const newSettings = _getSettingsValueFromForm($list);
-    const endpoint = getURL(`/posts/${post.id}`);
-    const options = { type: "GET", cache: false };
-    return ajax(endpoint, options).then((result) => {
-      const raw = result.raw;
-      const newRaw = _replaceSettingsInRaw(existingSettings, newSettings, raw);
-
-      if (newRaw) {
-        const props = {
-          raw: newRaw,
-          edit_reason: I18n.t("discourse_policy.edit_reason"),
-        };
-
-        return TextLib.cookAsync(raw).then((cooked) => {
-          props.cooked = cooked.string;
-          post.save(props);
-        });
-      }
     });
-  }
-
-  function _replaceSettingsInRaw(existingSettings, newSettings, raw) {
-    let settingReplaced = false;
-
-    const policyRegex = new RegExp(`\\[policy\\s(.*?)\\]`, "m");
-    const policyMatches = raw.match(policyRegex);
-    let policyString = "";
-    if (policyMatches && policyMatches[1]) {
-      // sanitizing any xx=zz, xx='zz', xx="zz" into xx="zz"
-      // it makes regex way easier
-      policyString = policyMatches[1]
-        .replace(/(.*?\w+=)'(.*?)'(.*?)/gm, `$1"$2"$3`)
-        .replace(/(.*?\w+=)([\w]+)(.*?)/gm, `$1"$2"$3`);
-    }
-
-    SETTINGS.forEach((setting) => {
-      const existingSetting = existingSettings[setting.name];
-      const newSetting = newSettings[setting.name];
-
-      if (existingSetting === newSetting) return;
-
-      settingReplaced = true;
-
-      if (!existingSetting) {
-        policyString = `${policyString} ${setting.name}="${newSetting}"`;
-      } else if (!newSetting) {
-        if (setting.optional) {
-          const regexp = new RegExp(`(\\s?${setting.name}=".*?")`, "gm");
-          policyString = policyString.replace(regexp, "");
-        }
-      } else {
-        const regexp = new RegExp(`(${setting.name}=)".*?"`, "gm");
-        policyString = policyString.replace(regexp, `$1"${newSetting}"`);
-      }
-    });
-
-    if (policyString.indexOf("version=") < 0) {
-      policyString = `${policyString} version="1"`;
-    }
-
-    raw = raw.replace(policyRegex, `[policy ${policyString}]`);
-
-    return settingReplaced ? raw : false;
-  }
-
-  function _getSettingsValueFromForm($form) {
-    let extractedSettings = {};
-    SETTINGS.forEach((setting) => {
-      extractedSettings[setting.name] = $form
-        .find(`#policy-setting-${setting.name}`)
-        .val();
-    });
-    return extractedSettings;
-  }
-
-  function _extractSettingsFromCookedContainer($cooked) {
-    let extractedSettings = {};
-    SETTINGS.forEach((setting) => {
-      extractedSettings[setting.name] =
-        $cooked.attr(`data-${setting.name}`) || "";
-    });
-    return extractedSettings;
-  }
-
-  function _attachSettingInput($container, setting, value) {
-    const $label = $(
-      `<span class="policy-setting-name">${setting.name}</span>`
-    );
-    const $input = $(
-      `<input class="input policy-setting-value" id="policy-setting-${
-        setting.name
-      }" value="${value}" placeholder="${
-        setting.optional ? "optional" : "required"
-      }" type="text">`
-    );
-    const $setting = $(`<div class="setting"></div>`);
-
-    $container.append($setting);
-    $setting.append($label).append($input);
   }
 
   function attachPolicy($elem, helper) {

@@ -7,8 +7,10 @@
 # url: https://github.com/discourse/discourse-policy
 
 register_asset "stylesheets/common/discourse-policy.scss"
+register_asset "stylesheets/common/discourse-policy-builder.scss"
 
 register_svg_icon "user-check" if respond_to?(:register_svg_icon)
+register_svg_icon "file-signature" if respond_to?(:register_svg_icon)
 
 enabled_site_setting :policy_enabled
 
