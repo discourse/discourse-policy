@@ -10,8 +10,6 @@ function initializePolicyBuilder(api, container) {
       return;
     }
 
-    console.log(currentUser.staff);
-
     if (!siteSettings.policy_restrict_to_staff_posts || currentUser.staff) {
       return {
         label: "discourse_policy.builder.attach",
