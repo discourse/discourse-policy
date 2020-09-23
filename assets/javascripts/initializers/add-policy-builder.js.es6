@@ -1,21 +1,26 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 import showModal from "discourse/lib/show-modal";
 
-function initializePolicyBuilder(api) {
+function initializePolicyBuilder(api, container) {
   const currentUser = api.getCurrentUser();
+  const siteSettings = container.lookup("site-settings:main");
 
   api.addToolbarPopupMenuOptionsCallback(() => {
     if (!currentUser) {
       return;
     }
 
-    return {
-      label: "discourse_policy.builder.attach",
-      id: "insertPolicy",
-      group: "insertions",
-      icon: "file-signature",
-      action: "insertPolicy",
-    };
+    console.log(currentUser.staff);
+
+    if (!siteSettings.policy_restrict_to_staff_posts || currentUser.staff) {
+      return {
+        label: "discourse_policy.builder.attach",
+        id: "insertPolicy",
+        group: "insertions",
+        icon: "file-signature",
+        action: "insertPolicy",
+      };
+    }
   });
 
   api.modifyClass("controller:composer", {
@@ -35,7 +40,7 @@ export default {
   initialize(container) {
     const siteSettings = container.lookup("site-settings:main");
     if (siteSettings.policy_enabled) {
-      withPluginApi("0.8.7", initializePolicyBuilder);
+      withPluginApi("0.8.7", (api) => initializePolicyBuilder(api, container));
     }
   },
 };
