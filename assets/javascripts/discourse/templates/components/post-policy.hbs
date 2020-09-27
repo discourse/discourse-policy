@@ -1,0 +1,63 @@
+<div class="policy-footer">
+  {{#if currentlyAcceptedUser}}
+    {{d-button
+      isLoading=isLoading
+      action=(action "revokePolicy" post)
+      class="btn-danger revoke btn-revoke-policy"
+      translatedLabel=options.revokeText
+    }}
+  {{/if}}
+
+  {{#if notCurrentlyAcceptedUser}}
+    {{d-button
+      isLoading=isLoading
+      action=(action "acceptPolicy" post)
+      class="btn-primary accept btn-accept-policy"
+      translatedLabel=options.acceptText
+    }}
+  {{/if}}
+
+  <div class="user-lists">
+    <a href {{action "toggleShowUsers"}} class="toggle toggle-accepted" title={{i18n "discourse_policy.accepted_tooltip"}}>
+      <span class="user-count">
+        {{acceptedUsers.length}}
+      </span>
+      {{d-icon "user-check"}}
+    </a>
+
+    {{#unless showNotAccepted}}
+      <div class="users accepted">
+        {{#each acceptedUsers as |acceptedUser|}}
+          {{avatar acceptedUser imageSize="tiny"}}
+        {{/each}}
+      </div>
+    {{/unless}}
+
+    {{#if notAcceptedUsers.length}}
+      <div class="seperator"></div>
+
+      <a href {{action "toggleShowUsers"}} class="toggle toggle-not-accepted" title={{i18n "discourse_policy.not_accepted_tooltip"}}>
+        <span class="user-count">
+          {{notAcceptedUsers.length}}
+        </span>
+        {{d-icon "user-times"}}
+      </a>
+
+      {{#if showNotAccepted}}
+        <div class="users not-accepted">
+          {{#each notAcceptedUsers as |notAcceptedUser|}}
+            {{avatar notAcceptedUser imageSize="tiny"}}
+          {{/each}}
+        </div>
+      {{/if}}
+    {{/if}}
+  </div>
+
+  {{#if canManagePolicy}}
+    {{d-button
+      class="no-text btn-default edit-policy-settings-btn"
+      icon="cog"
+      action=(action "editPolicy" post)
+    }}
+  {{/if}}
+</div>
