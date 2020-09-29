@@ -1,6 +1,7 @@
 en:
   js:
     discourse_policy:
+      title: "Policy"
       accepted_tooltip: "Users who have accepted this policy"
       not_accepted_tooltip: "Users who have not accepted this policy"
       accept_policy: "Accept Policy"

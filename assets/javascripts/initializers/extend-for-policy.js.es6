@@ -43,6 +43,11 @@ function initializePolicy(api) {
     policy.innerHTML = `<div class="policy-body">${policy.innerHTML}</div>`;
 
     if (!helper) {
+      // if no helper it means we are decorating the preview, make it clear it's a policy
+      const policyPreview = document.createElement("div");
+      policyPreview.classList.add("policy-preview");
+      policyPreview.innerText = I18n.t("discourse_policy.title");
+      policy.prepend(policyPreview);
       return;
     }
 
@@ -67,7 +72,7 @@ function initializePolicy(api) {
   }
 
   api.decorateCookedElement(attachPolicy, {
-    onlyStream: true,
+    onlyStream: false,
     id: "discouse-policy",
   });
 
