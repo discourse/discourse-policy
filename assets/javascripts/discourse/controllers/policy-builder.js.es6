@@ -32,7 +32,7 @@ export default Controller.extend(ModalFunctionality, {
 
     const markdownParams = this._buildParams(this.form);
     this.toolbarEvent.addText(
-      `[policy ${markdownParams.join(" ")}]\n[/policy]`
+      `\n\n[policy ${markdownParams.join(" ")}]\n[/policy]\n\n`
     );
     this.send("closeModal");
   },
