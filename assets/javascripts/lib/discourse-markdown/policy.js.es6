@@ -40,7 +40,7 @@ const rule = {
 };
 
 export function setup(helper) {
-  helper.whiteList(["div.policy"]);
+  helper.allowList(["div.policy"]);
 
   helper.registerOptions((opts, siteSettings) => {
     opts.features.policy = !!siteSettings.policy_enabled;
