@@ -4,7 +4,7 @@ import getURL from "discourse-common/lib/get-url";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import Component from "@ember/component";
-import { computed, action } from "@ember/object";
+import { action, computed } from "@ember/object";
 import layout from "javascripts/components/post-policy";
 
 export default Component.extend({
