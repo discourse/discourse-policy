@@ -169,7 +169,7 @@ after_initialize do
     end
 
     if !has_group && (post.custom_fields[DiscoursePolicy::HasPolicy] || !post_policy&.new_record?)
-      post.custom_fields[DiscoursePolicy::HasPolicy] = nil
+      post.custom_fields.delete(DiscoursePolicy::HasPolicy)
       post.save_custom_fields
       PostPolicy.where(post_id: post.id).destroy_all
     end
