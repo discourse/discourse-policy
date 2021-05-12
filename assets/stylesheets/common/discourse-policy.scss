@@ -1,14 +1,14 @@
 // Policy in post styles
 .cooked .policy {
   position: relative;
-  border: 1px solid var(--primary-low, $primary-low);
+  border: 1px solid var(--primary-low);
   .policy-body {
     padding: 0.75em;
     margin-bottom: 2em;
   }
 
   .policy-footer {
-    border-top: 1px solid var(--primary-low, $primary-low);
+    border-top: 1px solid var(--primary-low);
     padding: 0.75em;
     align-items: center;
     display: flex;
@@ -24,11 +24,11 @@
     align-items: center;
 
     &.toggle-accepted {
-      color: var(--success, $success);
+      color: var(--success);
     }
 
     &.toggle-not-accepted {
-      color: var(--primary-medium, $primary-medium);
+      color: var(--primary-medium);
     }
 
     .user-count {
@@ -60,7 +60,7 @@
   }
 
   .seperator {
-    border-right: 2px solid var(--primary-low, $primary-low);
+    border-right: 2px solid var(--primary-low);
     margin: 0 0.5em;
     padding: 0.75em 0em;
   }
@@ -74,8 +74,8 @@
     padding: 0.5em;
 
     &:hover {
-      color: var(--primary-very-low, $primary-very-low);
-      background: var(--primary-medium, $primary-medium);
+      color: var(--primary-very-low);
+      background: var(--primary-medium);
     }
   }
 }
@@ -84,12 +84,12 @@
 .cooked .policy {
   .policy-settings {
     display: none; // JS override kicks in when needed.
-    border-top: 1px solid var(--primary-low, $primary-low);
+    border-top: 1px solid var(--primary-low);
     padding: 0.75em;
     flex-direction: column;
 
     .visible-settings {
-      color: var(--primary-medium, $primary-medium);
+      color: var(--primary-medium);
     }
 
     .save-policy-settings-btn {
@@ -121,7 +121,7 @@
 // Policy in editor styles
 .d-editor-preview .policy {
   padding: 0.5em;
-  border: 1px solid var(--primary-low, $primary-low);
+  border: 1px solid var(--primary-low);
 
   .policy-preview {
     font-size: $font-up-1;
