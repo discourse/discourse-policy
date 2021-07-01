@@ -8,12 +8,14 @@
 
   {{#if notCurrentlyAcceptedUser}}
     <div class="latest-revision">
-      {{#conditional-loading-section isLoading=isLoading}}
+      {{#if isLoading}}
+        {{loading-spinner size="large"}}
+      {{else}}
         {{#if diff}}
           <h3 class="title">Latest revision</h3>
           {{html-safe diff}}
         {{/if}}
-      {{/conditional-loading-section}}
+      {{/if}}
     </div>
   {{/if}}
 </div>
