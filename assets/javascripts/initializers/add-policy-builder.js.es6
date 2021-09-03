@@ -22,6 +22,7 @@ function initializePolicyBuilder(api, container) {
   });
 
   api.modifyClass("controller:composer", {
+    pluginId: "discourse-policy",
     actions: {
       insertPolicy() {
         showModal("policy-builder").setProperties({
