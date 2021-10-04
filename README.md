@@ -1,3 +1,5 @@
-# discourse-policy
+# Discourse Policy Plugin
 
-see: https://meta.discourse.org/t/discourse-policy/88557?u=sam
+ Confirm your users have seen or done something with reminders
+
+For more information, please see: https://meta.discourse.org/t/discourse-policy/88557
