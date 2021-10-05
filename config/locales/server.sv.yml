@@ -8,3 +8,11 @@ sv:
   site_settings:
     policy_enabled: "Tillåter du policyer?"
     policy_max_group_size: "Maximalt antal användare i en grupp som kan tillämpa en policy"
+    policy_restrict_to_staff_posts: "Policyer får endast visas på personalens inlägg"
+  discourse_policy:
+    errors:
+      too_large: "Gruppen är för stor, den kan inte godkänna policyer"
+      user_missing: "Användaren finns inte i gruppen"
+      group_not_found: "Gruppen hittades inte för policyn"
+      no_policy: "Det finns ingen policy för inlägg"
+      staff_only: "Policyer får endast gälla för personalens inlägg"

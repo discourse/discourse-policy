@@ -5,3 +5,40 @@
 # https://translate.discourse.org/
 
 he:
+  js:
+    discourse_policy:
+      title: "מדיניות"
+      accepted_tooltip: "משתמשים שקיבלו את המדיניות הזאת"
+      not_accepted_tooltip: "משתמשים שלא קיבלו את המדיניות הזאת"
+      accept_policy: "לקבל מדיניות"
+      revoke_policy: "לשלול מדיניות"
+      edit_reason: "הגדרות המדיניות השתנו"
+      builder:
+        title: מדיניות
+        attach: יצירת מדיניות
+        save: שמירת השינויים
+        insert: הוספה
+        errors:
+          group: הקבוצה היא חובה
+          version: הגרסה היא חובה
+        group:
+          label: קבוצה
+          description: הקבוצה המשויכת למדיניות זו
+        version:
+          label: גרסה
+          description: גרסת המדיניות, הקפצת הגרסה תאלץ אנשים לקבל אותה מחדש
+        renew:
+          label: חידוש
+          description: חידוש המדיניות כל x ימים
+        renew-start:
+          label: התחלת חידוש
+          description: מתי לחדש את המדיניות
+        reminder:
+          label: תזכורת
+          description: באיזו תדירות לשלוח הודעת תזכורת לקבלת המדיניות
+        accept:
+          label: קבלה
+          description: טקסט המשמש לכפתור הקבלה
+        revoke:
+          label: שלילה
+          description: טקסט המשמש לכפתור השלילה
