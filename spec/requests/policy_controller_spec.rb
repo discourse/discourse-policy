@@ -3,20 +3,19 @@
 require "rails_helper"
 
 describe DiscoursePolicy::PolicyController do
+  fab!(:group) { Fabricate(:group) }
+  fab!(:moderator) { Fabricate(:moderator) }
+  fab!(:user1) { Fabricate(:user) }
+  fab!(:user2) { Fabricate(:user) }
+
   before do
-    SiteSetting.queue_jobs = false
+    Jobs.run_immediately!
+    group.add(user1)
+    group.add(user2)
   end
 
   it 'can not apply a policy to groups that are too big' do
-
-    group = Fabricate(:group)
-    user1 = Fabricate(:user)
-    user2 = Fabricate(:user)
-
-    group.add(user1)
-    group.add(user2)
-
-    sign_in(user1)
+    SiteSetting.policy_max_group_size = 1
 
     raw = <<~MD
      [policy group=#{group.name}]
@@ -24,55 +23,93 @@ describe DiscoursePolicy::PolicyController do
      [/policy]
     MD
 
-    post = create_post(raw: raw, user: Fabricate(:moderator))
+    post = create_post(raw: raw, user: moderator)
 
-    SiteSetting.policy_max_group_size = 1
-
+    sign_in(user1)
     put "/policy/accept.json", params: { post_id: post.id }
-
     expect(response.status).not_to eq(200)
     expect(response.body).to include('too large')
   end
 
   it 'can allows users to accept/reject policy' do
-
-    group = Fabricate(:group)
-    user1 = Fabricate(:user)
-    user2 = Fabricate(:user)
-
-    group.add(user1)
-    group.add(user2)
-
-    sign_in(user1)
-
     raw = <<~MD
      [policy group=#{group.name}]
      I always open **doors**!
      [/policy]
     MD
 
-    post = create_post(raw: raw, user: Fabricate(:moderator))
+    post = create_post(raw: raw, user: moderator)
 
+    sign_in(user1)
     put "/policy/accept.json", params: { post_id: post.id }
-
     expect(response.status).to eq(200)
-    post.reload
-
-    expect(post.post_policy.accepted_by.map(&:id)).to eq([user1.id])
+    expect(post.reload.post_policy.accepted_by.map(&:id)).to eq([user1.id])
 
     sign_in(user2)
     put "/policy/accept.json", params: { post_id: post.id }
-
     expect(response.status).to eq(200)
-    post.reload
-
-    expect(post.post_policy.accepted_by.map(&:id).sort).to eq([user1.id, user2.id])
+    expect(post.reload.post_policy.accepted_by.map(&:id).sort).to eq([user1.id, user2.id])
 
     put "/policy/unaccept.json", params: { post_id: post.id }
     expect(response.status).to eq(200)
+    expect(post.reload.post_policy.accepted_by.map(&:id)).to eq([user1.id])
+  end
 
-    post = Post.find(post.id)
+  describe '#accepted' do
+    before do
+      sign_in(user1)
+    end
 
-    expect(post.post_policy.accepted_by.map(&:id)).to eq([user1.id])
+    it 'returns pages of users who accepted' do
+      raw = <<~MD
+       [policy group=#{group.name}]
+       I always open **doors**!
+       [/policy]
+      MD
+
+      post = create_post(raw: raw, user: moderator)
+      PolicyUser.add!(user1, post.post_policy)
+      PolicyUser.add!(user2, post.post_policy)
+
+      get "/policy/accepted.json", params: { post_id: post.id, offset: 0 }
+      expect(response.status).to eq(200)
+      expect(response.parsed_body['users'].map { |x| x['id'] }).to contain_exactly(user1.id, user2.id)
+
+      get "/policy/accepted.json", params: { post_id: post.id, offset: 1 }
+      expect(response.status).to eq(200)
+      expect(response.parsed_body['users'].map { |x| x['id'] }).to contain_exactly(user1.id)
+
+      get "/policy/accepted.json", params: { post_id: post.id, offset: 2 }
+      expect(response.status).to eq(200)
+      expect(response.parsed_body['users'].map { |x| x['id'] }).to contain_exactly()
+    end
+  end
+
+  describe '#not_accepted' do
+    before do
+      sign_in(user1)
+    end
+
+    it 'returns pages of users who accepted' do
+      raw = <<~MD
+       [policy group=#{group.name}]
+       I always open **doors**!
+       [/policy]
+      MD
+
+      post = create_post(raw: raw, user: moderator)
+
+      get "/policy/not-accepted.json", params: { post_id: post.id, offset: 0 }
+      expect(response.status).to eq(200)
+      expect(response.parsed_body['users'].map { |x| x['id'] }).to contain_exactly(user1.id, user2.id)
+
+      get "/policy/not-accepted.json", params: { post_id: post.id, offset: 1 }
+      expect(response.status).to eq(200)
+      expect(response.parsed_body['users'].map { |x| x['id'] }).to contain_exactly(user1.id)
+
+      get "/policy/not-accepted.json", params: { post_id: post.id, offset: 2 }
+      expect(response.status).to eq(200)
+      expect(response.parsed_body['users'].map { |x| x['id'] }).to contain_exactly()
+    end
   end
 end
