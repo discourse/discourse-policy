@@ -1,17 +1,17 @@
 <div class="policy-footer">
-  {{#if currentlyAcceptedUser}}
+  {{#if post.policy_can_revoke}}
     {{d-button
       isLoading=isLoading
-      action=(action "revokePolicy" post)
+      action=(action "revokePolicy")
       class="btn-danger revoke btn-revoke-policy"
       translatedLabel=options.revokeText
     }}
   {{/if}}
 
-  {{#if notCurrentlyAcceptedUser}}
+  {{#if post.policy_can_accept}}
     {{d-button
       isLoading=isLoading
-      action=(action "acceptPolicy" post)
+      action=(action "acceptPolicy")
       class="btn-primary accept btn-accept-policy"
       translatedLabel=options.acceptText
     }}
@@ -20,7 +20,7 @@
   <div class="user-lists">
     <a href {{action "toggleShowUsers"}} class="toggle toggle-accepted" title={{i18n "discourse_policy.accepted_tooltip"}}>
       <span class="user-count">
-        {{acceptedUsers.length}}
+        {{post.policy_accepted_by_count}}
       </span>
       {{d-icon "user-check"}}
     </a>
@@ -30,15 +30,21 @@
         {{#each acceptedUsers as |acceptedUser|}}
           {{avatar acceptedUser imageSize="tiny"}}
         {{/each}}
+
+        {{#if remainingAcceptedUsers}}
+          <a href {{action "loadRemainingAcceptedUsers"}} class="load-more-users">
+            + {{remainingAcceptedUsers}} {{d-icon "user"}}
+          </a>
+        {{/if}}
       </div>
     {{/unless}}
 
-    {{#if notAcceptedUsers.length}}
+    {{#if post.policy_not_accepted_by_count}}
       <div class="seperator"></div>
 
       <a href {{action "toggleShowUsers"}} class="toggle toggle-not-accepted" title={{i18n "discourse_policy.not_accepted_tooltip"}}>
         <span class="user-count">
-          {{notAcceptedUsers.length}}
+          {{post.policy_not_accepted_by_count}}
         </span>
         {{d-icon "user-times"}}
       </a>
@@ -48,6 +54,12 @@
           {{#each notAcceptedUsers as |notAcceptedUser|}}
             {{avatar notAcceptedUser imageSize="tiny"}}
           {{/each}}
+
+          {{#if remainingNotAcceptedUsers}}
+            <a href {{action "loadRemainingNotAcceptedUsers"}} class="load-more-users">
+              + {{remainingNotAcceptedUsers}} {{d-icon "user"}}
+            </a>
+          {{/if}}
         </div>
       {{/if}}
     {{/if}}
@@ -57,7 +69,7 @@
     {{d-button
       class="no-text btn-default edit-policy-settings-btn"
       icon="cog"
-      action=(action "editPolicy" post)
+      action=(action "editPolicy")
     }}
   {{/if}}
 </div>

@@ -18,6 +18,7 @@ PLUGIN_NAME ||= "discourse_policy".freeze
 
 after_initialize do
   module ::DiscoursePolicy
+    MAX_POLICY_USER_LIMIT = 25
 
     HasPolicy = "HasPolicy"
 
@@ -50,6 +51,32 @@ after_initialize do
 
     def unaccept
       change_accepted(:remove)
+    end
+
+    def accepted
+      post = Post.find(params[:post_id])
+      users = post
+        .post_policy
+        .accepted_by
+        .offset(params[:offset])
+        .limit(DiscoursePolicy::MAX_POLICY_USER_LIMIT)
+
+      render json: {
+        users: serialize_data(users, BasicUserSerializer)
+      }
+    end
+
+    def not_accepted
+      post = Post.find(params[:post_id])
+      users = post
+        .post_policy
+        .not_accepted_by
+        .offset(params[:offset])
+        .limit(DiscoursePolicy::MAX_POLICY_USER_LIMIT)
+
+      render json: {
+        users: serialize_data(users, BasicUserSerializer)
+      }
     end
 
     private
@@ -98,6 +125,8 @@ after_initialize do
   DiscoursePolicy::Engine.routes.draw do
     put "/accept" => "policy#accept"
     put "/unaccept" => "policy#unaccept"
+    get "/accepted" => "policy#accepted"
+    get "/not-accepted" => "policy#not_accepted"
   end
 
   Discourse::Application.routes.append do
@@ -182,22 +211,51 @@ after_initialize do
 
   require_dependency 'post_serializer'
   class ::PostSerializer
-    attributes :policy_not_accepted_by, :policy_accepted_by
+    attributes :policy_can_accept,
+               :policy_can_revoke,
+               :policy_not_accepted_by,
+               :policy_not_accepted_by_count,
+               :policy_accepted_by,
+               :policy_accepted_by_count
 
     delegate :post_policy, to: :object
 
+    def include_policy?
+      post_custom_fields[DiscoursePolicy::HasPolicy]
+    end
+
+    alias :include_policy_can_accept? :include_policy?
+    alias :include_policy_can_revoke? :include_policy?
+    alias :include_policy_not_accepted_by? :include_policy?
+    alias :include_policy_not_accepted_by_count? :include_policy?
+    alias :include_policy_accepted_by? :include_policy?
+    alias :include_policy_accepted_by_count? :include_policy?
+
+    has_many :policy_not_accepted_by, embed: :object, serializer: BasicUserSerializer
+    has_many :policy_accepted_by, embed: :object, serializer: BasicUserSerializer
+
+    def policy_can_accept
+      post_policy.not_accepted_by.exists?(id: scope.user&.id)
+    end
+
+    def policy_can_revoke
+      post_policy.accepted_by.exists?(id: scope.user&.id)
+    end
+
     def policy_not_accepted_by
-      return if !post_custom_fields[DiscoursePolicy::HasPolicy]
-      (post_policy.not_accepted_by).map do |u|
-        BasicUserSerializer.new(u, root: false).as_json
-      end
+      post_policy.not_accepted_by.limit(DiscoursePolicy::MAX_POLICY_USER_LIMIT)
+    end
+
+    def policy_not_accepted_by_count
+      post_policy.not_accepted_by.size
     end
 
     def policy_accepted_by
-      return if !post_custom_fields[DiscoursePolicy::HasPolicy]
-      post_policy.accepted_by.map do |u|
-        BasicUserSerializer.new(u, root: false).as_json
-      end
+      post_policy.accepted_by.limit(DiscoursePolicy::MAX_POLICY_USER_LIMIT)
+    end
+
+    def policy_accepted_by_count
+      post_policy.accepted_by.size
     end
   end
 end
