@@ -94,6 +94,8 @@ after_initialize do
           post_policy.last_reminded_at ||= Time.zone.now
         end
 
+        post_policy.private = policy["data-private"] == "true"
+
         if has_group
           if !post.custom_fields[DiscoursePolicy::HAS_POLICY]
             post.custom_fields[DiscoursePolicy::HAS_POLICY] = true
@@ -131,12 +133,16 @@ after_initialize do
       post_custom_fields[DiscoursePolicy::HAS_POLICY]
     end
 
+    def include_policy_stats?
+      include_policy? && (scope.is_admin? || !post_policy.private?)
+    end
+
     alias :include_policy_can_accept? :include_policy?
     alias :include_policy_can_revoke? :include_policy?
-    alias :include_policy_not_accepted_by? :include_policy?
-    alias :include_policy_not_accepted_by_count? :include_policy?
-    alias :include_policy_accepted_by? :include_policy?
-    alias :include_policy_accepted_by_count? :include_policy?
+    alias :include_policy_not_accepted_by? :include_policy_stats?
+    alias :include_policy_not_accepted_by_count? :include_policy_stats?
+    alias :include_policy_accepted_by? :include_policy_stats?
+    alias :include_policy_accepted_by_count? :include_policy_stats?
 
     has_many :policy_not_accepted_by, embed: :object, serializer: BasicUserSerializer
     has_many :policy_accepted_by, embed: :object, serializer: BasicUserSerializer
