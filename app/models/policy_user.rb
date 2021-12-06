@@ -5,6 +5,7 @@ class PolicyUser < ActiveRecord::Base
   belongs_to :user
 
   scope :accepted, -> { where.not(accepted_at: nil).where(revoked_at: nil, expired_at: nil) }
+  scope :revoked, -> { where.not(revoked_at: nil).where(expired_at: nil) }
   scope :with_version, ->(version) { where(version: version) }
 
   def self.add!(user, post_policy)

@@ -1,21 +1,25 @@
 <div class="policy-footer">
-  {{#if post.policy_can_revoke}}
-    {{d-button
-      isLoading=isLoading
-      action=(action "revokePolicy")
-      class="btn-danger revoke btn-revoke-policy"
-      translatedLabel=options.revokeText
-    }}
-  {{/if}}
+  <div class="policy-actions">
+    {{#if post.policy_can_accept}}
+      {{d-button
+        isLoading=isLoading
+        action=(action "acceptPolicy")
+        class="btn-primary accept btn-accept-policy"
+        translatedLabel=options.acceptText
+        icon=(if post.policy_accepted "check")
+      }}
+    {{/if}}
 
-  {{#if post.policy_can_accept}}
-    {{d-button
-      isLoading=isLoading
-      action=(action "acceptPolicy")
-      class="btn-primary accept btn-accept-policy"
-      translatedLabel=options.acceptText
-    }}
-  {{/if}}
+    {{#if post.policy_can_revoke}}
+      {{d-button
+        isLoading=isLoading
+        action=(action "revokePolicy")
+        class="btn-danger revoke btn-revoke-policy"
+        translatedLabel=options.revokeText
+        icon=(if post.policy_revoked "check")
+      }}
+    {{/if}}
+  </div>
 
   <div class="user-lists">
     {{#if post.policy_accepted_by_count}}

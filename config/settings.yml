@@ -6,3 +6,5 @@ plugins:
   policy_restrict_to_staff_posts:
     client: true
     default: true
+  policy_easy_revoke:
+    default: false

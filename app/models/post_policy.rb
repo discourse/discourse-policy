@@ -13,6 +13,12 @@ class PostPolicy < ActiveRecord::Base
     User.where(id: accepted_policy_users.select(:user_id))
   end
 
+  def revoked_by
+    return [] if !policy_group
+
+    User.where(id: revoked_policy_users.select(:user_id))
+  end
+
   def not_accepted_by
     return [] if !policy_group
 
@@ -23,6 +29,10 @@ class PostPolicy < ActiveRecord::Base
 
   def accepted_policy_users
     policy_users.accepted.with_version(version)
+  end
+
+  def revoked_policy_users
+    policy_users.revoked.with_version(version)
   end
 
   def policy_group_users
