@@ -142,11 +142,11 @@ after_initialize do
     has_many :policy_accepted_by, embed: :object, serializer: BasicUserSerializer
 
     def policy_can_accept
-      post_policy.not_accepted_by.exists?(id: scope.user&.id)
+      scope.authenticated? && post_policy.not_accepted_by.exists?(id: scope.user.id)
     end
 
     def policy_can_revoke
-      post_policy.accepted_by.exists?(id: scope.user&.id)
+      scope.authenticated? && post_policy.accepted_by.exists?(id: scope.user.id)
     end
 
     def policy_not_accepted_by
