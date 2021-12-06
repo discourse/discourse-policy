@@ -47,11 +47,12 @@ export default Component.extend({
     if (post) {
       const endpoint = getURL(`/posts/${post.id}.json`);
       ajax(endpoint).then((result) => {
-        this.post.set("policy_accepted_by", result.policy_accepted_by || []);
-        this.post.set(
-          "policy_not_accepted_by",
-          result.policy_not_accepted_by || []
-        );
+        this.post.setProperties({
+          policy_not_accepted_by: result.policy_not_accepted_by || [],
+          policy_not_accepted_by_count: result.policy_not_accepted_by_count,
+          policy_accepted_by: result.policy_accepted_by || [],
+          policy_accepted_by_count: result.policy_accepted_by_count,
+        });
       });
     }
   },
