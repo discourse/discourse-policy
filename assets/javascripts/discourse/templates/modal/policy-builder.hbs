@@ -57,6 +57,13 @@
       input=(action (mut form.revoke) value="target.value")
     }}
   {{/policy-form-field}}
+
+  {{#policy-form-field name="private"}}
+    {{input
+      type="checkbox"
+      checked=form.private
+    }}
+  {{/policy-form-field}}
 {{/d-modal-body}}
 
 <div class="modal-footer">

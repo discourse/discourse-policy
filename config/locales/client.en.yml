@@ -36,3 +36,6 @@ en:
         revoke:
           label: Revoke
           description: Text used on the revoke button
+        private:
+          label: Private?
+          description: Keep policy status private to administrators

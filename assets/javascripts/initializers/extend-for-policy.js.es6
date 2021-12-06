@@ -30,6 +30,8 @@ function initializePolicy(api) {
       form.version = 1;
     }
 
+    form.private = policy.dataset.private === "true";
+
     return EmberObject.create(form);
   }
 
