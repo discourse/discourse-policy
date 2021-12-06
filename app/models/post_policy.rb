@@ -48,3 +48,22 @@ class PostPolicy < ActiveRecord::Base
       .first
   end
 end
+
+# == Schema Information
+#
+# Table name: post_policies
+#
+#  id               :bigint           not null, primary key
+#  post_id          :bigint           not null
+#  renew_start      :datetime
+#  renew_days       :integer
+#  next_renew_at    :datetime
+#  reminder         :string
+#  last_reminded_at :datetime
+#  version          :string
+#  group_id         :integer          not null
+#  created_at       :datetime         not null
+#  updated_at       :datetime         not null
+#  renew_interval   :integer
+#  private          :boolean          default(FALSE), not null
+#

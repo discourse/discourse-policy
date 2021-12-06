@@ -26,3 +26,22 @@ class PolicyUser < ActiveRecord::Base
       .update_all(revoked_at: Time.zone.now)
   end
 end
+
+# == Schema Information
+#
+# Table name: policy_users
+#
+#  id             :bigint           not null, primary key
+#  post_policy_id :integer          not null
+#  user_id        :integer          not null
+#  accepted_at    :datetime
+#  revoked_at     :datetime
+#  expired_at     :datetime
+#  version        :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#
+# Indexes
+#
+#  index_policy_users_on_post_policy_id_and_user_id  (post_policy_id,user_id)
+#
