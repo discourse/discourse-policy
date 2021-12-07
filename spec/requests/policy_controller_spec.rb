@@ -77,7 +77,7 @@ describe DiscoursePolicy::PolicyController do
 
       get "/policy/accepted.json", params: { post_id: post.id, offset: 1 }
       expect(response.status).to eq(200)
-      expect(response.parsed_body['users'].map { |x| x['id'] }).to contain_exactly(user1.id)
+      expect(response.parsed_body['users'].map { |x| x['id'] }).to contain_exactly(user2.id)
 
       get "/policy/accepted.json", params: { post_id: post.id, offset: 2 }
       expect(response.status).to eq(200)
@@ -105,7 +105,7 @@ describe DiscoursePolicy::PolicyController do
 
       get "/policy/not-accepted.json", params: { post_id: post.id, offset: 1 }
       expect(response.status).to eq(200)
-      expect(response.parsed_body['users'].map { |x| x['id'] }).to contain_exactly(user1.id)
+      expect(response.parsed_body['users'].map { |x| x['id'] }).to contain_exactly(user2.id)
 
       get "/policy/not-accepted.json", params: { post_id: post.id, offset: 2 }
       expect(response.status).to eq(200)

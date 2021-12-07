@@ -23,6 +23,7 @@ class DiscoursePolicy::PolicyController < ::ApplicationController
     users = @post
       .post_policy
       .accepted_by
+      .order(:id)
       .offset(params[:offset])
       .limit(DiscoursePolicy::POLICY_USER_DEFAULT_LIMIT)
 
@@ -36,6 +37,7 @@ class DiscoursePolicy::PolicyController < ::ApplicationController
     users = @post
       .post_policy
       .not_accepted_by
+      .order(:id)
       .offset(params[:offset])
       .limit(DiscoursePolicy::POLICY_USER_DEFAULT_LIMIT)
 
