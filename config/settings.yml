@@ -2,7 +2,6 @@ plugins:
   policy_enabled:
     default: true
     client: true
-  policy_max_group_size: 200
   policy_restrict_to_staff_posts:
     client: true
     default: true

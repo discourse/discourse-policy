@@ -72,10 +72,6 @@ class DiscoursePolicy::PolicyController < ::ApplicationController
       return render_json_error(I18n.t("discourse_policy.errors.user_missing"))
     end
 
-    if group.user_count > SiteSetting.policy_max_group_size
-      return render_json_error(I18n.t("discourse_policy.errors.too_large"))
-    end
-
     if SiteSetting.policy_restrict_to_staff_posts && !@post.user&.staff?
       return render_json_error(I18n.t("discourse_policy.errors.staff_only"))
     end
