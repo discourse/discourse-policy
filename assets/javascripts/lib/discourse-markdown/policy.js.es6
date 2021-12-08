@@ -35,6 +35,10 @@ const rule = {
       token.attrs.push(["data-renew-start", info.attrs.start]);
     }
 
+    if (info.attrs.private) {
+      token.attrs.push(["data-private", info.attrs.private]);
+    }
+
     return true;
   },
 };

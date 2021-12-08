@@ -1,43 +1,49 @@
 <div class="policy-footer">
-  {{#if post.policy_can_revoke}}
-    {{d-button
-      isLoading=isLoading
-      action=(action "revokePolicy")
-      class="btn-danger revoke btn-revoke-policy"
-      translatedLabel=options.revokeText
-    }}
-  {{/if}}
+  <div class="policy-actions">
+    {{#if post.policy_can_accept}}
+      {{d-button
+        isLoading=isLoading
+        action=(action "acceptPolicy")
+        class="btn-primary accept btn-accept-policy"
+        translatedLabel=options.acceptText
+        icon=(if post.policy_accepted "check")
+      }}
+    {{/if}}
 
-  {{#if post.policy_can_accept}}
-    {{d-button
-      isLoading=isLoading
-      action=(action "acceptPolicy")
-      class="btn-primary accept btn-accept-policy"
-      translatedLabel=options.acceptText
-    }}
-  {{/if}}
+    {{#if post.policy_can_revoke}}
+      {{d-button
+        isLoading=isLoading
+        action=(action "revokePolicy")
+        class="btn-danger revoke btn-revoke-policy"
+        translatedLabel=options.revokeText
+        icon=(if post.policy_revoked "check")
+      }}
+    {{/if}}
+  </div>
 
   <div class="user-lists">
-    <a href {{action "toggleShowUsers"}} class="toggle toggle-accepted" title={{i18n "discourse_policy.accepted_tooltip"}}>
-      <span class="user-count">
-        {{post.policy_accepted_by_count}}
-      </span>
-      {{d-icon "user-check"}}
-    </a>
+    {{#if post.policy_accepted_by_count}}
+      <a href {{action "toggleShowUsers"}} class="toggle toggle-accepted" title={{i18n "discourse_policy.accepted_tooltip"}}>
+        <span class="user-count">
+          {{post.policy_accepted_by_count}}
+        </span>
+        {{d-icon "user-check"}}
+      </a>
 
-    {{#unless showNotAccepted}}
-      <div class="users accepted">
-        {{#each acceptedUsers as |acceptedUser|}}
-          {{avatar acceptedUser imageSize="tiny"}}
-        {{/each}}
+      {{#unless showNotAccepted}}
+        <div class="users accepted">
+          {{#each acceptedUsers as |acceptedUser|}}
+            {{avatar acceptedUser imageSize="tiny"}}
+          {{/each}}
 
-        {{#if remainingAcceptedUsers}}
-          <a href {{action "loadRemainingAcceptedUsers"}} class="load-more-users">
-            + {{remainingAcceptedUsers}} {{d-icon "user"}}
-          </a>
-        {{/if}}
-      </div>
-    {{/unless}}
+          {{#if remainingAcceptedUsers}}
+            <a href {{action "loadRemainingAcceptedUsers"}} class="load-more-users">
+              + {{remainingAcceptedUsers}} {{d-icon "user"}}
+            </a>
+          {{/if}}
+        </div>
+      {{/unless}}
+    {{/if}}
 
     {{#if post.policy_not_accepted_by_count}}
       <div class="seperator"></div>

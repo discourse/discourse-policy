@@ -87,6 +87,14 @@
 
 // Policy settings styles
 .cooked .policy {
+  .policy-actions {
+    display: flex;
+
+    .btn {
+      margin-right: 0.25em;
+    }
+  }
+
   .policy-settings {
     display: none; // JS override kicks in when needed.
     border-top: 1px solid var(--primary-low);

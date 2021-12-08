@@ -3,15 +3,20 @@
 require 'rails_helper'
 
 describe 'post serializer' do
-  it 'includes users in the serializer' do
-    SiteSetting.queue_jobs = false
-    group = Fabricate(:group)
-    user1 = Fabricate(:user)
-    user2 = Fabricate(:user)
+  fab!(:group) { Fabricate(:group) }
+  fab!(:admin) { Fabricate(:admin) }
+  fab!(:user1) { Fabricate(:user) }
+  fab!(:user2) { Fabricate(:user) }
 
+  before do
+    Jobs.run_immediately!
+
+    group.add(admin)
     group.add(user1)
     group.add(user2)
+  end
 
+  it 'includes users in the serializer' do
     raw = <<~MD
      [policy group=#{group.name}]
      I always open **doors**!
@@ -28,7 +33,7 @@ describe 'post serializer' do
 
     not_accepted = json[:post][:policy_not_accepted_by]
 
-    expect(not_accepted.map { |u| u[:id] }.sort).to eq([user1.id, user2.id].sort)
+    expect(not_accepted.map { |u| u[:id] }).to contain_exactly(admin.id, user1.id, user2.id)
 
     PolicyUser.add!(user1, post.post_policy)
 
@@ -37,7 +42,51 @@ describe 'post serializer' do
     not_accepted = json[:post][:policy_not_accepted_by]
     accepted = json[:post][:policy_accepted_by]
 
-    expect(not_accepted.map { |u| u[:id] }.sort).to eq([user2.id].sort)
-    expect(accepted.map { |u| u[:id] }.sort).to eq([user1.id].sort)
+    expect(not_accepted.map { |u| u[:id] }).to contain_exactly(admin.id, user2.id)
+    expect(accepted.map { |u| u[:id] }).to contain_exactly(user1.id)
+  end
+
+  it 'does not include users if private' do
+    raw = <<~MD
+     [policy group=#{group.name} private=true]
+     I always open **doors**!
+     [/policy]
+    MD
+
+    post = create_post(raw: raw, user: Fabricate(:admin))
+    post.reload
+
+    PolicyUser.add!(user1, post.post_policy)
+
+    json = PostSerializer.new(post, scope: Guardian.new).as_json
+    expect(json[:post][:policy_not_accepted_by]).to eq(nil)
+    expect(json[:post][:policy_accepted_by]).to eq(nil)
+
+    json = PostSerializer.new(post, scope: admin.guardian).as_json
+    expect(json[:post][:policy_not_accepted_by].map { |u| u[:id] }).to contain_exactly(admin.id, user2.id)
+    expect(json[:post][:policy_accepted_by].map { |u| u[:id] }).to contain_exactly(user1.id)
+  end
+
+  context 'policy_easy_revoke' do
+    it 'lets user accept and revoke post at the same time if enabled' do
+      raw = <<~MD
+       [policy group=#{group.name}]
+       I always open **doors**!
+       [/policy]
+      MD
+
+      post = create_post(raw: raw, user: Fabricate(:admin))
+      post.reload
+
+      json = PostSerializer.new(post, scope: admin.guardian).as_json
+      expect(json[:post][:policy_can_accept]).to eq(true)
+      expect(json[:post][:policy_can_revoke]).to eq(false)
+
+      SiteSetting.policy_easy_revoke = true
+
+      json = PostSerializer.new(post, scope: admin.guardian).as_json
+      expect(json[:post][:policy_can_accept]).to eq(true)
+      expect(json[:post][:policy_can_revoke]).to eq(true)
+    end
   end
 end

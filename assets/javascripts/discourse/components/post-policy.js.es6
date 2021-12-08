@@ -20,11 +20,10 @@ export default Component.extend({
   init() {
     this._super(...arguments);
 
-    this.post.set("policy_accepted_by", this.post.policy_accepted_by || []);
-    this.post.set(
-      "policy_not_accepted_by",
-      this.post.policy_not_accepted_by || []
-    );
+    this.post.setProperties({
+      policy_accepted_by: this.post.policy_accepted_by || [],
+      policy_not_accepted_by: this.post.policy_not_accepted_by || [],
+    });
   },
 
   didInsertElement() {
@@ -47,11 +46,16 @@ export default Component.extend({
     if (post) {
       const endpoint = getURL(`/posts/${post.id}.json`);
       ajax(endpoint).then((result) => {
-        this.post.set("policy_accepted_by", result.policy_accepted_by || []);
-        this.post.set(
-          "policy_not_accepted_by",
-          result.policy_not_accepted_by || []
-        );
+        this.post.setProperties({
+          policy_can_accept: result.policy_can_accept,
+          policy_can_revoke: result.policy_can_revoke,
+          policy_accepted: result.policy_accepted,
+          policy_revoked: result.policy_revoked,
+          policy_not_accepted_by: result.policy_not_accepted_by || [],
+          policy_not_accepted_by_count: result.policy_not_accepted_by_count,
+          policy_accepted_by: result.policy_accepted_by || [],
+          policy_accepted_by_count: result.policy_accepted_by_count,
+        });
       });
     }
   },
@@ -118,8 +122,14 @@ export default Component.extend({
       );
     }
 
-    this.post.set("policy_can_accept", true);
-    this.post.set("policy_can_revoke", false);
+    if (this.post.policy_can_accept !== this.post.policy_can_revoke) {
+      this.post.set({
+        policy_can_accept: true,
+        policy_can_revoke: false,
+        policy_accepted: false,
+        policy_revoked: true,
+      });
+    }
 
     this._updatePolicy("unaccept", this.post.id);
   },
@@ -144,8 +154,14 @@ export default Component.extend({
       );
     }
 
-    this.post.set("policy_can_accept", false);
-    this.post.set("policy_can_revoke", true);
+    if (this.post.policy_can_accept !== this.post.policy_can_revoke) {
+      this.post.setProperties({
+        policy_can_accept: false,
+        policy_can_revoke: true,
+        policy_accepted: true,
+        policy_revoked: false,
+      });
+    }
 
     this._updatePolicy("accept", this.post.id);
   },

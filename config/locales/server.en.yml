@@ -3,6 +3,7 @@ en:
     policy_enabled: "Allow policies?"
     policy_max_group_size: "Maximum number of users in a group that can have a policy applied"
     policy_restrict_to_staff_posts: "Policies may only appear on staff posts"
+    policy_easy_revoke: "Show the accept and revoke buttons at the same time"
   discourse_policy:
     errors:
       too_large: "Group is too large, it can not accept policies"
