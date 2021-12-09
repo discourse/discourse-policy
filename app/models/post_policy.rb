@@ -43,7 +43,6 @@ class PostPolicy < ActiveRecord::Base
     return @policy_group if defined?(@policy_group)
 
     @policy_group = Group
-      .where('user_count < ?', SiteSetting.policy_max_group_size)
       .where('id in (SELECT group_id FROM post_policies WHERE post_id = ?)', post.id)
       .first
   end

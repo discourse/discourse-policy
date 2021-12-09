@@ -14,23 +14,6 @@ describe DiscoursePolicy::PolicyController do
     group.add(user2)
   end
 
-  it 'can not apply a policy to groups that are too big' do
-    SiteSetting.policy_max_group_size = 1
-
-    raw = <<~MD
-     [policy group=#{group.name}]
-     I always open **doors**!
-     [/policy]
-    MD
-
-    post = create_post(raw: raw, user: moderator)
-
-    sign_in(user1)
-    put "/policy/accept.json", params: { post_id: post.id }
-    expect(response.status).not_to eq(200)
-    expect(response.body).to include('too large')
-  end
-
   it 'can allows users to accept/reject policy' do
     raw = <<~MD
      [policy group=#{group.name}]
