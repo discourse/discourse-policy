@@ -11,3 +11,6 @@ ru:
       not_accepted_tooltip: "Пользователи, которые не приняли эту политику"
       accept_policy: "Принять Политику"
       revoke_policy: "Отзыв Политики"
+      builder:
+        private:
+          label: Приватные?

@@ -5,3 +5,8 @@
 # https://translate.discourse.org/
 
 lv:
+  js:
+    discourse_policy:
+      builder:
+        private:
+          label: Privāts?

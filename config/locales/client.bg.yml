@@ -5,3 +5,8 @@
 # https://translate.discourse.org/
 
 bg:
+  js:
+    discourse_policy:
+      builder:
+        private:
+          label: Затворени?

@@ -5,3 +5,8 @@
 # https://translate.discourse.org/
 
 el:
+  js:
+    discourse_policy:
+      builder:
+        private:
+          label: Ιδιωτική?

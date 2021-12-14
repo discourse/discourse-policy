@@ -5,3 +5,8 @@
 # https://translate.discourse.org/
 
 fa_IR:
+  js:
+    discourse_policy:
+      builder:
+        private:
+          label: خصوصی?

@@ -5,3 +5,8 @@
 # https://translate.discourse.org/
 
 cs:
+  js:
+    discourse_policy:
+      builder:
+        private:
+          label: Soukromé?

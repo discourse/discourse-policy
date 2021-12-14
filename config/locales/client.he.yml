@@ -42,3 +42,5 @@ he:
         revoke:
           label: שלילה
           description: טקסט המשמש לכפתור השלילה
+        private:
+          label: פרטי?

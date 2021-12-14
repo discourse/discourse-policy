@@ -7,11 +7,9 @@
 he:
   site_settings:
     policy_enabled: "לאפשר מסמכי מדיניות?"
-    policy_max_group_size: "מספר המשתמשים המרבי בקבוצה שיכול להחיל מדיניות"
     policy_restrict_to_staff_posts: "מסמכי מדיניות יכולים להופיע רק על פוסטים של סגל"
   discourse_policy:
     errors:
-      too_large: "הקבוצה גדולה מדי, היא לא יכולה לקבל מדיניות"
       user_missing: "המשתמש לא קיים בקבוצה"
       group_not_found: "הקבוצה לא נמצאה לצורך מדיניות"
       no_policy: "לא קיימת מדיניות לפוסט"

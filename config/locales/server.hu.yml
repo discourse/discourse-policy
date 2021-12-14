@@ -5,3 +5,5 @@
 # https://translate.discourse.org/
 
 hu:
+  site_settings:
+    policy_easy_revoke: "Az elfogadás és a visszavonás gombok egyidejű megjelenítése"
