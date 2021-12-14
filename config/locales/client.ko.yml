@@ -5,3 +5,8 @@
 # https://translate.discourse.org/
 
 ko:
+  js:
+    discourse_policy:
+      builder:
+        private:
+          label: 비공개?

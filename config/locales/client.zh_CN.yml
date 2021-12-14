@@ -5,3 +5,8 @@
 # https://translate.discourse.org/
 
 zh_CN:
+  js:
+    discourse_policy:
+      builder:
+        private:
+          label: 不公开?

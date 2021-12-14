@@ -5,3 +5,8 @@
 # https://translate.discourse.org/
 
 uk:
+  js:
+    discourse_policy:
+      builder:
+        private:
+          label: Приватні?

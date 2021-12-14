@@ -5,3 +5,9 @@
 # https://translate.discourse.org/
 
 hu:
+  js:
+    discourse_policy:
+      builder:
+        private:
+          label: Privát?
+          description: Házirend állapotának privátban tartása a rendszergazdák számára

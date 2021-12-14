@@ -5,3 +5,8 @@
 # https://translate.discourse.org/
 
 et:
+  js:
+    discourse_policy:
+      builder:
+        private:
+          label: Privaatne?

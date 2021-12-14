@@ -5,3 +5,8 @@
 # https://translate.discourse.org/
 
 tr_TR:
+  js:
+    discourse_policy:
+      builder:
+        private:
+          label: Özel?

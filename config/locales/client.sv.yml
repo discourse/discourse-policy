@@ -42,3 +42,6 @@ sv:
         revoke:
           label: Återkalla
           description: Text som används på återkallningsknappen
+        private:
+          label: Privat?
+          description: Håll policystatus privat för administratörer

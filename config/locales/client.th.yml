@@ -5,3 +5,8 @@
 # https://translate.discourse.org/
 
 th:
+  js:
+    discourse_policy:
+      builder:
+        private:
+          label: ส่วนตัว?

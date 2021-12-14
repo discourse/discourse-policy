@@ -11,3 +11,6 @@ es:
       not_accepted_tooltip: "Usuarios que no aceptaron esta política"
       accept_policy: "Aceptar la Política"
       revoke_policy: "Rechazar la Política"
+      builder:
+        private:
+          label: Privado?
