@@ -60,6 +60,24 @@ export default Component.extend({
     }
   },
 
+  @discourseComputed("post.policy_accepted", "post.policy_revoked")
+  acceptButtonClasses(accepted, revoked) {
+    let classes = "accept btn-accept-policy";
+    if (accepted || (!accepted && !revoked)) {
+      classes += " btn-primary";
+    }
+    return classes;
+  },
+
+  @discourseComputed("post.policy_accepted", "post.policy_revoked")
+  revokeButtonClasses(accepted, revoked) {
+    let classes = "accept btn-accept-policy";
+    if (revoked || (!accepted && !revoked)) {
+      classes += " btn-danger";
+    }
+    return classes;
+  },
+
   @discourseComputed(
     "post.policy_accepted_by_count",
     "post.policy_accepted_by.[]"

@@ -4,7 +4,7 @@
       {{d-button
         isLoading=isLoading
         action=(action "acceptPolicy")
-        class="btn-primary accept btn-accept-policy"
+        class=acceptButtonClasses
         translatedLabel=options.acceptText
         icon=(if post.policy_accepted "check")
       }}
@@ -14,7 +14,7 @@
       {{d-button
         isLoading=isLoading
         action=(action "revokePolicy")
-        class="btn-danger revoke btn-revoke-policy"
+        class=revokeButtonClasses
         translatedLabel=options.revokeText
         icon=(if post.policy_revoked "check")
       }}
