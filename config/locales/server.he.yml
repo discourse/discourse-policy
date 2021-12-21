@@ -8,6 +8,7 @@ he:
   site_settings:
     policy_enabled: "לאפשר מסמכי מדיניות?"
     policy_restrict_to_staff_posts: "מסמכי מדיניות יכולים להופיע רק על פוסטים של סגל"
+    policy_easy_revoke: "להציג את כפתורי האישור והשלילה בו־זמנית"
   discourse_policy:
     errors:
       user_missing: "המשתמש לא קיים בקבוצה"
