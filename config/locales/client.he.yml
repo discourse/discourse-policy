@@ -44,3 +44,4 @@ he:
           description: טקסט המשמש לכפתור השלילה
         private:
           label: פרטי?
+          description: להשאיר את מצב המדיניות למנהלים בלבד
