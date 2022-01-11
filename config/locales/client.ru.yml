@@ -7,10 +7,41 @@
 ru:
   js:
     discourse_policy:
+      title: "Политика"
       accepted_tooltip: "Пользователи, принявшие эту политику"
       not_accepted_tooltip: "Пользователи, которые не приняли эту политику"
-      accept_policy: "Принять Политику"
-      revoke_policy: "Отзыв Политики"
+      accept_policy: "Принять политику"
+      revoke_policy: "Отказаться от политики"
+      edit_reason: "Настройки политики были изменены"
       builder:
+        title: Политика
+        attach: Создать политику
+        save: Сохранить изменения
+        insert: Вставить
+        errors:
+          group: Группа является обязательной
+          version: Версия является обязательной
+        group:
+          label: Группа
+          description: Группа, связанная с этой политикой
+        version:
+          label: Версии
+          description: Версия политики, повышение версии заставит людей заново принять её
+        renew:
+          label: Обновить
+          description: Обновлять политику каждые x дней
+        renew-start:
+          label: Начать обновление
+          description: Когда политика должна быть возобновлена
+        reminder:
+          label: Напоминание
+          description: Как часто следует отправлять напоминания о принятии политики
+        accept:
+          label: Принять
+          description: Текст, используемый на кнопке «Принять»
+        revoke:
+          label: Отмена
+          description: Текст, используемый на кнопке отмены
         private:
           label: Приватные?
+          description: Сохранить статус политики приватным администраторам

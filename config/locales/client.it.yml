@@ -7,6 +7,41 @@
 it:
   js:
     discourse_policy:
+      title: "Informativa"
+      accepted_tooltip: "Utenti che hanno accettato questa informativa"
+      not_accepted_tooltip: "Utenti che non hanno accettato questa informativa"
+      accept_policy: "Accetta informativa"
+      revoke_policy: "Revoca informativa"
+      edit_reason: "Le impostazioni dell'informativa sono state modificate"
       builder:
+        title: Informativa
+        attach: Crea informativa
+        save: Salva le modifiche
+        insert: Inserisci
+        errors:
+          group: Il gruppo è obbligatorio
+          version: La versione è obbligatoria
+        group:
+          label: Gruppo
+          description: Il gruppo associato a questa informativa
+        version:
+          label: Versione
+          description: La versione dell'informativa, il cambio della versione costringerà gli utenti a riaccettarla
+        renew:
+          label: Rinnova
+          description: Rinnova l'informativa ogni x giorni
+        renew-start:
+          label: Inizio rinnovo
+          description: Quando l'informativa dovrà essere rinnovata
+        reminder:
+          label: Promemoria
+          description: Frequenza di invio di un promemoria di accettazione dell'informativa
+        accept:
+          label: Accetta
+          description: Testo utilizzato sul pulsante di accettazione
+        revoke:
+          label: Revoca
+          description: Testo utilizzato sul pulsante di revoca
         private:
           label: Privato?
+          description: Mantieni privato lo stato dell'informativa per gli amministratori

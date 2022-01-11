@@ -7,6 +7,41 @@
 zh_CN:
   js:
     discourse_policy:
+      title: "策略"
+      accepted_tooltip: "已接受此策略的用户"
+      not_accepted_tooltip: "未接受此策略的用户"
+      accept_policy: "接受策略"
+      revoke_policy: "撤销策略"
+      edit_reason: "策略设置已被修改"
       builder:
+        title: 策略
+        attach: 创建策略
+        save: 保存变更
+        insert: 插入
+        errors:
+          group: 群组为必填项
+          version: 版本为必填项
+        group:
+          label: 群组
+          description: 与此策略关联的群组
+        version:
+          label: 版本
+          description: 策略的版本，提升版本将强制相关人员重新接受
+        renew:
+          label: 更新
+          description: 每 x 天更新一次策略
+        renew-start:
+          label: 更新开始
+          description: 策略应在何时更新
+        reminder:
+          label: 提醒
+          description: 发送接受策略提醒通知的频率
+        accept:
+          label: 接受
+          description: 接受按钮上使用的文本
+        revoke:
+          label: 撤销
+          description: 撤销按钮上使用的文本
         private:
-          label: 不公开?
+          label: 不公开？
+          description: 将策略状态对管理员保密

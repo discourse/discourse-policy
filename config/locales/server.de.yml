@@ -5,3 +5,13 @@
 # https://translate.discourse.org/
 
 de:
+  site_settings:
+    policy_enabled: "Richtlinien zulassen?"
+    policy_restrict_to_staff_posts: "Richtlinien dürfen nur in Team-Beiträgen erscheinen"
+    policy_easy_revoke: "Die Schaltflächen „Akzeptieren“ und „Widerrufen“ gleichzeitig anzeigen"
+  discourse_policy:
+    errors:
+      user_missing: "Benutzer existiert nicht in der Gruppe"
+      group_not_found: "Gruppe für Richtlinie nicht gefunden"
+      no_policy: "Keine Richtlinie für Beitrag vorhanden"
+      staff_only: "Richtlinien dürfen nur auf Team-Beiträge angewendet werden"
