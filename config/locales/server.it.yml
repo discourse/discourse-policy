@@ -5,3 +5,13 @@
 # https://translate.discourse.org/
 
 it:
+  site_settings:
+    policy_enabled: "Consentire informative?"
+    policy_restrict_to_staff_posts: "Le informative possono apparire solo sui messaggi dello staff"
+    policy_easy_revoke: "Mostra contemporaneamente i pulsanti accetta e revoca"
+  discourse_policy:
+    errors:
+      user_missing: "Utente non esistente nel gruppo"
+      group_not_found: "Gruppo non trovato per l'informativa"
+      no_policy: "Non ci sono informative per il messaggio"
+      staff_only: "Le informative si possono applicare solo ai messaggi dello staff"

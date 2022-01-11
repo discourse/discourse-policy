@@ -5,3 +5,13 @@
 # https://translate.discourse.org/
 
 ja:
+  site_settings:
+    policy_enabled: "ポリシーを許可？"
+    policy_restrict_to_staff_posts: "ポリシーはスタッフの投稿のみに表示される場合があります"
+    policy_easy_revoke: "同意ボタンと同意の取り消しボタンを同時に表示する"
+  discourse_policy:
+    errors:
+      user_missing: "ユーザーはグループに存在しません"
+      group_not_found: "ポリシーのグループが見つかりません"
+      no_policy: "投稿にポリシーが存在しません"
+      staff_only: "ポリシーはスタッフの投稿のみに適用される場合があります"

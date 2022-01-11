@@ -5,3 +5,13 @@
 # https://translate.discourse.org/
 
 ar:
+  site_settings:
+    policy_enabled: "هل تريد السماح بالسياسات؟"
+    policy_restrict_to_staff_posts: "قد لا تظهر السياسات إلا على منشورات فريق العمل"
+    policy_easy_revoke: "عرض زرَّي القبول والإلغاء في الوقت نفسه"
+  discourse_policy:
+    errors:
+      user_missing: "المستخدم غير موجود في المجموعة"
+      group_not_found: "لم يتم العثور على المجموعة للسياسة"
+      no_policy: "لا توجد سياسة للمنشور"
+      staff_only: "قد تنطبق السياسات على فريق العمل فقط"

@@ -7,10 +7,41 @@
 es:
   js:
     discourse_policy:
+      title: "Política"
       accepted_tooltip: "Usuarios que aceptaron esta política"
       not_accepted_tooltip: "Usuarios que no aceptaron esta política"
-      accept_policy: "Aceptar la Política"
-      revoke_policy: "Rechazar la Política"
+      accept_policy: "Aceptar política"
+      revoke_policy: "Rechazar política"
+      edit_reason: "Se ha modificado la configuración de la política"
       builder:
+        title: Política
+        attach: Crear política
+        save: Guardar cambios
+        insert: Insertar
+        errors:
+          group: El grupo es obligatorio
+          version: La versión es obligatoria
+        group:
+          label: Grupo
+          description: El grupo asociado a esta política
+        version:
+          label: Versión
+          description: La versión de la política, cambiar la versión obligará a las personas a volver a aceptarla
+        renew:
+          label: Renovar
+          description: Renovar la política cada x días
+        renew-start:
+          label: Inicio de la renovación
+          description: Cuándo debe renovarse la política
+        reminder:
+          label: Recordatorio
+          description: Con qué frecuencia se debe enviar una notificación de recordatorio para aceptar la política
+        accept:
+          label: Aceptar
+          description: Texto utilizado en el botón aceptar
+        revoke:
+          label: Revocar
+          description: Texto utilizado en el botón de revocación
         private:
-          label: Privado?
+          label: '¿Privado?'
+          description: Mantener el estado de la política en privado para los administradores

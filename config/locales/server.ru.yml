@@ -8,6 +8,7 @@ ru:
   site_settings:
     policy_enabled: "Разрешить политику?"
     policy_restrict_to_staff_posts: "Политика может появляться только к персоналу"
+    policy_easy_revoke: "Показывать кнопки «принять» и «отмена» одновременно"
   discourse_policy:
     errors:
       user_missing: "Пользователь не существует в группе"

@@ -7,6 +7,41 @@
 ar:
   js:
     discourse_policy:
+      title: "السياسة"
+      accepted_tooltip: "المستخدمون الذين قبلوا هذه السياسة"
+      not_accepted_tooltip: "المستخدمون الذين لم يقبلوا هذه السياسة"
+      accept_policy: "قبول السياسة"
+      revoke_policy: "إلغاء السياسة"
+      edit_reason: "تم تعديل إعدادات السياسة"
       builder:
+        title: السياسة
+        attach: إنشاء سياسة
+        save: حفظ التغييرات
+        insert: إدراج
+        errors:
+          group: المجموعة ضرورية
+          version: الإصدار ضروري
+        group:
+          label: المجموعة
+          description: المجموعة المرتبطة بهذه السياسة
+        version:
+          label: الإصدار
+          description: نسخة السياسة، ستجبر ترقية السياسة الأشخاص على قبولها مرة أخرى
+        renew:
+          label: تجديد
+          description: إعادة تجديد السياسة كل x من الأيام
+        renew-start:
+          label: بدء التجديد
+          description: موعد تجديد السياسة
+        reminder:
+          label: تذكير
+          description: عدد المرات التي يجب فيها إرسال إشعار التذكير بقبول السياسة
+        accept:
+          label: قبول
+          description: النص المستخدم على زر القبول
+        revoke:
+          label: إلغاء
+          description: النص المستخدم على زر الإلغاء
         private:
           label: خاصة?
+          description: إبقاء حالة السياسة خاصة للمشرفين

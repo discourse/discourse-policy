@@ -7,6 +7,41 @@
 de:
   js:
     discourse_policy:
+      title: "Richtlinie"
+      accepted_tooltip: "Benutzer, die diese Richtlinie akzeptiert haben"
+      not_accepted_tooltip: "Benutzer, die diese Richtlinie nicht akzeptiert haben"
+      accept_policy: "Richtlinie akzeptieren"
+      revoke_policy: "Richtlinie widerrufen"
+      edit_reason: "Richtlinieneinstellungen wurden geändert"
       builder:
+        title: Richtlinie
+        attach: Richtlinie erstellen
+        save: Änderungen speichern
+        insert: Einfügen
+        errors:
+          group: Gruppe ist obligatorisch
+          version: Version ist obligatorisch
+        group:
+          label: Gruppe
+          description: Die mit dieser Richtlinie verknüpfte Gruppe
+        version:
+          label: Version
+          description: Die Version der Richtlinie. Das Erhöhen der Version zwingt die Benutzer dazu, sie erneut zu akzeptieren
+        renew:
+          label: Erneuern
+          description: Die Richtlinie alle x Tage erneuern
+        renew-start:
+          label: Start der Erneuerung
+          description: Wann die Richtlinie erneuert werden soll
+        reminder:
+          label: Erinnerung
+          description: Wie oft eine Erinnerungsbenachrichtigung zur Annahme der Richtlinie gesendet werden soll
+        accept:
+          label: Akzeptieren
+          description: Text für die Schaltfläche „Akzeptieren“
+        revoke:
+          label: Widerrufen
+          description: Text für die Schaltfläche „Widerrufen“
         private:
           label: Privat?
+          description: Status der Richtlinie für Administratoren privat halten

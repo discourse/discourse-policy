@@ -5,3 +5,13 @@
 # https://translate.discourse.org/
 
 pt_BR:
+  site_settings:
+    policy_enabled: "Permitir políticas?"
+    policy_restrict_to_staff_posts: "Políticas devem aparecer apenas nas postagens da equipe"
+    policy_easy_revoke: "Exibir os botões de aceitar e revogar ao mesmo tempo"
+  discourse_policy:
+    errors:
+      user_missing: "O(a) usuário(a) não existe no grupo"
+      group_not_found: "Grupo não encontrado para política"
+      no_policy: "Não existem políticas para a postagem"
+      staff_only: "Políticas podem ser aplicadas apenas às postagens da equipe"
