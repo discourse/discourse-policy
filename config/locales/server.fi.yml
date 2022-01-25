@@ -5,3 +5,13 @@
 # https://translate.discourse.org/
 
 fi:
+  site_settings:
+    policy_enabled: "Sallitaanko käytännöt?"
+    policy_restrict_to_staff_posts: "Käytännöt voivat näkyä vain henkilökunnan viesteissä"
+    policy_easy_revoke: "Näytä hyväksymis- ja perumispainikkeet samanaikaisesti"
+  discourse_policy:
+    errors:
+      user_missing: "Käyttäjää ei ole ryhmässä"
+      group_not_found: "Ryhmää ei löydy käytännölle"
+      no_policy: "Viestille ei ole käytäntöä"
+      staff_only: "Käytännöt voivat koskea vain henkilökunnan viestejä"
