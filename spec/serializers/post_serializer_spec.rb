@@ -46,6 +46,44 @@ describe 'post serializer' do
     expect(accepted.map { |u| u[:id] }).to contain_exactly(user1.id)
   end
 
+  it 'excludes inactive users' do
+    user1.active = false
+    user1.save!
+
+    raw = <<~MD
+     [policy group=#{group.name} private=true]
+     I always open **doors**!
+     [/policy]
+    MD
+
+    post = create_post(raw: raw, user: Fabricate(:admin))
+    post.reload
+
+    PolicyUser.add!(user1, post.post_policy)
+
+    json = PostSerializer.new(post, scope: admin.guardian).as_json
+    expect(json[:post][:policy_accepted_by]).to be_empty
+  end
+
+  it 'excludes suspended users' do
+    user1.suspended_till = 1.year.from_now
+    user1.save!
+
+    raw = <<~MD
+     [policy group=#{group.name} private=true]
+     I always open **doors**!
+     [/policy]
+    MD
+
+    post = create_post(raw: raw, user: Fabricate(:admin))
+    post.reload
+
+    PolicyUser.add!(user1, post.post_policy)
+
+    json = PostSerializer.new(post, scope: admin.guardian).as_json
+    expect(json[:post][:policy_accepted_by]).to be_empty
+  end
+
   it 'does not include users if private' do
     raw = <<~MD
      [policy group=#{group.name} private=true]

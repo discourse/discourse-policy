@@ -1,0 +1,69 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+describe PostPolicy do
+  before do
+    SiteSetting.queue_jobs = false
+  end
+
+  fab!(:user1) { Fabricate(:user) }
+  fab!(:user2) { Fabricate(:user) }
+  fab!(:inactive_user) { Fabricate(:user, active: false) }
+  fab!(:suspended_user) { Fabricate(:user, suspended_till: 1.year.from_now) }
+
+  fab!(:group) do
+    group = Fabricate(:group)
+    group.add(user1)
+    group.add(user2)
+    group.add(inactive_user)
+    group.add(suspended_user)
+    group
+  end
+
+  fab!(:policy) { Fabricate(:post_policy) }
+
+  describe "#accepted_by" do
+    it "returns empty if no policy group" do
+      PolicyUser.add!(user1, policy)
+      Group.delete_all
+
+      expect(policy.accepted_by).to eq []
+    end
+
+    it "shows users who accepted" do
+      PolicyUser.add!(user1, policy)
+
+      expect(policy.accepted_by).to eq [user1]
+    end
+
+    it "excludes inactive or suspended users" do
+      PolicyUser.add!(inactive_user, policy)
+      PolicyUser.add!(suspended_user, policy)
+
+      expect(policy.accepted_by).to eq []
+    end
+  end
+
+  describe "#revoked_by" do
+    it "returns empty if no policy group" do
+      PolicyUser.add!(user1, policy)
+      Group.delete_all
+
+      expect(policy.revoked_by).to eq []
+    end
+
+    it "shows users who revoked" do
+      PolicyUser.remove!(user1, policy)
+
+      expect(policy.revoked_by).to eq [user1]
+    end
+
+    it "excludes inactive or suspended users" do
+      PolicyUser.remove!(inactive_user, policy)
+      PolicyUser.remove!(suspended_user, policy)
+
+      expect(policy.revoked_by).to eq []
+    end
+  end
+end
