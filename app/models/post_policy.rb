@@ -10,13 +10,13 @@ class PostPolicy < ActiveRecord::Base
   def accepted_by
     return [] if !policy_group
 
-    User.activated.not_suspended.where(id: accepted_policy_users.select(:user_id))
+    User.activated.not_suspended.where(id: accepted_policy_users.select(:user_id)).order(:id)
   end
 
   def revoked_by
     return [] if !policy_group
 
-    User.activated.not_suspended.where(id: revoked_policy_users.select(:user_id))
+    User.activated.not_suspended.where(id: revoked_policy_users.select(:user_id)).order(:id)
   end
 
   def not_accepted_by
@@ -46,7 +46,7 @@ class PostPolicy < ActiveRecord::Base
   private
 
   def policy_group_users
-    User.activated.joins(:group_users).where('group_users.group_id = ?', policy_group.id)
+    User.activated.not_suspended.joins(:group_users).where('group_users.group_id = ?', policy_group.id).order(:id)
   end
 end
 

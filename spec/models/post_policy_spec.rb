@@ -7,8 +7,8 @@ describe PostPolicy do
     SiteSetting.queue_jobs = false
   end
 
-  fab!(:user1) { Fabricate(:user) }
-  fab!(:user2) { Fabricate(:user) }
+  fab!(:user1) { Fabricate(:user, id: 123456789) }
+  fab!(:user2) { Fabricate(:user, id: 1234) }
   fab!(:inactive_user) { Fabricate(:user, active: false) }
   fab!(:suspended_user) { Fabricate(:user, suspended_till: 1.year.from_now) }
 
@@ -21,7 +21,7 @@ describe PostPolicy do
     group
   end
 
-  fab!(:policy) { Fabricate(:post_policy) }
+  fab!(:policy) { Fabricate(:post_policy, group: group) }
 
   describe "#accepted_by" do
     it "returns empty if no policy group" do
@@ -31,10 +31,11 @@ describe PostPolicy do
       expect(policy.accepted_by).to eq []
     end
 
-    it "shows users who accepted" do
+    it "shows users who accepted ordered by id" do
+      PolicyUser.add!(user2, policy)
       PolicyUser.add!(user1, policy)
 
-      expect(policy.accepted_by).to eq [user1]
+      expect(policy.accepted_by).to eq [user2, user1]
     end
 
     it "excludes inactive or suspended users" do
@@ -53,10 +54,11 @@ describe PostPolicy do
       expect(policy.revoked_by).to eq []
     end
 
-    it "shows users who revoked" do
+    it "shows users who revoked ordered by id" do
+      PolicyUser.remove!(user2, policy)
       PolicyUser.remove!(user1, policy)
 
-      expect(policy.revoked_by).to eq [user1]
+      expect(policy.revoked_by).to eq [user2, user1]
     end
 
     it "excludes inactive or suspended users" do
@@ -64,6 +66,23 @@ describe PostPolicy do
       PolicyUser.remove!(suspended_user, policy)
 
       expect(policy.revoked_by).to eq []
+    end
+  end
+
+  describe "#not_accepted_by" do
+    it "returns empty if no policy group" do
+      PolicyUser.add!(user1, policy)
+      Group.delete_all
+
+      expect(policy.not_accepted_by).to eq []
+    end
+
+    it "shows users who have not accepted ordered by id" do
+      expect(policy.not_accepted_by).to eq [user2, user1]
+    end
+
+    it "excludes inactive or suspended users" do
+      expect(policy.not_accepted_by).to eq [user2, user1]
     end
   end
 end
