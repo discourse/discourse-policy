@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe PostPolicy do
   before do
-    SiteSetting.queue_jobs = false
+    Jobs.run_immediately!
   end
 
   fab!(:user1) { Fabricate(:user, id: 123456789) }
