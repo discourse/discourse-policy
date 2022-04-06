@@ -77,7 +77,10 @@ after_initialize do
             rescue ArgumentError
               # already nil
             end
+          else
+            post_policy.next_renew_at = nil
           end
+
         else
           post_policy.renew_days = nil
           post_policy.renew_start = nil
