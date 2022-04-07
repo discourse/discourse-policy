@@ -44,13 +44,15 @@ module Jobs
       PostPolicy.where("next_renew_at < ?", Time.zone.now).find_each do |policy|
         policy.policy_users.accepted.where("accepted_at < ?", policy.next_renew_at).update_all(expired_at: Time.zone.now)
         next_renew = policy.renew_start
+
         if policy.renew_days.to_i < 1 && !PostPolicy.renew_intervals.keys.include?(policy.renew_interval)
           Rails.logger.warn("Invalid policy on post #{policy.post_id}")
-        else
+        elsif next_renew.present?
           while next_renew < Time.zone.now
             next_renew = calculate_next_renew_date(next_renew, policy)
           end
         end
+
         policy.update(next_renew_at: next_renew)
       end
 

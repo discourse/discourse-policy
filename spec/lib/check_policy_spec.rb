@@ -288,4 +288,12 @@ describe DiscoursePolicy::CheckPolicy do
     expect(user1.notifications.where(notification_type: Notification.types[:topic_reminder], topic_id: post.topic_id, post_number: 1).count).to eq(1)
     expect(Notification.find_by(id: user1_notification.id)).to eq(nil)
   end
+
+  it "clears the next_renew_at when renew_start is nil" do
+    policy = Fabricate(:post_policy, next_renew_at: 3.hours.ago, renew_start: nil, renew_days: 10)
+
+    DiscoursePolicy::CheckPolicy.new.execute
+
+    expect(policy.reload.next_renew_at).to be_nil
+  end
 end
