@@ -26,6 +26,8 @@ function initializePolicyBuilder(api, container) {
     actions: {
       insertPolicy() {
         showModal("policy-builder").setProperties({
+          insertMode: true,
+          post: null,
           toolbarEvent: this.toolbarEvent,
         });
       },
