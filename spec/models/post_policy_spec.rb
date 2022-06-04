@@ -7,8 +7,8 @@ describe PostPolicy do
     Jobs.run_immediately!
   end
 
-  fab!(:user1) { Fabricate(:user, id: 123456789) }
-  fab!(:user2) { Fabricate(:user, id: 1234) }
+  fab!(:user1) { Fabricate(:user) }
+  fab!(:user2) { Fabricate(:user) }
   fab!(:inactive_user) { Fabricate(:user, active: false) }
   fab!(:suspended_user) { Fabricate(:user, suspended_till: 1.year.from_now) }
 
@@ -35,7 +35,7 @@ describe PostPolicy do
       PolicyUser.add!(user2, policy)
       PolicyUser.add!(user1, policy)
 
-      expect(policy.accepted_by).to eq [user2, user1]
+      expect(policy.accepted_by).to eq [user1, user2]
     end
 
     it "excludes inactive or suspended users" do
@@ -58,7 +58,7 @@ describe PostPolicy do
       PolicyUser.remove!(user2, policy)
       PolicyUser.remove!(user1, policy)
 
-      expect(policy.revoked_by).to eq [user2, user1]
+      expect(policy.revoked_by).to eq [user1, user2]
     end
 
     it "excludes inactive or suspended users" do
@@ -78,11 +78,11 @@ describe PostPolicy do
     end
 
     it "shows users who have not accepted ordered by id" do
-      expect(policy.not_accepted_by).to eq [user2, user1]
+      expect(policy.not_accepted_by).to eq [user1, user2]
     end
 
     it "excludes inactive or suspended users" do
-      expect(policy.not_accepted_by).to eq [user2, user1]
+      expect(policy.not_accepted_by).to_not include(inactive_user, suspended_user)
     end
   end
 end
