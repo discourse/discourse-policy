@@ -112,9 +112,10 @@ describe 'markdown' do
 
     expect(post.post_policy.reminder).to eq("weekly")
     expect(post.post_policy.last_reminded_at).to eq_time(Time.zone.now)
+    expect(post.post_policy.groups.pluck(:name).sort).to eq(['staff'])
 
     raw = <<~MD
-     [policy groups=staff version=2 reminder=weekly]
+     [policy groups=trust_level_1,trust_level_0 version=2 reminder=weekly]
      I always open **doors**!
      [/policy]
     MD
@@ -123,5 +124,7 @@ describe 'markdown' do
 
     post = Post.find(post.id)
     expect(post.post_policy.accepted_by).to eq([])
+
+    expect(post.post_policy.groups.pluck(:name).sort).to eq(['trust_level_0', 'trust_level_1'])
   end
 end

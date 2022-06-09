@@ -53,17 +53,17 @@ after_initialize do
 
         post_policy = post.post_policy || post.build_post_policy
 
-        new_group_ids = []
+        group_names = []
 
         if group = policy["data-group"]
-          if group_id = Group.where(name: group).pluck(:id).first
-            new_group_ids << group_id
-          end
+          group_names << group
         end
 
         if groups = policy["data-groups"]
-          new_group_ids.concat(Group.where('name in (?)', groups.split(",")).pluck(:id))
+          group_names.concat(groups.split(","))
         end
+
+        new_group_ids = Group.where('name in (?)', group_names).pluck(:id)
 
         if new_group_ids.length > 0
           has_group = true
