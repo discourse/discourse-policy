@@ -2,8 +2,8 @@
   title=(concat "discourse_policy.builder.title")
   class="policy-builder"
 }}
-  {{#policy-form-field name="group" mandatory=true}}
-    {{policy-group-input group=form.group onChangeGroup=(action (mut form.group))}}
+  {{#policy-form-field name="groups" mandatory=true}}
+    {{policy-group-input groups=form.groups onChangeGroup=(action (mut form.groups))}}
   {{/policy-form-field}}
 
   {{#policy-form-field name="version" mandatory=true}}

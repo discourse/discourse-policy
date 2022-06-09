@@ -141,7 +141,7 @@ export default Component.extend({
     }
 
     if (this.post.policy_can_accept !== this.post.policy_can_revoke) {
-      this.post.set({
+      this.post.setProperties({
         policy_can_accept: true,
         policy_can_revoke: false,
         policy_accepted: false,

@@ -2,7 +2,7 @@ import Component from "@ember/component";
 import { action, computed } from "@ember/object";
 
 export default Component.extend({
-  group: null,
+  groups: null,
   onChangeGroup: null,
 
   siteGroups: computed("site.groups", function () {

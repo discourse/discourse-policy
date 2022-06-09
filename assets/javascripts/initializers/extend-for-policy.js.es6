@@ -4,7 +4,7 @@ import { withPluginApi } from "discourse/lib/plugin-api";
 import { escapeExpression } from "discourse/lib/utilities";
 
 const SETTINGS = [
-  { name: "group", visible: true },
+  { name: "groups", visible: true },
   { name: "version", visible: true, optional: true },
   { name: "renew", visible: true, optional: true },
   {

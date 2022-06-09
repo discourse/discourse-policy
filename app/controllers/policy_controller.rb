@@ -4,6 +4,7 @@ class DiscoursePolicy::PolicyController < ::ApplicationController
   requires_plugin DiscoursePolicy::PLUGIN_NAME
 
   before_action :ensure_logged_in, :set_post
+  before_action :ensure_can_accept, only: [:accept, :unaccept]
 
   def accept
     PolicyUser.add!(current_user, @post.post_policy)
@@ -46,6 +47,15 @@ class DiscoursePolicy::PolicyController < ::ApplicationController
 
   private
 
+  def ensure_can_accept
+
+    if !GroupUser.where('group_id in (:group_ids) and user_id = :user_id', group_ids: @groups.pluck(:id), user_id: current_user.id).exists?
+      return render_json_error(I18n.t("discourse_policy.error.user_missing"))
+    end
+
+    true
+  end
+
   def set_post
     if !SiteSetting.policy_enabled
       raise Discourse::NotFound
@@ -62,12 +72,10 @@ class DiscoursePolicy::PolicyController < ::ApplicationController
       return render_json_error(I18n.t("discourse_policy.errors.no_policy"))
     end
 
-    unless group = @post.post_policy.group
-      return render_json_error(I18n.t("discourse_policy.error.group_not_found"))
-    end
+    @groups = @post.post_policy.groups.to_a
 
-    unless group.group_users.where(user_id: current_user.id)
-      return render_json_error(I18n.t("discourse_policy.errors.user_missing"))
+    if @groups.length == 0
+      return render_json_error(I18n.t("discourse_policy.error.group_not_found"))
     end
 
     if SiteSetting.policy_restrict_to_staff_posts && !@post.user&.staff?

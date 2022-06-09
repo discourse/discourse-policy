@@ -101,7 +101,7 @@ export default Controller.extend(ModalFunctionality, {
   },
 
   _validateForm(form) {
-    if (!form.group || !isPresent(form.group)) {
+    if (!form.groups || !isPresent(form.groups)) {
       this.flash(I18n.t("discourse_policy.builder.errors.group"), "error");
       return false;
     }

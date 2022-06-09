@@ -21,7 +21,11 @@ describe PostPolicy do
     group
   end
 
-  fab!(:policy) { Fabricate(:post_policy, group: group) }
+  fab!(:policy) {
+    policy = Fabricate(:post_policy)
+    PostPolicyGroup.create!(post_policy_id: policy.id, group_id: group.id)
+    policy
+  }
 
   describe "#accepted_by" do
     it "returns empty if no policy group" do

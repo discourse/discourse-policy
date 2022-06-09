@@ -4,14 +4,19 @@ const rule = {
   tag: "policy",
 
   wrap: function (token, info) {
-    if (!info.attrs.group) {
+    if (!info.attrs.group && !info.attrs.groups) {
       return false;
     }
 
-    token.attrs = [
-      ["class", "policy"],
-      ["data-group", info.attrs.group],
-    ];
+    token.attrs = [["class", "policy"]];
+
+    if (info.attrs["group"]) {
+      token.attrs.push(["data-group", info.attrs.group]);
+    }
+
+    if (info.attrs["groups"]) {
+      token.attrs.push(["data-groups", info.attrs.groups]);
+    }
 
     token.attrs.push(["data-version", info.attrs.version || 1]);
 
