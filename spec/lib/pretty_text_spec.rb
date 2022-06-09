@@ -25,7 +25,7 @@ describe 'markdown' do
 
   it "triggers a rebaked post message after processing policy" do
     raw = <<~MD
-     [policy groups=staff reminder=weekly]
+     [policy group=staff reminder=weekly]
      I pet cats
      [/policy]
     MD
