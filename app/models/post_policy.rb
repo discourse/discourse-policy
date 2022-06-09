@@ -45,7 +45,7 @@ class PostPolicy < ActiveRecord::Base
     return @policy_groups if defined?(@policy_groups)
 
     @policy_groups = groups.to_a
-    if @policy_groups == []
+    if @policy_groups.blank?
       @policy_groups = nil
     end
 
