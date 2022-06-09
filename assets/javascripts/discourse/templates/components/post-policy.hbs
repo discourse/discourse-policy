@@ -22,6 +22,10 @@
       {{/if}}
     </div>
     <div class="user-lists">
+      {{#unless policyHasUsers}}
+        <span class="no-possible-users">{{i18n "discourse_policy.no_possible_users"}}</span>
+      {{/unless}}
+
       {{#if post.policy_accepted_by_count}}
         <a href {{action "toggleShowUsers"}} class="toggle toggle-accepted" title={{i18n "discourse_policy.accepted_tooltip"}}>
           <span class="user-count">

@@ -11,6 +11,7 @@ import hbs from "htmlbars-inline-precompile";
 import { click } from "@ember/test-helpers";
 import EmberObject from "@ember/object";
 import pretender from "discourse/tests/helpers/create-pretender";
+import I18n from "I18n";
 
 function fabricatePost(options = {}) {
   return EmberObject.create(Object.assign({ id: 1 }, options));
@@ -76,6 +77,7 @@ discourseModule("Discourse Policy | Component | post-policy", function (hooks) {
       );
     },
   });
+
   componentTest("post#policy_not_accepted_by_count", {
     template: hbs`{{post-policy post=post policy=policy}}`,
 
@@ -88,6 +90,28 @@ discourseModule("Discourse Policy | Component | post-policy", function (hooks) {
       assert.equal(
         query(".toggle-not-accepted .user-count").innerText,
         this.post.policy_not_accepted_by_count
+      );
+    },
+  });
+
+  componentTest("no possible users", {
+    template: hbs`{{post-policy post=post policy=policy}}`,
+
+    beforeEach() {
+      this.set(
+        "post",
+        fabricatePost({
+          policy_accepted_by_count: 0,
+          policy_not_accepted_by_count: 0,
+        })
+      );
+      this.set("policy", fabricatePolicy());
+    },
+
+    async test(assert) {
+      assert.equal(
+        query(".no-possible-users").innerText.trim(),
+        I18n.t("discourse_policy.no_possible_users")
       );
     },
   });
