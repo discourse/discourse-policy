@@ -2,7 +2,7 @@
 class RemoveGroupIdFromPostPolicy < ActiveRecord::Migration[6.1]
 
   def up
-    Migration::ColumnDropper.execute_drop(:post_policies, :group_id)
+    Migration::ColumnDropper.execute_drop(:post_policies, [:group_id])
   end
 
   def down
