@@ -133,6 +133,7 @@ after_initialize do
             post.save_custom_fields
           end
           post_policy.save!
+          post.rebake!
         end
       end
     end
