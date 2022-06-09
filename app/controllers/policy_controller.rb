@@ -48,7 +48,7 @@ class DiscoursePolicy::PolicyController < ::ApplicationController
   private
 
   def ensure_can_accept
-    if !GroupUser.where('group_id in (:group_ids) and user_id = :user_id', group_ids: @groups.pluck(:id), user_id: current_user.id).exists?
+    if !GroupUser.where('group_id in (:group_ids) and user_id = :user_id', group_ids: @group_ids, user_id: current_user.id).exists?
       return render_json_error(I18n.t("discourse_policy.error.user_missing"))
     end
 
@@ -71,9 +71,9 @@ class DiscoursePolicy::PolicyController < ::ApplicationController
       return render_json_error(I18n.t("discourse_policy.errors.no_policy"))
     end
 
-    @groups = @post.post_policy.groups.to_a
+    @group_ids = @post.post_policy.groups.pluck(:id)
 
-    if @groups.length == 0
+    if @group_ids.blank?
       return render_json_error(I18n.t("discourse_policy.error.group_not_found"))
     end
 
