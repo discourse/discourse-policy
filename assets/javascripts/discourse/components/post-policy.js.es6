@@ -7,39 +7,38 @@ import { popupAjaxError } from "discourse/lib/ajax-error";
 import showModal from "discourse/lib/show-modal";
 import layout from "javascripts/components/post-policy";
 
-export default Component.extend({
-  layout,
-
-  tagName: "",
-  post: null,
-  options: null,
-  showNotAccepted: false,
-  isLoading: false,
-  form: null,
-
-  init() {
-    this._super(...arguments);
-
-    this.post.setProperties({
-      policy_accepted_by: this.post.policy_accepted_by || [],
-      policy_not_accepted_by: this.post.policy_not_accepted_by || [],
-    });
-  },
+export default class PostPolicy extends Component {
+  layout = layout;
+  tagName = "";
+  post = null;
+  options = null;
+  showNotAccepted = false;
+  isLoading = false;
+  policy = null;
 
   didInsertElement() {
     this._super(...arguments);
 
+    this.post?.setProperties({
+      policy_accepted_by: this.post?.policy_accepted_by || [],
+      policy_not_accepted_by: this.post?.policy_not_accepted_by || [],
+    });
+
     this.appEvents.on("policy:changed", this, "policyChanged");
-  },
+  }
 
   willDestroyElement() {
     this._super(...arguments);
 
     this.appEvents.off("policy:changed", this, "policyChanged");
-  },
+  }
 
   @bind
   policyChanged(data) {
+    if (data.message.id !== this.post.id) {
+      return;
+    }
+
     const stream = data.controller.get("model.postStream");
     const post = stream.findLoadedPost(data.message.id);
 
@@ -58,25 +57,25 @@ export default Component.extend({
         });
       });
     }
-  },
+  }
 
   @discourseComputed("post.policy_accepted", "post.policy_revoked")
   acceptButtonClasses(accepted, revoked) {
     let classes = "accept btn-accept-policy";
-    if (accepted || !revoked) {
+    if (!accepted || revoked) {
       classes += " btn-primary";
     }
     return classes;
-  },
+  }
 
   @discourseComputed("post.policy_accepted", "post.policy_revoked")
   revokeButtonClasses(accepted, revoked) {
-    let classes = "accept btn-accept-policy";
-    if (revoked || !accepted) {
+    let classes = "revoke btn-revoke-policy";
+    if (!revoked || accepted) {
       classes += " btn-danger";
     }
     return classes;
-  },
+  }
 
   @discourseComputed(
     "post.policy_accepted_by_count",
@@ -84,12 +83,12 @@ export default Component.extend({
   )
   remainingAcceptedUsers(count, loaded) {
     return count - loaded.length;
-  },
+  }
 
   @discourseComputed("post.policy_accepted_by.[]")
   acceptedUsers() {
     return this.post.policy_accepted_by || [];
-  },
+  }
 
   @discourseComputed(
     "post.policy_not_accepted_by_count",
@@ -97,12 +96,12 @@ export default Component.extend({
   )
   remainingNotAcceptedUsers(count, loaded) {
     return count - loaded.length;
-  },
+  }
 
   @discourseComputed("post.policy_not_accepted_by.[]")
   notAcceptedUsers() {
     return this.post.policy_not_accepted_by || [];
-  },
+  }
 
   @discourseComputed("currentUser.{id,staff}", "post.user_id")
   canManagePolicy() {
@@ -110,18 +109,7 @@ export default Component.extend({
       this.currentUser &&
       (this.currentUser.staff || this.currentUser.id === this.post.user_id)
     );
-  },
-
-  _updatePolicy(policyAction, id) {
-    this.set("isLoading", true);
-
-    return ajax(getURL(`/policy/${policyAction}`), {
-      type: "put",
-      data: { post_id: id },
-    })
-      .catch(popupAjaxError)
-      .finally(() => this.set("isLoading", false));
-  },
+  }
 
   @action
   revokePolicy() {
@@ -150,7 +138,7 @@ export default Component.extend({
     }
 
     this._updatePolicy("unaccept", this.post.id);
-  },
+  }
 
   @action
   acceptPolicy() {
@@ -164,6 +152,7 @@ export default Component.extend({
       "id",
       this.currentUser.id
     );
+
     if (obj) {
       this.post.policy_not_accepted_by.removeObject(obj);
       this.post.set(
@@ -182,7 +171,7 @@ export default Component.extend({
     }
 
     this._updatePolicy("accept", this.post.id);
-  },
+  }
 
   @action
   loadRemainingAcceptedUsers() {
@@ -198,7 +187,7 @@ export default Component.extend({
         });
       })
       .catch(popupAjaxError);
-  },
+  }
 
   @action
   loadRemainingNotAcceptedUsers() {
@@ -214,19 +203,30 @@ export default Component.extend({
         });
       })
       .catch(popupAjaxError);
-  },
+  }
 
   @action
   editPolicy() {
     showModal("policy-builder").setProperties({
       insertMode: false,
       post: this.post,
-      form: this.form,
+      policy: this.policy,
     });
-  },
+  }
 
   @action
   toggleShowUsers() {
     this.toggleProperty("showNotAccepted");
-  },
-});
+  }
+
+  _updatePolicy(policyAction, id) {
+    this.set("isLoading", true);
+
+    return ajax(getURL(`/policy/${policyAction}`), {
+      type: "put",
+      data: { post_id: id },
+    })
+      .catch(popupAjaxError)
+      .finally(() => this.set("isLoading", false));
+  }
+}

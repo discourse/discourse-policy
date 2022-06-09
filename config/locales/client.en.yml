@@ -13,8 +13,8 @@ en:
         save: Save changes
         insert: Insert
         errors:
-          group: Group is mandatory
-          version: Version is mandatory
+          group: Group is required
+          version: Version is required
         groups:
           label: Groups
           description: The groups associated to this policy

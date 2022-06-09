@@ -4,26 +4,38 @@ import { withPluginApi } from "discourse/lib/plugin-api";
 import { escapeExpression } from "discourse/lib/utilities";
 
 const SETTINGS = [
-  { name: "groups", visible: true },
-  { name: "version", visible: true, optional: true },
-  { name: "renew", visible: true, optional: true },
+  { name: "groups" },
+  { name: "version" },
+  { name: "renew" },
   {
     name: "renew-start",
     camelName: "renewStart",
-    visible: true,
-    optional: true,
   },
-  { name: "reminder", optional: true },
-  { name: "accept", optional: true },
-  { name: "revoke", optional: true },
+  { name: "reminder" },
+  {
+    name: "accept",
+    default: I18n.t("discourse_policy.accept_policy"),
+    escape: true,
+  },
+  {
+    name: "revoke",
+    default: I18n.t("discourse_policy.revoke_policy"),
+    escape: true,
+  },
 ];
 
 function initializePolicy(api) {
-  function _buildForm(policy) {
+  function _buildPolicyAttributes(policy) {
     const form = {};
     SETTINGS.forEach((setting) => {
       form[setting.name] =
-        policy.dataset[setting.camelName || setting.name] || "";
+        policy.dataset[setting.camelName || setting.name] ||
+        setting.default ||
+        "";
+
+      if (setting.escape) {
+        form[setting.name] = escapeExpression(form[setting.name]);
+      }
     });
 
     if (!form.version || parseInt(form.version, 10) < 1) {
@@ -59,15 +71,7 @@ function initializePolicy(api) {
       .factoryFor("component:post-policy")
       .create({
         post,
-        form: _buildForm(policy),
-        options: {
-          revokeText: escapeExpression(
-            policy.dataset.revoke || I18n.t("discourse_policy.revoke_policy")
-          ),
-          acceptText: escapeExpression(
-            policy.dataset.accept || I18n.t("discourse_policy.accept_policy")
-          ),
-        },
+        policy: _buildPolicyAttributes(policy),
       });
 
     component.renderer.appendTo(component, policy);

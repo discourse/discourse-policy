@@ -15,22 +15,27 @@ export default Controller.extend(ModalFunctionality, {
   insertMode: true,
 
   onShow() {
-    if (!this.form) {
-      this.set("form", EmberObject.create({ reminder: "daily", version: 1 }));
+    if (!this.policy) {
+      this.set("policy", EmberObject.create({ reminder: "daily", version: 1 }));
     }
   },
 
   onClose() {
-    this.set("form", null);
+    this.set("policy", null);
+  },
+
+  @action
+  onChangeFormField(field, value) {
+    this.policy?.set(field, value);
   },
 
   @action
   insertPolicy() {
-    if (!this._validateForm(this.form)) {
+    if (!this._validateForm(this.policy)) {
       return;
     }
 
-    const markdownParams = this._buildParams(this.form);
+    const markdownParams = this._buildParams(this.policy);
     this.toolbarEvent.addText(
       `\n\n[policy ${markdownParams.join(" ")}]\n[/policy]\n\n`
     );
@@ -39,7 +44,7 @@ export default Controller.extend(ModalFunctionality, {
 
   @action
   updatePolicy() {
-    if (!this._validateForm(this.form)) {
+    if (!this._validateForm(this.policy)) {
       return;
     }
 
@@ -51,7 +56,7 @@ export default Controller.extend(ModalFunctionality, {
     return ajax(endpoint, options)
       .then((result) => {
         const raw = result.raw;
-        const newRaw = this._replaceRaw(this.form, raw);
+        const newRaw = this._replaceRaw(this.policy, raw);
 
         if (newRaw) {
           const props = {
@@ -71,15 +76,10 @@ export default Controller.extend(ModalFunctionality, {
       });
   },
 
-  @action
-  onChangeRenewStartChange(value) {
-    this.form.set("renew-start", value);
-  },
-
-  _buildParams(form) {
+  _buildParams(policy) {
     const markdownParams = [];
-    Object.keys(form).forEach((key) => {
-      const value = form[key];
+    Object.keys(policy).forEach((key) => {
+      const value = policy[key];
 
       if (value && isPresent(value)) {
         markdownParams.push(`${key}="${value}"`);
@@ -88,25 +88,25 @@ export default Controller.extend(ModalFunctionality, {
     return markdownParams;
   },
 
-  _replaceRaw(form, raw) {
+  _replaceRaw(policy, raw) {
     const policyRegex = new RegExp(`\\[policy\\s(.*?)\\]`, "m");
     const policyMatches = raw.match(policyRegex);
 
     if (policyMatches && policyMatches[1]) {
-      const markdownParams = this._buildParams(form);
+      const markdownParams = this._buildParams(policy);
       return raw.replace(policyRegex, `[policy ${markdownParams.join(" ")}]`);
     }
 
     return false;
   },
 
-  _validateForm(form) {
-    if (!form.groups || !isPresent(form.groups)) {
+  _validateForm(policy) {
+    if (!policy.groups || !isPresent(policy.groups)) {
       this.flash(I18n.t("discourse_policy.builder.errors.group"), "error");
       return false;
     }
 
-    if (!form.version || !isPresent(form.version)) {
+    if (!policy.version || !isPresent(policy.version)) {
       this.flash(I18n.t("discourse_policy.builder.errors.version"), "error");
       return false;
     }

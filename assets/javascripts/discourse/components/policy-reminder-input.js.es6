@@ -12,8 +12,9 @@ const VALID_REMINDERS = [
   },
 ];
 
-export default Component.extend({
-  reminder: null,
-  onChangeReminder: null,
-  validReminders: VALID_REMINDERS,
-});
+export default class PolicyReminderInput extends Component {
+  tagName = "";
+  reminder = null;
+  onChangeReminder = null;
+  validReminders = VALID_REMINDERS;
+}
