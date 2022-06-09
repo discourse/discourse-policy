@@ -105,6 +105,7 @@ after_initialize do
             post.save_custom_fields
           end
           post_policy.save!
+          post.publish_change_to_clients!(:rebaked)
         end
       end
     end

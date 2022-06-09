@@ -23,6 +23,21 @@ describe 'markdown' do
     expect(PrettyText.cook(raw)).to match_html(cooked)
   end
 
+  it "triggers a rebaked post message after processing policy" do
+    raw = <<~MD
+     [policy groups=staff reminder=weekly]
+     I pet cats
+     [/policy]
+    MD
+    topic = create_topic
+
+    messages = MessageBus.track_publish("/topic/#{topic.id}") do
+      create_post(raw: raw, topic_id: topic.id, user: Fabricate(:admin))
+    end
+
+    expect(messages.find { |m| m.data[:type] == :rebaked }).to be_present
+  end
+
   it "sets the custom attribute on posts with policies" do
 
     SiteSetting.policy_restrict_to_staff_posts = false
