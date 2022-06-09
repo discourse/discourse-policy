@@ -49,6 +49,7 @@ class PostPolicy < ActiveRecord::Base
       .joins('JOIN post_policy_groups on post_policy_groups.group_id = group_users.group_id')
       .where('post_policy_groups.post_policy_id = ?', id)
       .order(:id)
+      .distinct
   end
 end
 
