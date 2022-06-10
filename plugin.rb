@@ -29,6 +29,7 @@ after_initialize do
   require_relative "app/controllers/policy_controller"
   require_relative "app/models/policy_user"
   require_relative "app/models/post_policy"
+  require_relative "app/models/post_policy_group"
   require_relative "jobs/scheduled/check_policy"
 
   DiscoursePolicy::Engine.routes.draw do
@@ -52,12 +53,39 @@ after_initialize do
 
         post_policy = post.post_policy || post.build_post_policy
 
+        group_names = []
+
         if group = policy["data-group"]
-          if group = Group.find_by(name: group)
-            post_policy.group_id = group.id
-            has_group = true
+          group_names << group
+        end
+
+        if groups = policy["data-groups"]
+          group_names.concat(groups.split(","))
+        end
+
+        new_group_ids = Group.where('name in (?)', group_names).pluck(:id)
+
+        if new_group_ids.length > 0
+          has_group = true
+        end
+
+        existing_ids = post_policy.post_policy_groups.pluck(:group_id)
+
+        missing = (new_group_ids - existing_ids)
+
+        new_relations = []
+
+        post_policy.post_policy_groups.each do |relation|
+          if new_group_ids.include?(relation.group_id)
+            new_relations << relation
           end
         end
+
+        missing.each do |id|
+          new_relations << PostPolicyGroup.new(post_policy_id: post_policy.id, group_id: id)
+        end
+
+        post_policy.post_policy_groups = new_relations
 
         renew_days = policy["data-renew"]
         if (renew_days.to_i) > 0 || PostPolicy.renew_intervals.keys.include?(renew_days)

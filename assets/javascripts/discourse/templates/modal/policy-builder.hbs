@@ -2,68 +2,7 @@
   title=(concat "discourse_policy.builder.title")
   class="policy-builder"
 }}
-  {{#policy-form-field name="group" mandatory=true}}
-    {{policy-group-input group=form.group onChangeGroup=(action (mut form.group))}}
-  {{/policy-form-field}}
-
-  {{#policy-form-field name="version" mandatory=true}}
-    {{input
-      name="version"
-      type="number"
-      value=form.version
-      input=(action (mut form.version)
-      value="target.value")
-    }}
-  {{/policy-form-field}}
-
-  {{#policy-form-field name="renew"}}
-    {{input
-      name="renew"
-      type="number"
-      value=form.renew
-      input=(action (mut form.renew) value="target.value")
-    }}
-  {{/policy-form-field}}
-
-  {{#policy-form-field name="renew-start"}}
-    {{input
-      type="date"
-      placeholder="2020-03-31"
-      name="renew-start"
-      value=(get form "renew-start")
-      input=(action "onChangeRenewStartChange" value="target.value")
-    }}
-  {{/policy-form-field}}
-
-  {{#policy-form-field name="reminder"}}
-    {{policy-reminder-input
-      reminder=form.reminder
-      onChangeReminder=(action (mut form.reminder))
-    }}
-  {{/policy-form-field}}
-
-  {{#policy-form-field name="accept"}}
-    {{input
-      type="text"
-      value=form.accept
-      input=(action (mut form.accept) value="target.value")
-    }}
-  {{/policy-form-field}}
-
-  {{#policy-form-field name="revoke"}}
-    {{input
-      type="text"
-      value=form.revoke
-      input=(action (mut form.revoke) value="target.value")
-    }}
-  {{/policy-form-field}}
-
-  {{#policy-form-field name="private"}}
-    {{input
-      type="checkbox"
-      checked=form.private
-    }}
-  {{/policy-form-field}}
+  {{policy-builder-form policy=policy onChange=(action "onChangeFormField")}}
 {{/d-modal-body}}
 
 <div class="modal-footer">

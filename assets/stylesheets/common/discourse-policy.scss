@@ -42,6 +42,11 @@
     }
   }
 
+  .no-possible-users {
+    color: var(--danger);
+    font-size: var(--font-down-1);
+  }
+
   .user-lists {
     padding-left: 0.75em;
     display: flex;

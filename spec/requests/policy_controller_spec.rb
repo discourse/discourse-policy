@@ -45,7 +45,7 @@ describe DiscoursePolicy::PolicyController do
 
     it 'returns pages of users who accepted' do
       raw = <<~MD
-       [policy group=#{group.name}]
+       [policy groups=#{group.name}]
        I always open **doors**!
        [/policy]
       MD

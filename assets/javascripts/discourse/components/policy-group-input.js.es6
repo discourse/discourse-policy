@@ -1,11 +1,18 @@
 import Component from "@ember/component";
 import { action, computed } from "@ember/object";
 
-export default Component.extend({
-  group: null,
-  onChangeGroup: null,
+export default class PolicyGroupInput extends Component {
+  tagName = null;
+  groups = null;
+  onChangeGroup = null;
 
-  siteGroups: computed("site.groups", function () {
+  @computed("groups.[]")
+  get selectedGroups() {
+    return (this.groups || "").split(",").filter(Boolean);
+  }
+
+  @computed("site.groups.[]")
+  get availableGroups() {
     return (this.site.groups || [])
       .map((g) => {
         if (g.id === 0) {
@@ -15,12 +22,12 @@ export default Component.extend({
         return g.name;
       })
       .filter(Boolean);
-  }),
+  }
 
   @action
   onChange(values) {
     if (this.onChangeGroup) {
-      this.onChangeGroup(values);
+      this.onChangeGroup(values.join(","));
     }
-  },
-});
+  }
+}
