@@ -1,9 +1,10 @@
 import {
   acceptance,
+  exists,
   updateCurrentUser,
 } from "discourse/tests/helpers/qunit-helpers";
 import { test } from "qunit";
-import { visit } from "@ember/test-helpers";
+import { click, visit } from "@ember/test-helpers";
 import { cloneJSON } from "discourse-common/lib/object";
 import topicFixtures from "discourse/tests/fixtures/topic";
 import postFixtures from "discourse/tests/fixtures/post";
