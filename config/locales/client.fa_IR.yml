@@ -8,5 +8,10 @@ fa_IR:
   js:
     discourse_policy:
       builder:
+        errors:
+          group: گروه الزامی است
+          version: نسخه الزامی است
+        groups:
+          label: گروه‌ها
         private:
           label: خصوصی?

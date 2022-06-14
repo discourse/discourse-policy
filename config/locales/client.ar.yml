@@ -18,12 +18,6 @@ ar:
         attach: إنشاء سياسة
         save: حفظ التغييرات
         insert: إدراج
-        errors:
-          group: المجموعة ضرورية
-          version: الإصدار ضروري
-        group:
-          label: المجموعة
-          description: المجموعة المرتبطة بهذه السياسة
         version:
           label: الإصدار
           description: نسخة السياسة، ستجبر ترقية السياسة الأشخاص على قبولها مرة أخرى

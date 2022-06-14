@@ -8,5 +8,7 @@ bg:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: Групи
         private:
           label: Затворени?

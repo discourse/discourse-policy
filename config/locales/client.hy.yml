@@ -8,5 +8,7 @@ hy:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: Խմբեր
         private:
           label: Գաղտնի?

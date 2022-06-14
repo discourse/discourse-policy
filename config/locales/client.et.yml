@@ -8,5 +8,7 @@ et:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: Grupid
         private:
           label: Privaatne?

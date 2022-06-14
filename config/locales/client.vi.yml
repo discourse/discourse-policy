@@ -8,5 +8,7 @@ vi:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: Nhóm
         private:
           label: Riêng tư?

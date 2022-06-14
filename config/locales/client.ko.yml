@@ -8,5 +8,7 @@ ko:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: 그룹
         private:
           label: 비공개?

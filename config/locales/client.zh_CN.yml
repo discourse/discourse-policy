@@ -18,12 +18,6 @@ zh_CN:
         attach: 创建策略
         save: 保存变更
         insert: 插入
-        errors:
-          group: 群组为必填项
-          version: 版本为必填项
-        group:
-          label: 群组
-          description: 与此策略关联的群组
         version:
           label: 版本
           description: 策略的版本，提升版本将强制相关人员重新接受

@@ -18,12 +18,6 @@ es:
         attach: Crear política
         save: Guardar cambios
         insert: Insertar
-        errors:
-          group: El grupo es obligatorio
-          version: La versión es obligatoria
-        group:
-          label: Grupo
-          description: El grupo asociado a esta política
         version:
           label: Versión
           description: La versión de la política, cambiar la versión obligará a las personas a volver a aceptarla

@@ -8,6 +8,8 @@ hu:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: Csoportok
         private:
           label: Privát?
           description: Házirend állapotának privátban tartása a rendszergazdák számára
