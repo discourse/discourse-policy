@@ -8,5 +8,7 @@ sl:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: Skupine
         private:
           label: Zasebno?

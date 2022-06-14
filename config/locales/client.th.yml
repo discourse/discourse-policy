@@ -8,5 +8,7 @@ th:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: กลุ่ม
         private:
           label: ส่วนตัว?

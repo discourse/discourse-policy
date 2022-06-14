@@ -8,5 +8,7 @@ tr_TR:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: Gruplar
         private:
           label: Özel?

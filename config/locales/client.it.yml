@@ -18,12 +18,6 @@ it:
         attach: Crea informativa
         save: Salva le modifiche
         insert: Inserisci
-        errors:
-          group: Il gruppo è obbligatorio
-          version: La versione è obbligatoria
-        group:
-          label: Gruppo
-          description: Il gruppo associato a questa informativa
         version:
           label: Versione
           description: La versione dell'informativa, il cambio della versione costringerà gli utenti a riaccettarla

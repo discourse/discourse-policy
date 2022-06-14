@@ -8,5 +8,7 @@ sw:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: Vikundi
         private:
           label: Binafsi?

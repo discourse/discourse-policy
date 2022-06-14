@@ -8,5 +8,7 @@ ca:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: Grups
         private:
           label: Privat?

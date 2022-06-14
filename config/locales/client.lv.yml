@@ -8,5 +8,7 @@ lv:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: Grupas
         private:
           label: Privāts?
