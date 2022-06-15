@@ -1,5 +1,8 @@
 {{#policy-form-field name="groups" required=true}}
-  {{policy-group-input groups=policy.groups onChangeGroup=(action this.onChange "groups")}}
+  {{policy-group-input
+    groups=policy.groups
+    onChangeGroup=(action this.onChange "groups")
+  }}
 {{/policy-form-field}}
 
 {{#policy-form-field name="version" required=true}}

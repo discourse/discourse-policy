@@ -79,7 +79,7 @@ function initializePolicy(api) {
 
   api.decorateCookedElement(attachPolicy, {
     onlyStream: false,
-    id: "discouse-policy",
+    id: "discourse-policy",
   });
 
   api.registerCustomPostMessageCallback(
