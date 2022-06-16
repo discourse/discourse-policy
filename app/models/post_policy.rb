@@ -14,19 +14,19 @@ class PostPolicy < ActiveRecord::Base
   enum renew_interval: { monthly: 0, quarterly: 1, yearly: 2 }
 
   def accepted_by
-    return [] if !groups.exists?
+    return User.none if !groups.exists?
 
     User.activated.not_suspended.where(id: accepted_policy_users.select(:user_id)).order(:id)
   end
 
   def revoked_by
-    return [] if !groups.exists?
+    return User.none if !groups.exists?
 
     User.activated.not_suspended.where(id: revoked_policy_users.select(:user_id)).order(:id)
   end
 
   def not_accepted_by
-    return [] if !groups.exists?
+    return User.none if !groups.exists?
 
     policy_group_users.where.not(id: accepted_policy_users.select(:user_id))
   end
