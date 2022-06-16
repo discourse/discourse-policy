@@ -46,6 +46,25 @@ describe 'post serializer' do
     expect(accepted.map { |u| u[:id] }).to contain_exactly(user1.id)
   end
 
+  it 'works if group not found' do
+    raw = <<~MD
+     [policy group=#{group.name}]
+     I always open **doors**!
+     [/policy]
+    MD
+
+    post = create_post(raw: raw, user: Fabricate(:admin))
+    post.reload
+
+    group.destroy!
+
+    json = PostSerializer.new(post, scope: Guardian.new).as_json
+
+    not_accepted = json[:post][:policy_not_accepted_by]
+
+    expect(not_accepted.length).to eq(0)
+  end
+
   it 'excludes inactive users' do
     user1.active = false
     user1.save!
