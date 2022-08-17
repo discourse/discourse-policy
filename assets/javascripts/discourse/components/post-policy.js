@@ -5,10 +5,9 @@ import { bind } from "discourse-common/utils/decorators";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import showModal from "discourse/lib/show-modal";
-import layout from "javascripts/components/post-policy";
 
 export default class PostPolicy extends Component {
-  layout = layout;
+  layoutName = "components/post-policy";
   tagName = "";
   post = null;
   options = null;
