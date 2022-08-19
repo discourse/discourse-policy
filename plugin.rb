@@ -32,6 +32,8 @@ after_initialize do
   require_relative "app/models/post_policy"
   require_relative "app/models/post_policy_group"
   require_relative "jobs/scheduled/check_policy"
+  require_relative "jobs/scheduled/send_alert_emails"
+  require_relative "jobs/scheduled/enqueue_alert_emails"
 
   DiscoursePolicy::Engine.routes.draw do
     put "/accept" => "policy#accept"
@@ -127,6 +129,7 @@ after_initialize do
         end
 
         post_policy.private = policy["data-private"] == "true"
+        post_policy.send_email = policy["data-send-email"] == "true"
 
         if has_group
           if !post.custom_fields[DiscoursePolicy::HAS_POLICY]

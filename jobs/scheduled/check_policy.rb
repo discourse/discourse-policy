@@ -37,6 +37,9 @@ module Jobs
               data: { topic_title: post.topic.title, display_username: user.username }.to_json,
               high_priority: true
             )
+
+            # create policy user with empty accepted_at so that we can set emailed_at
+            # missing_users returns users not accepted, which includes accepted_at == nil
           end
         end
       end

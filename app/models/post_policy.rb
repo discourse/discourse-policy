@@ -70,4 +70,5 @@ end
 #  updated_at       :datetime         not null
 #  renew_interval   :integer
 #  private          :boolean          default(FALSE), not null
+#  email            :boolean
 #

@@ -11,6 +11,10 @@ const SETTINGS = [
     name: "renew-start",
     camelName: "renewStart",
   },
+  {
+    name: "send-email",
+    camelName: "sendEmail",
+  },
   { name: "reminder" },
   {
     name: "accept",
