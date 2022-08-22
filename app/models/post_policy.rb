@@ -41,7 +41,7 @@ class PostPolicy < ActiveRecord::Base
     return User.none if !groups.exists?
     return User.none if !self.send_email
 
-    # TODO (mark) this doesn't include expired or revoked policy users
+    # TODO (mark) this doesn't include expired or revoked policy users - should it?
     policy_group_users.where.not(id: accepted_policy_users.select(:user_id)).where.not(id: policy_users.emailed.with_version(version).select(:user_id))
   end
 
