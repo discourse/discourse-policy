@@ -32,8 +32,8 @@ after_initialize do
   require_relative "app/models/post_policy"
   require_relative "app/models/post_policy_group"
   require_relative "jobs/scheduled/check_policy"
-  require_relative "jobs/scheduled/send_alert_emails"
-  require_relative "jobs/scheduled/enqueue_alert_emails"
+  require_relative "jobs/scheduled/send_emails"
+  require_relative "app/mailers/policy_mailer"
 
   DiscoursePolicy::Engine.routes.draw do
     put "/accept" => "policy#accept"

@@ -31,6 +31,20 @@ class PostPolicy < ActiveRecord::Base
     policy_group_users.where.not(id: accepted_policy_users.select(:user_id))
   end
 
+  def emailed_by
+    return User.none if !groups.exists?
+
+    # TODO (mark) figure out this criteria if this would be useful
+    # User.activated.not_suspended.where(id: accepted_policy_users.select(:user_id)).order(:id)
+  end
+  def not_emailed_by
+    return User.none if !groups.exists?
+    return User.none if !self.send_email
+
+    # TODO (mark) this doesn't include expired or revoked policy users
+    policy_group_users.where.not(id: accepted_policy_users.select(:user_id)).where.not(id: policy_users.emailed.with_version(version).select(:user_id))
+  end
+
   private
 
   def accepted_policy_users
@@ -70,5 +84,5 @@ end
 #  updated_at       :datetime         not null
 #  renew_interval   :integer
 #  private          :boolean          default(FALSE), not null
-#  email            :boolean
+#  send_email       :boolean          default(FALSE), not null
 #

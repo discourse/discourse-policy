@@ -67,11 +67,17 @@
   }}
 {{/policy-form-field}}
 
+{{!--
+  I tried this based on a combation of renew-start above and renewStart
+  in extend-for-policy.js. I'm not seeing either field—where attribute
+  names are hyphenated—populate from the editor to the builder form.
+--}}
 {{#policy-form-field name="send-email"}}
   {{input
     type="checkbox"
     name="send-email"
-    checked=(readonly policy.send_email)
+    checked=(readonly policy.sendEmail)
     click=(action (fn this.onChange "send-email") value="target.checked")
   }}
 {{/policy-form-field}}
+{{policy.renewStart}}
