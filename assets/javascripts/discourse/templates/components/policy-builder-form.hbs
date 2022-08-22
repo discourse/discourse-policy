@@ -68,9 +68,10 @@
 {{/policy-form-field}}
 
 {{!--
-  I tried this based on a combation of renew-start above and renewStart
-  in extend-for-policy.js. I'm not seeing either field—where attribute
-  names are hyphenated—populate from the editor to the builder form.
+  TODO (mark) troubleshoot extend-for-policy.js attributes to builder values
+  I tried this by referencing renew-start above and renewStart
+  in extend-for-policy.js. I'm not seeing either field—with hyphenated attribute
+  names—populate from the editor to the builder form.
 --}}
 {{#policy-form-field name="send-email"}}
   {{input
@@ -80,4 +81,3 @@
     click=(action (fn this.onChange "send-email") value="target.checked")
   }}
 {{/policy-form-field}}
-{{policy.renewStart}}
