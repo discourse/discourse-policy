@@ -34,6 +34,28 @@ describe PostPolicy do
     policy
   }
 
+  describe "#not emailed_to" do
+    it "returns empty if no policy group" do
+      PolicyUser.add!(user1, policy)
+      Group.delete_all
+
+      expect(policy.not_emailed_to).to eq []
+    end
+
+    it "returns empty if send mail option not enabled" do
+      expect(policy.not_emailed_to).to eq []
+    end
+
+    it "shows users not emailed to ordered by id" do
+      policy.send_email = true
+      # Email just one of the two users
+      PolicyUser.set_emailed!(user1, policy)
+
+      # The other user has not been emailed to
+      expect(policy.not_emailed_to).to eq [user2]
+    end
+  end
+
   describe "#accepted_by" do
     it "returns empty if no policy group" do
       PolicyUser.add!(user1, policy)

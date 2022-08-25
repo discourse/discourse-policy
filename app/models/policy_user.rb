@@ -42,7 +42,7 @@ class PolicyUser < ActiveRecord::Base
     )
   end
 
-  def self.email!(user, post_policy)
+  def self.set_emailed!(user, post_policy)
     post_policy
       .policy_users
       .not_emailed

@@ -17,7 +17,7 @@ module Jobs
            AND pp.send_email = TRUE
       SQL
 
-      post_ids = DB.query_single(sql, weekly: 1.week.ago, daily: 1.day.ago)
+      post_ids = DB.query_single(sql)
 
       if post_ids.size > 0
         Post.where(id: post_ids).find_each do |post|
@@ -27,14 +27,14 @@ module Jobs
             message = PolicyMailer.send_notice(user)
             Email::Sender.new(message, 'policy_notice').send
             # update the policy user
-            PolicyUser.email!(user, post.post_policy)
+            PolicyUser.set_emailed!(user, post.post_policy)
           end
         end
       end
     end
 
     def needs_email(post)
-      post.post_policy.not_emailed_by
+      post.post_policy.not_emailed_to
     end
   end
 end
