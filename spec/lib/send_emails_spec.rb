@@ -34,7 +34,7 @@ describe DiscoursePolicy::SendEmails do
     MD
 
     post = create_post(raw: raw, user: Fabricate(:admin))
-    post.post_policy.send_email = true
+    post.post_policy.set_send_email
 
     expect(post.post_policy.not_emailed_to).to eq [user1, user2]
 

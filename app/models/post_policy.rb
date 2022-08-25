@@ -13,7 +13,10 @@ class PostPolicy < ActiveRecord::Base
 
   enum renew_interval: { monthly: 0, quarterly: 1, yearly: 2 }
 
-  attr_accessor :send_email
+  # attr_writer :send_email
+  def set_send_email
+    self.send_email = true
+  end
 
   def accepted_by
     return User.none if !groups.exists?
