@@ -222,6 +222,10 @@ export default class PostPolicy extends Component {
 
   @action
   editPolicy() {
+    // this would give me a readable attribute in the handlebars template,
+    // but then it gets written back to the markup
+    // this.policy.sendEmail = this.policy['send-email'];
+    // We want the send-email attribute on the policy.
     showModal("policy-builder").setProperties({
       insertMode: false,
       post: this.post,

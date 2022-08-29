@@ -69,9 +69,8 @@
 
 {{!--
   TODO (mark) troubleshoot extend-for-policy.js attributes to builder values
-  I tried this by referencing renew-start above and renewStart
-  in extend-for-policy.js. I'm not seeing either field—with hyphenated attribute
-  names—populate from the editor to the builder form.
+  reading policy['send-email'] here is what I'm thinking, but that syntax throws errors
+  and the `get form ""` syntax above doesn't work, either.
 --}}
 {{#policy-form-field name="send-email"}}
   {{input

@@ -47,6 +47,8 @@ function initializePolicy(api) {
     }
 
     form.private = policy.dataset.private === "true";
+    // this works to set the attribute in the form
+    form['send-email'] = policy.dataset['send-email'] === "true";
 
     return EmberObject.create(form);
   }
