@@ -18,6 +18,8 @@ it:
         attach: Crea informativa
         save: Salva le modifiche
         insert: Inserisci
+        groups:
+          label: Gruppi
         version:
           label: Versione
           description: La versione dell'informativa, il cambio della versione costringerà gli utenti a riaccettarla

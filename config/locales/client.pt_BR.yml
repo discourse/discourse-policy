@@ -18,6 +18,8 @@ pt_BR:
         attach: Criar política
         save: Salvar alterações
         insert: Inserir
+        groups:
+          label: Grupos
         version:
           label: Versão
           description: A versão da política, promover a versão obrigará as pessoas a aceitá-la novamente

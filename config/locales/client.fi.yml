@@ -18,6 +18,8 @@ fi:
         attach: Luo käytäntö
         save: Tallenna muutokset
         insert: Lisää
+        groups:
+          label: Ryhmät
         version:
           label: Versio
           description: Käytännön versio, version korotus pakottaa ihmiset hyväksymään sen uudelleen
