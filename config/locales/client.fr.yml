@@ -18,6 +18,8 @@ fr:
         attach: Créer une politique
         save: Enregistrer les modifications
         insert: Insérer
+        groups:
+          label: Groupes
         version:
           label: Version
           description: La version de la politique, la modification de la version forcera les utilisateurs à devoir l'accepter à nouveau
