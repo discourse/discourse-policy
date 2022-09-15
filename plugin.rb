@@ -215,4 +215,45 @@ after_initialize do
       post_policy.accepted_by.size
     end
   end
+
+  add_report("unaccepted-policies") do |report|
+    report.modes = [:table]
+
+    report.labels = [
+      {
+        property: :topic_id,
+        title: I18n.t("discourse_policy.reports.unaccepted_policies.labels.topic_id"),
+      },
+      {
+        property: :user_id,
+        title: I18n.t("discourse_policy.reports.unaccepted_policies.labels.user_id"),
+      },
+    ]
+
+    results = DB.query(<<~SQL)
+      SELECT distinct t.id AS topic_id, gu.user_id AS user_id
+      FROM post_policies pp
+      JOIN post_policy_groups pg on pg.post_policy_id = pp.id
+      JOIN posts p ON p.id = pp.post_id AND p.deleted_at is null
+      JOIN topics t ON t.id = p.topic_id AND t.deleted_at is null
+      JOIN group_users gu ON gu.group_id = pg.group_id
+      LEFT JOIN policy_users pu ON
+        pu.user_id = gu.user_id AND
+        pu.post_policy_id = pp.id AND
+        pu.accepted_at IS NOT NULL AND
+        pu.revoked_at IS NULL AND
+        (pu.expired_at IS NULL OR pu.expired_at < pu.accepted_at) AND
+        ((pu.version IS NULL AND pp.version IS NULL) OR
+        (pp.version IS NOT NULL AND pu.version IS NOT NULL AND pu.version = pp.version))
+      WHERE pu.id IS NULL
+    SQL
+
+    report.data = []
+    results.each do |row|
+      data = {}
+      data[:user_id] = row.user_id
+      data[:topic_id] = row.topic_id
+      report.data << data
+    end
+  end
 end
