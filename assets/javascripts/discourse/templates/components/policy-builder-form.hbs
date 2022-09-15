@@ -63,6 +63,6 @@
     type="checkbox"
     name="private"
     checked=(readonly policy.private)
-    click=(action (fn this.onChange "private") value="target.checked")
+    change=(action (fn this.onChange "private") value="target.checked")
   }}
 {{/policy-form-field}}
