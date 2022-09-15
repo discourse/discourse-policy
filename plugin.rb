@@ -220,14 +220,8 @@ after_initialize do
     report.modes = [:table]
 
     report.labels = [
-      {
-        property: :topic_id,
-        title: I18n.t("discourse_policy.reports.unaccepted_policies.labels.topic_id"),
-      },
-      {
-        property: :user_id,
-        title: I18n.t("discourse_policy.reports.unaccepted_policies.labels.user_id"),
-      },
+      { property: :topic_id, title: I18n.t("reports.unaccepted-policies.labels.topic_id") },
+      { property: :user_id, title: I18n.t("reports.unaccepted-policies.labels.user_id") },
     ]
 
     results = DB.query(<<~SQL)
