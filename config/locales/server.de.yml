@@ -15,3 +15,7 @@ de:
       group_not_found: "Gruppe für Richtlinie nicht gefunden"
       no_policy: "Keine Richtlinie für Beitrag vorhanden"
       staff_only: "Richtlinien dürfen nur auf Team-Beiträge angewendet werden"
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: Themen-ID

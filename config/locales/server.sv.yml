@@ -15,3 +15,7 @@ sv:
       group_not_found: "Gruppen hittades inte för policyn"
       no_policy: "Det finns ingen policy för inlägg"
       staff_only: "Policyer får endast gälla för personalens inlägg"
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: Ämnes-ID

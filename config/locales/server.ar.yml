@@ -15,3 +15,7 @@ ar:
       group_not_found: "لم يتم العثور على المجموعة للسياسة"
       no_policy: "لا توجد سياسة للمنشور"
       staff_only: "قد تنطبق السياسات على فريق العمل فقط"
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: معرِّف الموضوع

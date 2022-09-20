@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 te:
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: విషయపు ఐడీ

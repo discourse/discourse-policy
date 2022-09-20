@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 ko:
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: 토픽 ID

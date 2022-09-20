@@ -15,3 +15,7 @@ ru:
       group_not_found: "Группа не найдена"
       no_policy: "Политики для сообщения не существует"
       staff_only: "Политика может применяться только к сообщениям персонала"
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: ID темы
