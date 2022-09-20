@@ -15,3 +15,7 @@ fi:
       group_not_found: "Ryhmää ei löydy käytännölle"
       no_policy: "Viestille ei ole käytäntöä"
       staff_only: "Käytännöt voivat koskea vain henkilökunnan viestejä"
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: Ketjun tunnus

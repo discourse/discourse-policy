@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 pl_PL:
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: ID tematu

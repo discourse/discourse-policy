@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 zh_TW:
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: 話題 ID

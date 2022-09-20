@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 vi:
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: ID Chủ đề

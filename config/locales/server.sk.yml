@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 sk:
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: ID témy

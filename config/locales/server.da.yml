@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 da:
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: Emne ID

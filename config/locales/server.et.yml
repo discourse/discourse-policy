@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 et:
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: Teema ID

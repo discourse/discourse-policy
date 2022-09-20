@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 tr_TR:
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: Konu ID

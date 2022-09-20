@@ -15,3 +15,7 @@ ja:
       group_not_found: "ポリシーのグループが見つかりません"
       no_policy: "投稿にポリシーが存在しません"
       staff_only: "ポリシーはスタッフの投稿のみに適用される場合があります"
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: トピック ID
