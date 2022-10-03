@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'markdown' do
+describe PrettyText do
   before do
     SiteSetting.queue_jobs = false
   end

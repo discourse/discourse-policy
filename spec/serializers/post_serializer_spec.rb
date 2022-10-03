@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'post serializer' do
+describe PostSerializer do
   fab!(:group) { Fabricate(:group) }
   fab!(:admin) { Fabricate(:admin) }
   fab!(:user1) { Fabricate(:user) }
@@ -124,7 +124,7 @@ describe 'post serializer' do
     expect(json[:post][:policy_accepted_by].map { |u| u[:id] }).to contain_exactly(user1.id)
   end
 
-  context 'policy_easy_revoke' do
+  describe 'policy_easy_revoke' do
     it 'lets user accept and revoke post at the same time if enabled' do
       raw = <<~MD
        [policy group=#{group.name}]
