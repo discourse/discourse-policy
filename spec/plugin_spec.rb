@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'plugin' do
+describe DiscoursePolicy do
   describe 'post_process_cooked event' do
     before { Jobs.run_immediately! }
 

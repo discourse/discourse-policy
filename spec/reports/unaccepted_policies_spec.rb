@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-RSpec.describe "unaccepted-policies report" do
+RSpec.describe Report do
   fab!(:user1) { Fabricate(:user) }
   fab!(:user2) { Fabricate(:user) }
 
