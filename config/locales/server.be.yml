@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 be:
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: Номер тэмы

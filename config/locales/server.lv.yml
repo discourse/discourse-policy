@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 lv:
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: Tēmas ID

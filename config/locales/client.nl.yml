@@ -8,5 +8,7 @@ nl:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: Groepen
         private:
           label: Privé?

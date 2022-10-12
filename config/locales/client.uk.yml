@@ -8,5 +8,7 @@ uk:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: Групи
         private:
           label: Приватні?

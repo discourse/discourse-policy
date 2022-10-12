@@ -13,17 +13,18 @@ sv:
       accept_policy: "Godkänn policy"
       revoke_policy: "Återkalla policy"
       edit_reason: "Policyinställningarna har ändrats"
+      no_possible_users: "Denna policy har inga möjliga användare"
       builder:
         title: Policy
         attach: Skapa policy
         save: Spara ändringar
         insert: Infoga
         errors:
-          group: Grupp är obligatoriskt
-          version: Version är obligatoriskt
-        group:
-          label: Grupp
-          description: Gruppen som är kopplad till denna policy
+          group: Grupp krävs
+          version: Version krävs
+        groups:
+          label: Grupper
+          description: Grupperna som är associerade till denna policy
         version:
           label: Version
           description: Policyversionen, om versionen knuffas kommer detta att tvinga människor att godkänna den igen

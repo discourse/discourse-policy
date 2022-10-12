@@ -18,12 +18,8 @@ fi:
         attach: Luo käytäntö
         save: Tallenna muutokset
         insert: Lisää
-        errors:
-          group: Ryhmä on pakollinen
-          version: Versio on pakollinen
-        group:
-          label: Ryhmä
-          description: Tähän käytäntöön liittyvä ryhmä
+        groups:
+          label: Ryhmät
         version:
           label: Versio
           description: Käytännön versio, version korotus pakottaa ihmiset hyväksymään sen uudelleen

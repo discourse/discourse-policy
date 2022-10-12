@@ -1,10 +1,11 @@
 # frozen_string_literal: true
 
 # name: discourse-policy
-# about: apply policies to Discourse topics
+# about: Apply policies to Discourse topics
 # version: 0.1
 # authors: Sam Saffron
 # url: https://github.com/discourse/discourse-policy
+# transpile_js: true
 
 register_asset "stylesheets/common/discourse-policy.scss"
 register_asset "stylesheets/common/discourse-policy-builder.scss"
@@ -29,6 +30,7 @@ after_initialize do
   require_relative "app/controllers/policy_controller"
   require_relative "app/models/policy_user"
   require_relative "app/models/post_policy"
+  require_relative "app/models/post_policy_group"
   require_relative "jobs/scheduled/check_policy"
 
   DiscoursePolicy::Engine.routes.draw do
@@ -52,12 +54,39 @@ after_initialize do
 
         post_policy = post.post_policy || post.build_post_policy
 
+        group_names = []
+
         if group = policy["data-group"]
-          if group = Group.find_by(name: group)
-            post_policy.group_id = group.id
-            has_group = true
+          group_names << group
+        end
+
+        if groups = policy["data-groups"]
+          group_names.concat(groups.split(","))
+        end
+
+        new_group_ids = Group.where('name in (?)', group_names).pluck(:id)
+
+        if new_group_ids.length > 0
+          has_group = true
+        end
+
+        existing_ids = post_policy.post_policy_groups.pluck(:group_id)
+
+        missing = (new_group_ids - existing_ids)
+
+        new_relations = []
+
+        post_policy.post_policy_groups.each do |relation|
+          if new_group_ids.include?(relation.group_id)
+            new_relations << relation
           end
         end
+
+        missing.each do |id|
+          new_relations << PostPolicyGroup.new(post_policy_id: post_policy.id, group_id: id)
+        end
+
+        post_policy.post_policy_groups = new_relations
 
         renew_days = policy["data-renew"]
         if (renew_days.to_i) > 0 || PostPolicy.renew_intervals.keys.include?(renew_days)
@@ -185,6 +214,41 @@ after_initialize do
 
     def policy_accepted_by_count
       post_policy.accepted_by.size
+    end
+  end
+
+  add_report("unaccepted-policies") do |report|
+    report.modes = [:table]
+
+    report.labels = [
+      { property: :topic_id, title: I18n.t("reports.unaccepted-policies.labels.topic_id") },
+      { property: :user_id, title: I18n.t("reports.unaccepted-policies.labels.user_id") },
+    ]
+
+    results = DB.query(<<~SQL)
+      SELECT distinct t.id AS topic_id, gu.user_id AS user_id
+      FROM post_policies pp
+      JOIN post_policy_groups pg on pg.post_policy_id = pp.id
+      JOIN posts p ON p.id = pp.post_id AND p.deleted_at is null
+      JOIN topics t ON t.id = p.topic_id AND t.deleted_at is null
+      JOIN group_users gu ON gu.group_id = pg.group_id
+      LEFT JOIN policy_users pu ON
+        pu.user_id = gu.user_id AND
+        pu.post_policy_id = pp.id AND
+        pu.accepted_at IS NOT NULL AND
+        pu.revoked_at IS NULL AND
+        (pu.expired_at IS NULL OR pu.expired_at < pu.accepted_at) AND
+        ((pu.version IS NULL AND pp.version IS NULL) OR
+        (pp.version IS NOT NULL AND pu.version IS NOT NULL AND pu.version = pp.version))
+      WHERE pu.id IS NULL
+    SQL
+
+    report.data = []
+    results.each do |row|
+      data = {}
+      data[:user_id] = row.user_id
+      data[:topic_id] = row.topic_id
+      report.data << data
     end
   end
 end

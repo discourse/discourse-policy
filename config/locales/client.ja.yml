@@ -18,12 +18,8 @@ ja:
         attach: ポリシーを作成
         save: 変更を保存　
         insert: 挿入
-        errors:
-          group: グループは必須です
-          version: バージョンは必須です
-        group:
+        groups:
           label: グループ
-          description: このポリシーに関連付けられているグループ
         version:
           label: バージョン
           description: ポリシーのバージョン。バージョンを上げると、ユーザーはそれに同意し直する必要があります

@@ -8,5 +8,7 @@ el:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: Ομάδες
         private:
           label: Ιδιωτική?

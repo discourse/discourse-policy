@@ -8,5 +8,7 @@ cs:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: Skupiny
         private:
           label: Soukromé?

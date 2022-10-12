@@ -5,3 +5,9 @@
 # https://translate.discourse.org/
 
 fa_IR:
+  reports:
+    unaccepted-policies:
+      title: سیاست‌های پذیرفته نشده
+      labels:
+        topic_id: شناسه موضوع
+        user_id: شناسه کاربر

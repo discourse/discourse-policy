@@ -15,3 +15,9 @@ he:
       group_not_found: "הקבוצה לא נמצאה לצורך מדיניות"
       no_policy: "לא קיימת מדיניות לפוסט"
       staff_only: "אפשר להחיל מסמכי מדיניות על פוסטים של הסגל בלבד"
+  reports:
+    unaccepted-policies:
+      title: מדיניויות לא מקובלות
+      labels:
+        topic_id: מזהה נושא
+        user_id: מזהה משתמש

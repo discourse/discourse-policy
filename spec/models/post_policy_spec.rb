@@ -12,7 +12,7 @@ describe PostPolicy do
   fab!(:inactive_user) { Fabricate(:user, active: false) }
   fab!(:suspended_user) { Fabricate(:user, suspended_till: 1.year.from_now) }
 
-  fab!(:group) do
+  fab!(:group1) do
     group = Fabricate(:group)
     group.add(user1)
     group.add(user2)
@@ -21,7 +21,18 @@ describe PostPolicy do
     group
   end
 
-  fab!(:policy) { Fabricate(:post_policy, group: group) }
+  fab!(:group2) do
+    group = Fabricate(:group)
+    group.add(user1)
+    group
+  end
+
+  fab!(:policy) {
+    policy = Fabricate(:post_policy)
+    PostPolicyGroup.create!(post_policy_id: policy.id, group_id: group1.id)
+    PostPolicyGroup.create!(post_policy_id: policy.id, group_id: group2.id)
+    policy
+  }
 
   describe "#accepted_by" do
     it "returns empty if no policy group" do
@@ -43,6 +54,12 @@ describe PostPolicy do
       PolicyUser.add!(suspended_user, policy)
 
       expect(policy.accepted_by).to eq []
+    end
+
+    it "has no duplicates for users in multiple groups" do
+      PolicyUser.add!(user1, policy)
+
+      expect(policy.accepted_by).to eq [user1]
     end
   end
 
@@ -66,6 +83,12 @@ describe PostPolicy do
       PolicyUser.remove!(suspended_user, policy)
 
       expect(policy.revoked_by).to eq []
+    end
+
+    it "has no duplicates for users in multiple groups" do
+      PolicyUser.remove!(user1, policy)
+
+      expect(policy.revoked_by).to eq [user1]
     end
   end
 

@@ -2,8 +2,8 @@
   <div class="policy-field-label">
     <span class="label">
       {{i18n (concat "discourse_policy.builder." name ".label")}}
-      {{#if mandatory}}
-        <span class="mandatory-field">*</span>
+      {{#if required}}
+        <span class="required-field">*</span>
       {{/if}}
     </span>
   </div>
@@ -11,6 +11,10 @@
     {{yield}}
   </div>
   <span class="policy-field-description">
-    <span class="description">{{i18n (concat "discourse_policy.builder." name ".description")}}</span>
+    <span class="description">
+      {{i18n
+        (concat "discourse_policy.builder." name ".description")
+      }}
+    </span>
   </span>
 </div>

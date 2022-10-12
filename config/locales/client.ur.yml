@@ -8,5 +8,7 @@ ur:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: گروپس
         private:
           label: ذاتی?

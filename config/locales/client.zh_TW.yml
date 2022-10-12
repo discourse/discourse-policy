@@ -8,5 +8,7 @@ zh_TW:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: 群組
         private:
           label: 私密?

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe 'post serializer' do
+describe PostSerializer do
   fab!(:group) { Fabricate(:group) }
   fab!(:admin) { Fabricate(:admin) }
   fab!(:user1) { Fabricate(:user) }
@@ -44,6 +44,25 @@ describe 'post serializer' do
 
     expect(not_accepted.map { |u| u[:id] }).to contain_exactly(admin.id, user2.id)
     expect(accepted.map { |u| u[:id] }).to contain_exactly(user1.id)
+  end
+
+  it 'works if group not found' do
+    raw = <<~MD
+     [policy group=#{group.name}]
+     I always open **doors**!
+     [/policy]
+    MD
+
+    post = create_post(raw: raw, user: Fabricate(:admin))
+    post.reload
+
+    group.destroy!
+
+    json = PostSerializer.new(post, scope: Guardian.new).as_json
+
+    not_accepted = json[:post][:policy_not_accepted_by]
+
+    expect(not_accepted.length).to eq(0)
   end
 
   it 'excludes inactive users' do
@@ -105,7 +124,7 @@ describe 'post serializer' do
     expect(json[:post][:policy_accepted_by].map { |u| u[:id] }).to contain_exactly(user1.id)
   end
 
-  context 'policy_easy_revoke' do
+  describe 'policy_easy_revoke' do
     it 'lets user accept and revoke post at the same time if enabled' do
       raw = <<~MD
        [policy group=#{group.name}]

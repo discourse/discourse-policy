@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 sl:
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: ID teme

@@ -18,12 +18,8 @@ de:
         attach: Richtlinie erstellen
         save: Änderungen speichern
         insert: Einfügen
-        errors:
-          group: Gruppe ist obligatorisch
-          version: Version ist obligatorisch
-        group:
-          label: Gruppe
-          description: Die mit dieser Richtlinie verknüpfte Gruppe
+        groups:
+          label: Gruppen
         version:
           label: Version
           description: Die Version der Richtlinie. Das Erhöhen der Version zwingt die Benutzer dazu, sie erneut zu akzeptieren

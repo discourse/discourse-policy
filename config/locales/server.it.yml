@@ -15,3 +15,7 @@ it:
       group_not_found: "Gruppo non trovato per l'informativa"
       no_policy: "Non ci sono informative per il messaggio"
       staff_only: "Le informative si possono applicare solo ai messaggi dello staff"
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: ID dell'argomento

@@ -1,0 +1,68 @@
+{{#policy-form-field name="groups" required=true}}
+  {{policy-group-input
+    groups=policy.groups
+    onChangeGroup=(action this.onChange "groups")
+  }}
+{{/policy-form-field}}
+
+{{#policy-form-field name="version" required=true}}
+  {{input
+    name="version"
+    type="number"
+    value=(readonly policy.version)
+    input=(action (fn this.onChange "version") value="target.value")
+  }}
+{{/policy-form-field}}
+
+{{#policy-form-field name="renew"}}
+  {{input
+    name="renew"
+    type="number"
+    value=(readonly policy.renew)
+    input=(action (fn this.onChange "renew") value="target.value")
+  }}
+{{/policy-form-field}}
+
+{{#policy-form-field name="renew-start"}}
+  {{input
+    type="date"
+    placeholder="2020-03-31"
+    name="renew-start"
+    value=(readonly (get form "renew-start"))
+    input=(action (fn this.onChange "renew-start") value="target.value")
+  }}
+{{/policy-form-field}}
+
+{{#policy-form-field name="reminder"}}
+  {{policy-reminder-input
+    reminder=policy.reminder
+    onChangeReminder=(action this.onChange "reminder")
+  }}
+{{/policy-form-field}}
+
+{{#policy-form-field name="accept"}}
+  {{input
+    type="text"
+    name="accept"
+    value=(readonly policy.accept)
+    input=(action (fn this.onChange "accept") value="target.value")
+  }}
+{{/policy-form-field}}
+
+{{#policy-form-field name="revoke"}}
+  {{input
+    type="text"
+    name="revoke"
+    value=(readonly policy.revoke)
+    input=(action (fn this.onChange "revoke") value="target.value")
+  }}
+{{/policy-form-field}}
+
+{{#policy-form-field name="private"}}
+  {{input
+    type="checkbox"
+    name="private"
+    checked=(readonly policy.private)
+    click=(action (fn this.onChange "private") value="target.checked")
+  }}
+{{/policy-form-field}}

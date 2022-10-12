@@ -7,3 +7,7 @@
 hu:
   site_settings:
     policy_easy_revoke: "Az elfogadás és a visszavonás gombok egyidejű megjelenítése"
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: Témaazonosító

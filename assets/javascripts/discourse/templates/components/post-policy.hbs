@@ -1,81 +1,114 @@
-<div class="policy-footer">
-  <div class="policy-actions">
-    {{#if post.policy_can_accept}}
-      {{d-button
-        isLoading=isLoading
-        action=(action "acceptPolicy")
-        class=acceptButtonClasses
-        translatedLabel=options.acceptText
-        icon=(if post.policy_accepted "check")
-      }}
-    {{/if}}
-
-    {{#if post.policy_can_revoke}}
-      {{d-button
-        isLoading=isLoading
-        action=(action "revokePolicy")
-        class=revokeButtonClasses
-        translatedLabel=options.revokeText
-        icon=(if post.policy_revoked "check")
-      }}
-    {{/if}}
-  </div>
-
-  <div class="user-lists">
-    {{#if post.policy_accepted_by_count}}
-      <a href {{action "toggleShowUsers"}} class="toggle toggle-accepted" title={{i18n "discourse_policy.accepted_tooltip"}}>
-        <span class="user-count">
-          {{post.policy_accepted_by_count}}
-        </span>
-        {{d-icon "user-check"}}
-      </a>
-
-      {{#unless showNotAccepted}}
-        <div class="users accepted">
-          {{#each acceptedUsers as |acceptedUser|}}
-            {{avatar acceptedUser imageSize="tiny"}}
-          {{/each}}
-
-          {{#if remainingAcceptedUsers}}
-            <a href {{action "loadRemainingAcceptedUsers"}} class="load-more-users">
-              + {{remainingAcceptedUsers}} {{d-icon "user"}}
-            </a>
-          {{/if}}
-        </div>
-      {{/unless}}
-    {{/if}}
-
-    {{#if post.policy_not_accepted_by_count}}
-      <div class="seperator"></div>
-
-      <a href {{action "toggleShowUsers"}} class="toggle toggle-not-accepted" title={{i18n "discourse_policy.not_accepted_tooltip"}}>
-        <span class="user-count">
-          {{post.policy_not_accepted_by_count}}
-        </span>
-        {{d-icon "user-times"}}
-      </a>
-
-      {{#if showNotAccepted}}
-        <div class="users not-accepted">
-          {{#each notAcceptedUsers as |notAcceptedUser|}}
-            {{avatar notAcceptedUser imageSize="tiny"}}
-          {{/each}}
-
-          {{#if remainingNotAcceptedUsers}}
-            <a href {{action "loadRemainingNotAcceptedUsers"}} class="load-more-users">
-              + {{remainingNotAcceptedUsers}} {{d-icon "user"}}
-            </a>
-          {{/if}}
-        </div>
+{{#if post}}
+  <div class="policy-footer">
+    <div class="policy-actions">
+      {{#if post.policy_can_accept}}
+        {{d-button
+          isLoading=isLoading
+          action=(action "acceptPolicy")
+          class=acceptButtonClasses
+          translatedLabel=policy.accept
+          icon=(if post.policy_accepted "check")
+        }}
       {{/if}}
+
+      {{#if post.policy_can_revoke}}
+        {{d-button
+          isLoading=isLoading
+          action=(action "revokePolicy")
+          class=revokeButtonClasses
+          translatedLabel=policy.revoke
+          icon=(if post.policy_revoked "check")
+        }}
+      {{/if}}
+    </div>
+    <div class="user-lists">
+      {{#unless policyHasUsers}}
+        <span class="no-possible-users">
+          {{i18n
+            "discourse_policy.no_possible_users"
+          }}
+        </span>
+      {{/unless}}
+
+      {{#if post.policy_accepted_by_count}}
+        <a
+          href
+          {{action "toggleShowUsers"}}
+          class="toggle toggle-accepted"
+          title={{i18n "discourse_policy.accepted_tooltip"}}
+        >
+          <span class="user-count">
+            {{post.policy_accepted_by_count}}
+          </span>
+          {{d-icon "user-check"}}
+        </a>
+
+        {{#unless showNotAccepted}}
+          {{#if acceptedUsers.length}}
+            <div class="users accepted">
+              {{#each acceptedUsers as |acceptedUser|}}
+                {{avatar acceptedUser imageSize="tiny"}}
+              {{/each}}
+
+              {{#if remainingAcceptedUsers}}
+                <a
+                  href
+                  {{action "loadRemainingAcceptedUsers"}}
+                  class="load-more-users"
+                >
+                  +
+                  {{remainingAcceptedUsers}}
+                  {{d-icon "user"}}
+                </a>
+              {{/if}}
+            </div>
+          {{/if}}
+        {{/unless}}
+      {{/if}}
+
+      {{#if post.policy_not_accepted_by_count}}
+        <div class="seperator"></div>
+
+        <a
+          href
+          {{action "toggleShowUsers"}}
+          class="toggle toggle-not-accepted"
+          title={{i18n "discourse_policy.not_accepted_tooltip"}}
+        >
+          <span class="user-count">
+            {{post.policy_not_accepted_by_count}}
+          </span>
+          {{d-icon "user-times"}}
+        </a>
+
+        {{#if showNotAccepted}}
+          <div class="users not-accepted">
+            {{#each notAcceptedUsers as |notAcceptedUser|}}
+              {{avatar notAcceptedUser imageSize="tiny"}}
+            {{/each}}
+
+            {{#if remainingNotAcceptedUsers}}
+              <a
+                href
+                {{action "loadRemainingNotAcceptedUsers"}}
+                class="load-more-users"
+              >
+                +
+                {{remainingNotAcceptedUsers}}
+                {{d-icon "user"}}
+              </a>
+            {{/if}}
+          </div>
+        {{/if}}
+      {{/if}}
+    </div>
+
+    {{#if canManagePolicy}}
+      {{d-button
+        class="no-text btn-default edit-policy-settings-btn"
+        icon="cog"
+        action=(action "editPolicy")
+      }}
     {{/if}}
   </div>
-
-  {{#if canManagePolicy}}
-    {{d-button
-      class="no-text btn-default edit-policy-settings-btn"
-      icon="cog"
-      action=(action "editPolicy")
-    }}
-  {{/if}}
-</div>
+{{/if}}

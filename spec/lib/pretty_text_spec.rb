@@ -2,12 +2,12 @@
 
 require 'rails_helper'
 
-describe 'markdown' do
+describe PrettyText do
   before do
     SiteSetting.queue_jobs = false
   end
 
-  it "can properly decorate policies" do
+  it "can properly decorate policies (legacy)" do
     raw = <<~MD
      [policy group=team renew-start="01-01-2010" reminder=weekly accept=banana revoke=apple]
      I always open **doors**!
@@ -37,6 +37,22 @@ describe 'markdown' do
 
     expect(messages.find { |m| m.data[:type] == :rebaked }).to be_present
   end
+  
+  it "can properly decorate policies" do
+    raw = <<~MD
+     [policy groups=team,staff renew-start="01-01-2010" reminder=weekly accept=banana revoke=apple]
+     I always open **doors**!
+     [/policy]
+    MD
+
+    cooked = (<<~HTML).strip
+      <div class="policy" data-groups="team,staff" data-version="1" data-reminder="weekly" data-accept="banana" data-revoke="apple" data-renew-start="01-01-2010">
+      <p>I always open <strong>doors</strong>!</p>
+      </div>
+    HTML
+
+    expect(PrettyText.cook(raw)).to match_html(cooked)
+  end
 
   it "sets the custom attribute on posts with policies" do
 
@@ -51,7 +67,7 @@ describe 'markdown' do
     post = create_post(raw: raw)
     post = Post.find(post.id)
 
-    expect(post.post_policy.group.name).to eq('staff')
+    expect(post.post_policy.groups.pluck(:name)).to eq(['staff'])
 
     post.revise(post.user, raw: "i am new raw")
 
@@ -75,7 +91,6 @@ describe 'markdown' do
     MD
 
     post = create_post(raw: raw)
-    post.post_policy.group.users << user
     PolicyUser.add!(user, post.post_policy)
 
     freeze_time(199.days.from_now)
@@ -103,7 +118,6 @@ describe 'markdown' do
     MD
 
     post = create_post(raw: raw)
-    post.post_policy.group.users << user
 
     PolicyUser.add!(user, post.post_policy)
 
@@ -113,9 +127,10 @@ describe 'markdown' do
 
     expect(post.post_policy.reminder).to eq("weekly")
     expect(post.post_policy.last_reminded_at).to eq_time(Time.zone.now)
+    expect(post.post_policy.groups.pluck(:name).sort).to eq(['staff'])
 
     raw = <<~MD
-     [policy group=staff version=2 reminder=weekly]
+     [policy groups=trust_level_1,trust_level_0 version=2 reminder=weekly]
      I always open **doors**!
      [/policy]
     MD
@@ -124,5 +139,7 @@ describe 'markdown' do
 
     post = Post.find(post.id)
     expect(post.post_policy.accepted_by).to eq([])
+
+    expect(post.post_policy.groups.pluck(:name).sort).to eq(['trust_level_0', 'trust_level_1'])
   end
 end

@@ -7,17 +7,18 @@ en:
       accept_policy: "Accept Policy"
       revoke_policy: "Revoke Policy"
       edit_reason: "Policy settings have been modified"
+      no_possible_users: "This policy has no possible users"
       builder:
         title: Policy
         attach: Create Policy
         save: Save changes
         insert: Insert
         errors:
-          group: Group is mandatory
-          version: Version is mandatory
-        group:
-          label: Group
-          description: The group associated to this policy
+          group: Group is required
+          version: Version is required
+        groups:
+          label: Groups
+          description: The groups associated to this policy
         version:
           label: Version
           description: The version of the policy, bumping the version will force people to re-accept it

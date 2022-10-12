@@ -8,5 +8,7 @@ id:
   js:
     discourse_policy:
       builder:
+        groups:
+          label: Grup
         private:
           label: Pribadi?
