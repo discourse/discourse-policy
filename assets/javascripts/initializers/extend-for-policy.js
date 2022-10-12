@@ -11,6 +11,10 @@ const SETTINGS = [
     name: "renew-start",
     camelName: "renewStart",
   },
+  {
+    name: "send-email",
+    camelName: "sendEmail",
+  },
   { name: "reminder" },
   {
     name: "accept",
@@ -43,6 +47,7 @@ function initializePolicy(api) {
     }
 
     form.private = policy.dataset.private === "true";
+    form['send-email'] = policy.dataset.sendEmail === "true";
 
     return EmberObject.create(form);
   }

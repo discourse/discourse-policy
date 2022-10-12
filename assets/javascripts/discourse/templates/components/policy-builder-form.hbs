@@ -66,3 +66,12 @@
     click=(action (fn this.onChange "private") value="target.checked")
   }}
 {{/policy-form-field}}
+
+{{#policy-form-field name="send-email"}}
+  {{input
+    type="checkbox"
+    name="send-email"
+    checked=(readonly (get policy "send-email"))
+    click=(action (fn this.onChange "send-email") value="target.checked")
+  }}
+{{/policy-form-field}}

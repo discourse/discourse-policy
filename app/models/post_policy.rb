@@ -31,6 +31,13 @@ class PostPolicy < ActiveRecord::Base
     policy_group_users.where.not(id: accepted_policy_users.select(:user_id))
   end
 
+  def not_emailed_to
+    return User.none unless groups.exists?
+    return User.none unless self.send_email
+
+    policy_group_users.where.not(id: accepted_policy_users.select(:user_id)).where.not(id: policy_users.emailed.with_version(version).select(:user_id))
+  end
+
   private
 
   def accepted_policy_users
@@ -70,4 +77,5 @@ end
 #  updated_at       :datetime         not null
 #  renew_interval   :integer
 #  private          :boolean          default(FALSE), not null
+#  send_email       :boolean          default(FALSE), not null
 #

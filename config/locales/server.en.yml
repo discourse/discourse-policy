@@ -15,3 +15,11 @@ en:
       labels:
         topic_id: Topic ID
         user_id: User ID
+  policy_mailer:
+    title: "A new policy needs your review"
+    subject_template: "A new policy needs your review"
+    text_body_template: |
+      A new policy has been posted for your review.
+      
+      %{base_url}%{post_url}
+      

@@ -40,3 +40,6 @@ en:
         private:
           label: Private?
           description: Keep policy status private to administrators
+        send-email:
+          label: Send Email?
+          description: Notify users of the new policy by email
