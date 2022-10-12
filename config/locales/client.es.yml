@@ -18,6 +18,8 @@ es:
         attach: Crear política
         save: Guardar cambios
         insert: Insertar
+        groups:
+          label: Grupos
         version:
           label: Versión
           description: La versión de la política, cambiar la versión obligará a las personas a volver a aceptarla

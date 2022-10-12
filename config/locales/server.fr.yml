@@ -15,3 +15,7 @@ fr:
       group_not_found: "Groupe introuvable pour la politique"
       no_policy: "Aucune politique n'existe pour le message"
       staff_only: "Les politiques ne peuvent s'appliquer qu'aux messages du personnel"
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: ID du sujet

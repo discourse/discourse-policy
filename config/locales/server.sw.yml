@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 sw:
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: Utambulisho wa Mada

@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 ro:
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: ID discuție

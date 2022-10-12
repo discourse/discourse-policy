@@ -18,6 +18,8 @@ ar:
         attach: إنشاء سياسة
         save: حفظ التغييرات
         insert: إدراج
+        groups:
+          label: مجموعتان
         version:
           label: الإصدار
           description: نسخة السياسة، ستجبر ترقية السياسة الأشخاص على قبولها مرة أخرى

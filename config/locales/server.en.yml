@@ -14,4 +14,9 @@ en:
     subject_template: "A new policy needs your acceptance"
     text_body_template: |
       This is the message with a URL. %{post_url}
-
+  reports:
+    unaccepted-policies:
+      title: Unaccepted policies
+      labels:
+        topic_id: Topic ID
+        user_id: User ID

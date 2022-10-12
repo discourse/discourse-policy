@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 el:
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: Topic ID

@@ -15,3 +15,7 @@ es:
       group_not_found: "Grupo no encontrado para la política"
       no_policy: "No existe ninguna política para la publicación"
       staff_only: "Es posible que las políticas solo se apliquen a las publicaciones del personal"
+  reports:
+    unaccepted-policies:
+      labels:
+        topic_id: ID del tema
