@@ -43,3 +43,5 @@ en:
         send-email:
           label: Send Email?
           description: Notify users of the new policy by email
+      preferences:
+        title: Policies

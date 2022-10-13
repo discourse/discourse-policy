@@ -44,6 +44,10 @@ after_initialize do
 
   Discourse::Application.routes.append do
     mount ::DiscoursePolicy::Engine, at: "/policy"
+    get "u/:username/preferences/policy" => "users#preferences",
+        :constraints => {
+          username: RouteFormat.username,
+        }
   end
 
   TopicView.default_post_custom_fields << DiscoursePolicy::HAS_POLICY
