@@ -44,6 +44,8 @@ after_initialize do
     get "/not-accepted" => "policy#not_accepted"
   end
 
+  add_to_serializer(:user_option, :policy_emails_enabled) { object.policy_emails_enabled }
+
   Discourse::Application.routes.append do
     mount ::DiscoursePolicy::Engine, at: "/policy"
     get "u/:username/preferences/policy" => "users#preferences",
