@@ -46,14 +46,6 @@ after_initialize do
 
   add_to_serializer(:user_option, :policy_emails_enabled) { object.policy_emails_enabled }
 
-  Discourse::Application.routes.append do
-    mount ::DiscoursePolicy::Engine, at: "/policy"
-    get "u/:username/preferences/policy" => "users#preferences",
-        :constraints => {
-          username: RouteFormat.username,
-        }
-  end
-
   TopicView.default_post_custom_fields << DiscoursePolicy::HAS_POLICY
 
   on(:post_process_cooked) do |doc, post|
