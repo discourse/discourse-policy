@@ -9,8 +9,6 @@ const POLICY_ATTRS = [
 export default class PreferencesPolicyController extends Controller {
     @action
     save() {
-        console.log('controller save');
-        console.log(this.model);
         this.set("saved", false);
         return this.model
             .save(POLICY_ATTRS)
