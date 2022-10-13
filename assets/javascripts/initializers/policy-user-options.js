@@ -1,6 +1,6 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
 
-const SEND_EMAIL_NOTIFICATIONS_FIELD = "send_email_notifications";
+const SEND_EMAIL_NOTIFICATIONS_FIELD = "policy_emails_enabled";
 
 export default {
   name: "policy-user-options",

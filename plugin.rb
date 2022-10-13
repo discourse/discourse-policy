@@ -35,6 +35,8 @@ after_initialize do
   require_relative "jobs/scheduled/check_policy"
   require_relative "jobs/scheduled/send_emails"
 
+  UserUpdater::OPTION_ATTR.push(:policy_emails_enabled)
+
   DiscoursePolicy::Engine.routes.draw do
     put "/accept" => "policy#accept"
     put "/unaccept" => "policy#unaccept"

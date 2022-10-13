@@ -1,3 +1,21 @@
 <label class="control-label">{{i18n "discourse_policy.preferences.title"}}</label>
 
 <p>Fields go here.</p>
+
+<div class="control-group policy-setting">
+  <label class="controls">
+    {{input
+      id="policy_emails_enabled"
+      type="checkbox"
+      checked=model.user_option.policy_emails_enabled
+    }}
+    {{i18n "discourse_policy.preferences.policy_emails_enabled"}}
+  </label>
+</div>
+
+{{save-controls
+  id="user_policy_preference_save"
+  model=model
+  action=(action "save")
+  saved=saved
+}}

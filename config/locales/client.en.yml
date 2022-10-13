@@ -45,3 +45,4 @@ en:
           description: Notify users of the new policy by email
       preferences:
         title: Policies
+        policy_emails_enabled: Notify me via email on policy reminders
