@@ -31,15 +31,19 @@ class PostPolicy < ActiveRecord::Base
     policy_group_users.where.not(id: accepted_policy_users.select(:user_id))
   end
 
-  # deprecated: remove send-email option
   def not_emailed_to
     return User.none unless groups.exists?
-    return User.none unless self.send_email
+    # deprecated: remove send-email option
+    # return User.none unless self.send_email
 
-    policy_group_users
-      .where.not(id: accepted_policy_users.select(:user_id))
-      .where.not(id: policy_users.emailed.with_version(version).select(:user_id))
+    # policy_group_users
+    #   .where.not(id: accepted_policy_users.select(:user_id))
+    #   .where.not(id: policy_users.emailed.with_version(version).select(:user_id))
+
+    needs_notification_users.where.not(id: policy_users.emailed.with_version(version).select(:user_id))
   end
+
+  private
 
   def needs_notification_users
     return User.none unless groups.exists?
@@ -48,10 +52,8 @@ class PostPolicy < ActiveRecord::Base
   end
 
   def policy_emails_enabled_users
-    policy_group_users
+    policy_group_users.joins(:user_option).where('user_options.policy_emails_enabled = ?', true)
   end
-
-  private
 
   def accepted_policy_users
     policy_users.accepted.with_version(version)
