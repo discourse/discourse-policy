@@ -33,6 +33,7 @@ after_initialize do
   require_relative "app/models/post_policy"
   require_relative "app/models/post_policy_group"
   require_relative "jobs/scheduled/check_policy"
+  require_relative "jobs/regular/policy_status_email"
 
   load File.expand_path("../lib/extensions/user_option_extension.rb", __FILE__)
 
@@ -41,6 +42,12 @@ after_initialize do
   UserUpdater::OPTION_ATTR.push(:policy_email_frequency)
 
   add_to_serializer(:user_option, :policy_email_frequency) { object.policy_email_frequency }
+
+  # TODO: (via chat plugin) remove `respond_to?` after the 2.9 release
+  if respond_to?(:register_email_unsubscriber)
+    load File.expand_path("../lib/email_controller_helper/policy_status_unsubscriber.rb", __FILE__)
+    register_email_unsubscriber("policy_status", EmailControllerHelper::PolicyStatusUnsubscriber)
+  end
 
   DiscoursePolicy::Engine.routes.draw do
     put "/accept" => "policy#accept"

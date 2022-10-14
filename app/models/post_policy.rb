@@ -41,6 +41,7 @@ class PostPolicy < ActiveRecord::Base
     return User.none unless groups.exists?
 
     policy_emails_enabled_when_away_users.where.not(id: accepted_policy_users.select(:user_id))
+      .where("users.last_seen_at < ?", 15.minutes.ago)
   end
 
   private

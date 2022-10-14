@@ -38,12 +38,22 @@ module Jobs
               high_priority: true
             )
           end
+
           users_to_email_always(post).each do |user|
-            message = PolicyMailer.send_notice(user, post.url)
-            Email::Sender.new(message, 'policy_notice').send
+            Jobs.enqueue(
+              :policy_status_email,
+              user_email: user.email,
+              post_url: post.url
+            )
           end
 
-          # TODO: users_to_email_when_away
+          users_to_email_when_away(post).each do |user|
+            Jobs.enqueue(
+              :policy_status_email,
+              user_email: user.email,
+              post_url: post.url
+            )
+          end
         end
       end
 
@@ -104,7 +114,7 @@ module Jobs
     end
 
     def users_to_email_when_away(post)
-      post.post_policy.emailed_by_always
+      post.post_policy.emailed_by_when_away
     end
 
     def clear_existing_notification(user, post)

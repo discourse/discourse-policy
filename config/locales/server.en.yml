@@ -15,6 +15,10 @@ en:
       labels:
         topic_id: Topic ID
         user_id: User ID
+  user_notifications:
+    policy_status:
+      from: "%{site_name}"
+      subject: "A policy needs your attention"
   policy_mailer:
     title: "A new policy needs your review"
     subject_template: "A new policy needs your review"
