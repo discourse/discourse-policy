@@ -33,9 +33,14 @@ after_initialize do
   require_relative "app/models/post_policy"
   require_relative "app/models/post_policy_group"
   require_relative "jobs/scheduled/check_policy"
-  require_relative "jobs/scheduled/send_emails"
 
-  UserUpdater::OPTION_ATTR.push(:policy_emails_enabled)
+  load File.expand_path("../lib/extensions/user_option_extension.rb", __FILE__)
+
+  UserOption.prepend DiscoursePolicy::UserOptionExtension
+
+  UserUpdater::OPTION_ATTR.push(:policy_email_frequency)
+
+  add_to_serializer(:user_option, :policy_email_frequency) { object.policy_email_frequency }
 
   DiscoursePolicy::Engine.routes.draw do
     put "/accept" => "policy#accept"
@@ -44,7 +49,9 @@ after_initialize do
     get "/not-accepted" => "policy#not_accepted"
   end
 
-  add_to_serializer(:user_option, :policy_emails_enabled) { object.policy_emails_enabled }
+  Discourse::Application.routes.append do
+    mount ::DiscoursePolicy::Engine, at: "/policy"
+  end
 
   TopicView.default_post_custom_fields << DiscoursePolicy::HAS_POLICY
 
@@ -129,7 +136,6 @@ after_initialize do
         end
 
         post_policy.private = policy["data-private"] == "true"
-        post_policy.send_email = policy["data-send-email"] == "true"
 
         if has_group
           if !post.custom_fields[DiscoursePolicy::HAS_POLICY]

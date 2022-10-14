@@ -1,11 +1,18 @@
 <h3>Policies</h3>
-<div class="control-group policy-setting">
-  <label class="controls">
-    {{input
-      id="policy_emails_enabled"
-      type="checkbox"
-      checked=this.model.user_option.policy_emails_enabled
-    }}
-    {{i18n "discourse_policy.preferences.policy_emails_enabled"}}
+<div class="control-group policy-setting controls-dropdown">
+  <label for="user_policy_email_frequency">
+    {{i18n "discourse_policy.preferences.policy_emails.label"}}
   </label>
+  {{combo-box
+    valueProperty="value"
+    content=policyEmailFrequencyOptions
+    value=model.user_option.policy_email_frequency
+    id="user_policy_email_frequency"
+    onChange=(action (mut model.user_option.policy_email_frequency))
+  }}
+  {{#if (eq model.user_option.policy_email_frequency "when_away")}}
+    <div class="control-instructions">
+      {{i18n "discourse_policy.preferences.policy_emails.away_description"}}
+    </div>
+  {{/if}}
 </div>

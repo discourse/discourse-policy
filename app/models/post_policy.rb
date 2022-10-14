@@ -31,28 +31,26 @@ class PostPolicy < ActiveRecord::Base
     policy_group_users.where.not(id: accepted_policy_users.select(:user_id))
   end
 
-  def not_emailed_to
+  def emailed_by_always
     return User.none unless groups.exists?
-    # deprecated: remove send-email option
-    # return User.none unless self.send_email
 
-    # policy_group_users
-    #   .where.not(id: accepted_policy_users.select(:user_id))
-    #   .where.not(id: policy_users.emailed.with_version(version).select(:user_id))
+    policy_emails_enabled_always_users.where.not(id: accepted_policy_users.select(:user_id))
+  end
 
-    needs_notification_users.where.not(id: policy_users.emailed.with_version(version).select(:user_id))
+  def emailed_by_when_away
+    return User.none unless groups.exists?
+
+    policy_emails_enabled_when_away_users.where.not(id: accepted_policy_users.select(:user_id))
   end
 
   private
 
-  def needs_notification_users
-    return User.none unless groups.exists?
-
-    policy_emails_enabled_users.where.not(id: accepted_policy_users.select(:user_id))
+  def policy_emails_enabled_always_users
+    policy_group_users.joins(:user_option).where('user_options.policy_email_frequency = ?', UserOption.policy_email_frequencies[:always])
   end
 
-  def policy_emails_enabled_users
-    policy_group_users.joins(:user_option).where('user_options.policy_emails_enabled = ?', true)
+  def policy_emails_enabled_when_away_users
+    policy_group_users.joins(:user_option).where('user_options.policy_email_frequency = ?', UserOption.policy_email_frequencies[:when_away])
   end
 
   def accepted_policy_users
@@ -92,5 +90,4 @@ end
 #  updated_at       :datetime         not null
 #  renew_interval   :integer
 #  private          :boolean          default(FALSE), not null
-#  send_email       :boolean          default(FALSE), not null
 #

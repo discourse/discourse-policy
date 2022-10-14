@@ -38,6 +38,12 @@ module Jobs
               high_priority: true
             )
           end
+          users_to_email_always(post).each do |user|
+            message = PolicyMailer.send_notice(user, post.url)
+            Email::Sender.new(message, 'policy_notice').send
+          end
+
+          # TODO: users_to_email_when_away
         end
       end
 
@@ -91,6 +97,14 @@ module Jobs
 
     def missing_users(post)
       post.post_policy.not_accepted_by
+    end
+
+    def users_to_email_always(post)
+      post.post_policy.emailed_by_always
+    end
+
+    def users_to_email_when_away(post)
+      post.post_policy.emailed_by_always
     end
 
     def clear_existing_notification(user, post)

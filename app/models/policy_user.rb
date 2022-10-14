@@ -6,8 +6,6 @@ class PolicyUser < ActiveRecord::Base
 
   scope :accepted, -> { where.not(accepted_at: nil).where(revoked_at: nil, expired_at: nil) }
   scope :revoked, -> { where.not(revoked_at: nil).where(accepted_at: nil, expired_at: nil) }
-  scope :emailed, -> { where.not(emailed_at: nil) }
-  scope :not_emailed, -> { where(emailed_at: nil) }
   scope :with_version, ->(version) { where(version: version) }
 
   def self.add!(user, post_policy)
@@ -42,21 +40,6 @@ class PolicyUser < ActiveRecord::Base
     )
   end
 
-  def self.set_emailed!(user, post_policy)
-    post_policy
-      .policy_users
-      .not_emailed
-      .with_version(post_policy.version)
-      .where(user: user)
-      .update_all(emailed_at: Time.zone.now)
-
-    self.create!(
-      post_policy_id: post_policy.id,
-      user_id: user.id,
-      emailed_at: Time.zone.now,
-      version: post_policy.version
-    )
-  end
 end
 
 # == Schema Information

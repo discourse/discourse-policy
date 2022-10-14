@@ -1,7 +1,7 @@
 import EmailsController from "discourse/controllers/preferences/emails";
 import { withPluginApi } from "discourse/lib/plugin-api";
 
-const SEND_EMAIL_NOTIFICATIONS_FIELD = "policy_emails_enabled";
+const SEND_EMAIL_NOTIFICATIONS_FIELD = "policy_email_frequency";
 
 export default {
   name: "policy-user-options",
