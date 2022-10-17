@@ -16,14 +16,16 @@ en:
         topic_id: Topic ID
         user_id: User ID
   user_notifications:
-    policy_status:
+    policy_email:
       from: "%{site_name}"
       subject: "A policy needs your attention"
-  policy_mailer:
-    title: "A new policy needs your review"
-    subject_template: "A new policy needs your review"
-    text_body_template: |
-      A new policy has been posted for your review.
-      
-      %{base_url}%{post_url}
-      
+      unsubscribe: "This policy alert is sent from %{site_link}. Change your %{email_preferences_link}, or %{unsubscribe_link} to unsubscribe."
+      unsubscribe_no_link: "This policy alert is sent from %{site_link} when you are away. Change your %{email_preferences_link}."
+      your_policy_email_settings: "policy emails frequency preference"
+  unsubscribe:
+    policy_emails:
+      select_title: "Set policy alert emails frequency to:"
+      never: Never
+      when_away: Only when away
+      always: Always
+

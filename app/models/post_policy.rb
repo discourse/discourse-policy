@@ -31,6 +31,12 @@ class PostPolicy < ActiveRecord::Base
     policy_group_users.where.not(id: accepted_policy_users.select(:user_id))
   end
 
+  def emailed_by
+    return User.none unless groups.exists?
+
+    policy_emails_enabled_users.where.not(id: accepted_policy_users.select(:user_id))
+  end
+
   def emailed_by_always
     return User.none unless groups.exists?
 
@@ -41,17 +47,30 @@ class PostPolicy < ActiveRecord::Base
     return User.none unless groups.exists?
 
     policy_emails_enabled_when_away_users.where.not(id: accepted_policy_users.select(:user_id))
-      .where("users.last_seen_at < ?", 15.minutes.ago)
   end
 
   private
+
+  def policy_emails_enabled_users
+    policy_group_users
+      .joins(:user_option)
+      .where('
+        (user_options.policy_email_frequency = ?)
+        OR (user_options.policy_email_frequency = ? and users.last_seen_at < ?)',
+        UserOption.policy_email_frequencies[:always],
+        UserOption.policy_email_frequencies[:when_away],
+        15.minutes.ago
+      )
+  end
 
   def policy_emails_enabled_always_users
     policy_group_users.joins(:user_option).where('user_options.policy_email_frequency = ?', UserOption.policy_email_frequencies[:always])
   end
 
   def policy_emails_enabled_when_away_users
-    policy_group_users.joins(:user_option).where('user_options.policy_email_frequency = ?', UserOption.policy_email_frequencies[:when_away])
+    policy_group_users
+      .joins(:user_option).where('user_options.policy_email_frequency = ?', UserOption.policy_email_frequencies[:when_away])
+      .where("users.last_seen_at < ?", 15.minutes.ago)
   end
 
   def accepted_policy_users

@@ -1,0 +1,17 @@
+<p>Hello world!</p>
+<table class='summary-footer with-dir' style="margin-top:2em;width:100%">
+  <tr>
+    <td align="center">
+      <%- if @unsubscribe_link %>
+        <%= raw(t 'user_notifications.policy_email.unsubscribe',
+                site_link: html_site_link,
+                email_preferences_link: link_to(t('user_notifications.policy_email.your_policy_email_settings'), @preferences_path),
+                unsubscribe_link: link_to(t('user_notifications.digest.click_here'), @unsubscribe_link)) %>
+      <%- else %>
+         <%= raw(t 'user_notifications.policy_email.unsubscribe_no_link',
+                site_link: html_site_link,
+                email_preferences_link: link_to(t('user_notifications.policy_email.your_policy_email_settings'), @preferences_path)) %>
+      <%- end %>
+    </td>
+  </tr>
+</table>

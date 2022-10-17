@@ -28,25 +28,28 @@ after_initialize do
   end
 
   require_relative "app/controllers/policy_controller"
-  require_relative "app/mailers/policy_mailer"
   require_relative "app/models/policy_user"
   require_relative "app/models/post_policy"
   require_relative "app/models/post_policy_group"
   require_relative "jobs/scheduled/check_policy"
-  require_relative "jobs/regular/policy_status_email"
+  require_relative "lib/extensions/user_email_extension"
+  require_relative "lib/extensions/user_option_extension"
+  require_relative "lib/extensions/user_notifications_extension"
+  require_relative "lib/policy_mailer"
 
-  load File.expand_path("../lib/extensions/user_option_extension.rb", __FILE__)
+  UserNotifications.append_view_path(File.expand_path("../app/views", __FILE__))
 
   UserOption.prepend DiscoursePolicy::UserOptionExtension
-
+  UserNotifications.prepend DiscoursePolicy::UserNotificationsExtension
+  Jobs::UserEmail.prepend DiscoursePolicy::UserEmailExtension
   UserUpdater::OPTION_ATTR.push(:policy_email_frequency)
 
   add_to_serializer(:user_option, :policy_email_frequency) { object.policy_email_frequency }
 
-  # TODO: (via chat plugin) remove `respond_to?` after the 2.9 release
+  # TODO:(mark.reeves, a la chat plugin) remove `respond_to?` after the 2.9 release
   if respond_to?(:register_email_unsubscriber)
-    load File.expand_path("../lib/email_controller_helper/policy_status_unsubscriber.rb", __FILE__)
-    register_email_unsubscriber("policy_status", EmailControllerHelper::PolicyStatusUnsubscriber)
+    load File.expand_path("../lib/email_controller_helper/policy_email_unsubscriber.rb", __FILE__)
+    register_email_unsubscriber("policy_email", EmailControllerHelper::PolicyEmailUnsubscriber)
   end
 
   DiscoursePolicy::Engine.routes.draw do

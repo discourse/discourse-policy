@@ -39,20 +39,8 @@ module Jobs
             )
           end
 
-          users_to_email_always(post).each do |user|
-            Jobs.enqueue(
-              :policy_status_email,
-              user_email: user.email,
-              post_url: post.url
-            )
-          end
-
-          users_to_email_when_away(post).each do |user|
-            Jobs.enqueue(
-              :policy_status_email,
-              user_email: user.email,
-              post_url: post.url
-            )
+          users_to_email(post).each do |user|
+            DiscoursePolicy::PolicyMailer.send_email(user, post)
           end
         end
       end
@@ -107,6 +95,10 @@ module Jobs
 
     def missing_users(post)
       post.post_policy.not_accepted_by
+    end
+
+    def users_to_email(post)
+      post.post_policy.emailed_by
     end
 
     def users_to_email_always(post)
