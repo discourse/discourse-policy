@@ -70,7 +70,7 @@ class PostPolicy < ActiveRecord::Base
   def emails_enabled_when_away_users
     policy_group_users
       .joins(:user_option).where('user_options.policy_email_frequency = ?', UserOption.policy_email_frequencies[:when_away])
-      .where("users.last_seen_at < ?", 15.minutes.ago)
+      .where("users.last_seen_at < ?", 10.minutes.ago)
   end
 
   def accepted_policy_users

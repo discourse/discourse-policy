@@ -12,9 +12,14 @@ module DiscoursePolicy::UserNotificationsExtension
     if add_unsubscribe_link
       unsubscribe_key = UnsubscribeKey.create_key_for(@user, "policy_email")
       @unsubscribe_link = "#{Discourse.base_url}/email/unsubscribe/#{unsubscribe_key}"
+      opts[:add_unsubscribe_link] = add_unsubscribe_link
     end
 
-    @topic_title = opts[:post].topic.title
+    @post = opts[:post]
+    @topic_title = @post.topic.title
+    @classes = Rtl.new(user).css_class
+    @base_url = Discourse.base_url
+    @first_footer_classes = "highlight"
     opts[:subject] = I18n.t("user_notifications.policy_email.subject", topic_title: @topic_title)
 
     build_email(user.email, opts)

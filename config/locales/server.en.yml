@@ -18,9 +18,10 @@ en:
   user_notifications:
     policy_email:
       from: "%{site_name}"
-      subject: "A policy needs your attention: %{topic_title}"
-      unsubscribe: "This policy alert is sent from %{site_link}. Change your %{email_preferences_link}, or %{unsubscribe_link} to unsubscribe."
-      unsubscribe_no_link: "This policy alert is sent from %{site_link} when you are away. Change your %{email_preferences_link}."
+      subject: "A policy needs your review: %{topic_title}"
+      visit_topic: "Visit Topic"
+      visit_link_to_respond: "%{visit_topic_link} to respond."
+      unsubscribe: "Change your %{email_preferences_link}, or %{unsubscribe_link} to unsubscribe."
       your_policy_email_settings: "policy emails frequency preference"
   unsubscribe:
     policy_emails:

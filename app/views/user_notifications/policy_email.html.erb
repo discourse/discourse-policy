@@ -1,39 +1,29 @@
-<div class="policy_email">
-  <table class="policy-email-header text-header with-dir" style="background-color:#<%= @header_bgcolor -%>;width:100%;min-width:100%;">
-    <tr>
-      <td align="center" style="text-align: center;padding: 20px 0; font-family:Arial,sans-serif;">
+<div id='main' class=<%= @classes %>>
+  <% if SiteSetting.private_email? %>
+    <p><%= t('system_messages.contents_hidden') %></p>
+  <% else %>
+    <%= render partial: 'email/post', locals: { post: @post, use_excerpt: SiteSetting.post_excerpts_in_emails } %>
+  <% end %>
 
-        <a href="<%= Discourse.base_url %>" style="color:#<%= @header_color -%>;font-size:22px;text-decoration:none;">
-          <%- if logo_url.blank? %>
-            <%= SiteSetting.title %>
-          <%- else %>
-            <img src="<%= logo_url %>" height="40" style="clear:both;display:block;height:40px;margin:auto;max-width:100%;outline:0;text-decoration:none;" alt="<%= SiteSetting.title %>">
-          <%- end %>
-        </a>
-
-      </td>
-    </tr>
-    <tr>
-      <td align="center" style="font-weight:bold;font-size:22px;color:#0a0a0a">
-        <%#= I18n.t("user_notifications.chat_summary.description", count: @messages.size) %>
-      </td>
-    </tr>
-  </table>
+  <hr>
+  <div class='footer undecorated-link-footer <%= @first_footer_classes %>'>
+    <p>
+      <%= raw(t 'user_notifications.policy_email.visit_link_to_respond',
+        visit_topic_link: link_to(t('user_notifications.policy_email.visit_topic'), "#{Discourse.base_url}#{@post.url(without_slug: SiteSetting.private_email?)}")) %>
+    </p>
+  </div>
+  <div class='footer'>
+    <p>
+      <%= raw(t 'user_notifications.policy_email.unsubscribe',
+        email_preferences_link: link_to(t('user_notifications.policy_email.your_policy_email_settings'), @preferences_path),
+        unsubscribe_link: link_to(t('user_notifications.digest.click_here'), @unsubscribe_link)) %>
+    </p>
+  </div>
 </div>
 
-<table class='summary-footer with-dir' style="margin-top:2em;width:100%">
-  <tr>
-    <td align="center">
-      <%- if @unsubscribe_link %>
-        <%= raw(t 'user_notifications.policy_email.unsubscribe',
-                site_link: html_site_link,
-                email_preferences_link: link_to(t('user_notifications.policy_email.your_policy_email_settings'), @preferences_path),
-                unsubscribe_link: link_to(t('user_notifications.digest.click_here'), @unsubscribe_link)) %>
-      <%- else %>
-         <%= raw(t 'user_notifications.policy_email.unsubscribe_no_link',
-                site_link: html_site_link,
-                email_preferences_link: link_to(t('user_notifications.policy_email.your_policy_email_settings'), @preferences_path)) %>
-      <%- end %>
-    </td>
-  </tr>
-</table>
+<div itemscope itemtype="http://schema.org/EmailMessage" style="display:none">
+  <div itemprop="action" itemscope itemtype="http://schema.org/ViewAction">
+    <link itemprop="url" href="<%= Discourse.base_url %><%= @post.url(without_slug: SiteSetting.private_email?) %>" />
+    <meta itemprop="name" content="<%= t 'read_full_topic' %>"/>
+  </div>
+</div>
