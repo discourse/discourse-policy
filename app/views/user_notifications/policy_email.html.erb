@@ -1,3 +1,26 @@
+<div class="policy_email">
+  <table class="policy-email-header text-header with-dir" style="background-color:#<%= @header_bgcolor -%>;width:100%;min-width:100%;">
+    <tr>
+      <td align="center" style="text-align: center;padding: 20px 0; font-family:Arial,sans-serif;">
+
+        <a href="<%= Discourse.base_url %>" style="color:#<%= @header_color -%>;font-size:22px;text-decoration:none;">
+          <%- if logo_url.blank? %>
+            <%= SiteSetting.title %>
+          <%- else %>
+            <img src="<%= logo_url %>" height="40" style="clear:both;display:block;height:40px;margin:auto;max-width:100%;outline:0;text-decoration:none;" alt="<%= SiteSetting.title %>">
+          <%- end %>
+        </a>
+
+      </td>
+    </tr>
+    <tr>
+      <td align="center" style="font-weight:bold;font-size:22px;color:#0a0a0a">
+        <%#= I18n.t("user_notifications.chat_summary.description", count: @messages.size) %>
+      </td>
+    </tr>
+  </table>
+</div>
+
 <table class='summary-footer with-dir' style="margin-top:2em;width:100%">
   <tr>
     <td align="center">

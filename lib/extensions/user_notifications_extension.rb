@@ -4,9 +4,9 @@ module DiscoursePolicy::UserNotificationsExtension
   def policy_email(user, opts)
     @user = user
     build_summary_for(user)
-    @preferences_path = "#{Discourse.base_url}/my/preferences/email"
+    @preferences_path = "#{Discourse.base_url}/my/preferences/emails"
 
-    # TODO(mark, a la chat plugin): Remove after the 2.9 release
+    # TODO(mark.reeves, a la chat plugin): Remove after the 2.9 release
     add_unsubscribe_link = UnsubscribeKey.respond_to?(:get_unsubscribe_strategy_for)
 
     if add_unsubscribe_link
