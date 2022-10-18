@@ -39,7 +39,6 @@ class PolicyUser < ActiveRecord::Base
       version: post_policy.version
     )
   end
-
 end
 
 # == Schema Information
