@@ -34,6 +34,11 @@ acceptance("Discourse Policy - post", function (needs) {
     server.put("/policy/unaccept", () => helper.response(200, {}));
   });
 
+  test("edit email preferences", async function (assert) {
+    await visit(`/u/eviltrout/preferences/emails`);
+    assert.ok(exists("#user_policy_email_frequency"));
+  });
+
   test("edit policy - staff", async function (assert) {
     await visit("/t/-/130");
     await click(".edit-policy-settings-btn");
