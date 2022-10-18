@@ -6,9 +6,7 @@ class DiscoursePolicy::PolicyMailer
       :user_email,
       type: "policy_email",
       user_id: user.id,
-      post_id: post.topic.id,
-      # post_title: post.topic.title,
-      # post_url: "#{Discourse.base_url}/#{post.url}",
+      post_id: post.id,
     )
   end
 end

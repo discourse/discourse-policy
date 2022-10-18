@@ -32,7 +32,6 @@ after_initialize do
   require_relative "app/models/post_policy"
   require_relative "app/models/post_policy_group"
   require_relative "jobs/scheduled/check_policy"
-  require_relative "lib/extensions/user_email_extension"
   require_relative "lib/extensions/user_option_extension"
   require_relative "lib/extensions/user_notifications_extension"
   require_relative "lib/policy_mailer"
@@ -41,7 +40,6 @@ after_initialize do
 
   UserOption.prepend DiscoursePolicy::UserOptionExtension
   UserNotifications.prepend DiscoursePolicy::UserNotificationsExtension
-  Jobs::UserEmail.prepend DiscoursePolicy::UserEmailExtension
   UserUpdater::OPTION_ATTR.push(:policy_email_frequency)
 
   add_to_serializer(:user_option, :policy_email_frequency) { object.policy_email_frequency }
