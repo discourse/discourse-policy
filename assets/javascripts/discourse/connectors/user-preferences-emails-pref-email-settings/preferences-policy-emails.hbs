@@ -10,7 +10,11 @@
     id="user_policy_email_frequency"
     onChange=(action (mut model.user_option.policy_email_frequency))
   }}
-  {{#if (eq model.user_option.policy_email_frequency "when_away")}}
+  {{#if (eq model.user_option.policy_email_frequency "always")}}
+    <div class="control-instructions">
+      {{i18n "discourse_policy.preferences.policy_emails.always_description"}}
+    </div>
+  {{else if (eq model.user_option.policy_email_frequency "when_away")}}
     <div class="control-instructions">
       {{i18n "discourse_policy.preferences.policy_emails.away_description"}}
     </div>
