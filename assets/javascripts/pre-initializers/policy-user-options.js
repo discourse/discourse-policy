@@ -20,5 +20,5 @@ export default {
         this.saveAttrNames.push(SEND_EMAIL_NOTIFICATIONS_FIELD);
       },
     });
-  }
+  },
 };
