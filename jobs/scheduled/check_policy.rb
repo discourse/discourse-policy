@@ -101,14 +101,6 @@ module Jobs
       post.post_policy.emailed_by
     end
 
-    def users_to_email_always(post)
-      post.post_policy.emailed_by_always
-    end
-
-    def users_to_email_when_away(post)
-      post.post_policy.emailed_by_when_away
-    end
-
     def clear_existing_notification(user, post)
       existing_notification = Notification.find_by(
         notification_type: Notification.types[:topic_reminder],
