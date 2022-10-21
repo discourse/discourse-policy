@@ -59,7 +59,7 @@ class PostPolicy < ActiveRecord::Base
         OR (user_options.policy_email_frequency = ? and users.last_seen_at < ?)',
         UserOption.policy_email_frequencies[:always],
         UserOption.policy_email_frequencies[:when_away],
-        15.minutes.ago
+        10.minutes.ago
       )
   end
 
