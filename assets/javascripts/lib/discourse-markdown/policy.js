@@ -44,10 +44,6 @@ const rule = {
       token.attrs.push(["data-private", info.attrs.private]);
     }
 
-    if (info.attrs.email) {
-      token.attrs.push(["data-send-email", info.attrs.email]);
-    }
-
     return true;
   },
 };
