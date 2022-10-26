@@ -9,7 +9,6 @@ import { ajax } from "discourse/lib/ajax";
 
 export default Controller.extend(ModalFunctionality, {
   toolbarEvent: null,
-  form: null,
   post: null,
   isSaving: false,
   insertMode: true,

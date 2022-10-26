@@ -29,7 +29,7 @@ describe DiscoursePolicy::CheckPolicy do
     end
   end
 
-  it "correctly renews policise with no renew-start" do
+  it "correctly renews policies with no renew-start" do
     freeze_time Time.utc(2019)
 
     raw = <<~MD

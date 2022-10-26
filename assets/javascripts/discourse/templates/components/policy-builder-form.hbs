@@ -28,7 +28,7 @@
     type="date"
     placeholder="2020-03-31"
     name="renew-start"
-    value=(readonly (get form "renew-start"))
+    value=(readonly (get policy "renew-start"))
     input=(action (fn this.onChange "renew-start") value="target.value")
   }}
 {{/policy-form-field}}

@@ -40,3 +40,18 @@ en:
         private:
           label: Private?
           description: Keep policy status private to administrators
+        send-email:
+          label: Send Email?
+          description: Notify users of the new policy by email
+      preferences:
+        title: Policies
+        policy_emails:
+          always_description: We'll only email you if you've also opted in for new activity emails.
+          away_description: We'll only email you if we haven't seen you in the last 10 minutes when the policy status changes, and only if you've also opted in for new activity emails.
+          label: Email me when a policy needs my review
+          email_frequency_options:
+            never: never
+            when_away: only when away
+            always: always
+
+

@@ -3,6 +3,23 @@
 require 'rails_helper'
 
 describe DiscoursePolicy do
+  describe 'after_initialize' do
+    before { Jobs.run_immediately! }
+
+    fab!(:user1) { Fabricate(:user) }
+
+    it "serializes user options correctly" do
+      user1.user_option.update(policy_email_frequency: UserOption.policy_email_frequencies[:when_away])
+
+      @plugin = Plugin::Instance.new
+      @plugin.add_to_serializer(:user_option, :policy_email_frequency) { object.policy_email_frequency }
+
+      json = UserSerializer.new(user1, scope: Guardian.new(user1), root: false).as_json
+
+      expect(json[:user_option][:policy_email_frequency]).to eq("when_away")
+    end
+  end
+
   describe 'post_process_cooked event' do
     before { Jobs.run_immediately! }
 
@@ -11,9 +28,9 @@ describe DiscoursePolicy do
       renew_days = 10
       renew_start = 1.day.from_now.to_date
       raw = <<~MD
-       [policy group=#{group.name} renew="#{renew_days}" renew-start="#{renew_start.strftime('%F')}"]
-        Here's the new policy
-       [/policy]
+        [policy group=#{group.name} renew="#{renew_days}" renew-start="#{renew_start.strftime('%F')}"]
+         Here's the new policy
+        [/policy]
       MD
 
       post = create_post(raw: raw, user: Fabricate(:admin))
@@ -24,9 +41,9 @@ describe DiscoursePolicy do
       expect(policy.next_renew_at.to_date).to eq(renew_start)
 
       updated_policy = <<~MD
-       [policy group=#{group.name} renew="#{renew_days}"]
-        Here's the new policy
-       [/policy]
+        [policy group=#{group.name} renew="#{renew_days}"]
+         Here's the new policy
+        [/policy]
       MD
 
       post.update!(raw: updated_policy)
