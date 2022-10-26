@@ -6,6 +6,6 @@ module DiscoursePolicy::UserOptionExtension
       @policy_email_frequencies ||= { never: 0, when_away: 1, always: 2 }
     end
 
-    base.enum policy_email_frequency: base.policy_email_frequencies
+    base.enum :policy_email_frequency, base.policy_email_frequencies, prefix: "send_policy_email"
   end
 end
