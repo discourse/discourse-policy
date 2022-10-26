@@ -117,6 +117,17 @@ describe PostPolicy do
       expect(policy.emailed_by).to eq []
     end
 
+    it "shows users who have requested emails and have not accepted yet" do
+      user1.user_option.update(policy_email_frequency: UserOption.policy_email_frequencies[:always])
+      user2.user_option.update(policy_email_frequency: UserOption.policy_email_frequencies[:when_away])
+
+      user2.update(last_seen_at: 30.minutes.ago)
+
+      expect(policy.emailed_by).to eq [user1, user2]
+    end
+  end
+
+  describe "#emailed_by_always" do
     it "shows users who have opted for emails always" do
       user1.user_option.update(policy_email_frequency: UserOption.policy_email_frequencies[:always])
       user2.user_option.update(policy_email_frequency: UserOption.policy_email_frequencies[:never])
@@ -132,7 +143,9 @@ describe PostPolicy do
 
       expect(policy.emailed_by_always).to eq []
     end
+  end
 
+  describe "#emailed_by_when_away" do
     it "shows users who have opted for emails when away" do
       user1.user_option.update(policy_email_frequency: UserOption.policy_email_frequencies[:when_away])
       user2.user_option.update(policy_email_frequency: UserOption.policy_email_frequencies[:never])
@@ -151,15 +164,6 @@ describe PostPolicy do
       user1.update(last_seen_at: 30.minutes.ago)
 
       expect(policy.emailed_by_when_away).to eq []
-    end
-
-    it "shows users who have requested emails and have not accepted yet" do
-      user1.user_option.update(policy_email_frequency: UserOption.policy_email_frequencies[:always])
-      user2.user_option.update(policy_email_frequency: UserOption.policy_email_frequencies[:when_away])
-
-      user2.update(last_seen_at: 30.minutes.ago)
-
-      expect(policy.emailed_by).to eq [user1, user2]
     end
   end
 end
