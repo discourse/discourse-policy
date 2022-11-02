@@ -9,3 +9,7 @@ et:
     unaccepted-policies:
       labels:
         topic_id: Teema ID
+  unsubscribe:
+    policy_emails:
+      never: Mitte kunagi
+      always: Alati

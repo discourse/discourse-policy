@@ -12,3 +12,11 @@ gl:
           label: Grupos
         private:
           label: Privado?
+        send-email:
+          label: Enviar correo electrónico?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: nunca
+            when_away: só cando ausente
+            always: sempre

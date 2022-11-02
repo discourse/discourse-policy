@@ -9,3 +9,6 @@ te:
     unaccepted-policies:
       labels:
         topic_id: విషయపు ఐడీ
+  unsubscribe:
+    policy_emails:
+      always: ఎల్లప్పుడూ

@@ -12,3 +12,10 @@ lt:
           label: Grupės
         private:
           label: Privati?
+        send-email:
+          label: Siųsti e-paštą?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: niekada
+            always: visada

@@ -12,3 +12,11 @@ ro:
           label: Grupuri
         private:
           label: Privat?
+        send-email:
+          label: Trimite email?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: niciodată
+            when_away: numai atunci când nu sunt activ
+            always: întotdeauna

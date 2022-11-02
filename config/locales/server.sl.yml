@@ -9,3 +9,7 @@ sl:
     unaccepted-policies:
       labels:
         topic_id: ID teme
+  unsubscribe:
+    policy_emails:
+      never: Nikoli
+      always: Vedno

@@ -9,3 +9,7 @@ th:
     unaccepted-policies:
       labels:
         topic_id: หมายเลขกระทู้
+  unsubscribe:
+    policy_emails:
+      never: ไม่เคย
+      always: เสมอ

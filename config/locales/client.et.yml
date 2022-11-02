@@ -12,3 +12,10 @@ et:
           label: Grupid
         private:
           label: Privaatne?
+        send-email:
+          label: Saada kiri?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: mitte kunagi
+            always: alati

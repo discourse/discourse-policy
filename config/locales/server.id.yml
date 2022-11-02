@@ -5,3 +5,7 @@
 # https://translate.discourse.org/
 
 id:
+  unsubscribe:
+    policy_emails:
+      never: Tidak pernah
+      always: Selalu

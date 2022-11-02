@@ -9,3 +9,10 @@ pl_PL:
     unaccepted-policies:
       labels:
         topic_id: ID tematu
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
+  unsubscribe:
+    policy_emails:
+      never: Nigdy
+      always: Zawsze

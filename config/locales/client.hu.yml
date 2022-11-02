@@ -13,3 +13,11 @@ hu:
         private:
           label: Privát?
           description: Házirend állapotának privátban tartása a rendszergazdák számára
+        send-email:
+          label: E-mail küldése?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: soha
+            when_away: csak ha távol van
+            always: mindig

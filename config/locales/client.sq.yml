@@ -10,3 +10,10 @@ sq:
       builder:
         groups:
           label: Grupet
+        send-email:
+          label: Dërgo Email?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: asnjëherë
+            always: gjithmonë

@@ -12,3 +12,10 @@ cs:
           label: Skupiny
         private:
           label: Soukromé?
+        send-email:
+          label: Odeslat e-mail?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: nikdy
+            always: vždy

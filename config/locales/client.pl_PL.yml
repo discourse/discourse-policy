@@ -12,3 +12,11 @@ pl_PL:
           label: Grupy
         private:
           label: Prywatna?
+        send-email:
+          label: Wyślij Email?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: nigdy
+            when_away: tylko kiedy jest daleko
+            always: zawsze

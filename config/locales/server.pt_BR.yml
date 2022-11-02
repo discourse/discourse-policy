@@ -17,5 +17,21 @@ pt_BR:
       staff_only: "Políticas podem ser aplicadas apenas às postagens da equipe"
   reports:
     unaccepted-policies:
+      title: Políticas não aceitas
       labels:
         topic_id: ID do tópico
+        user_id: ID do usuário
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
+      subject: "Uma política precisa da sua revisão: %{topic_title}"
+      visit_topic: "Visitar o tópico"
+      visit_link_to_respond: "%{visit_topic_link} para responder."
+      unsubscribe: "Altere seu %{email_preferences_link} ou %{unsubscribe_link} para cancelar a inscrição."
+      your_policy_email_settings: "preferência de frequência de e-mails de política"
+  unsubscribe:
+    policy_emails:
+      select_title: "Defina a frequência de e-mails de alerta de política para:"
+      never: Nunca
+      when_away: Somente quando estiver longe
+      always: Sempre

@@ -9,3 +9,7 @@ bs_BA:
     unaccepted-policies:
       labels:
         topic_id: ID teme
+  unsubscribe:
+    policy_emails:
+      never: Nikad
+      always: Uvijek

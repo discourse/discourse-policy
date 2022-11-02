@@ -9,3 +9,7 @@ bg:
     unaccepted-policies:
       labels:
         topic_id: Тема ID
+  unsubscribe:
+    policy_emails:
+      never: Никога
+      always: Винаги

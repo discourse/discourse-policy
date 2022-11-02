@@ -9,3 +9,7 @@ pt:
     unaccepted-policies:
       labels:
         topic_id: ID do Tópico
+  unsubscribe:
+    policy_emails:
+      never: Nunca
+      always: Sempre

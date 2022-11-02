@@ -9,3 +9,10 @@ tr_TR:
     unaccepted-policies:
       labels:
         topic_id: Konu ID
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
+  unsubscribe:
+    policy_emails:
+      never: Asla
+      always: Her zaman

@@ -12,3 +12,10 @@ sw:
           label: Vikundi
         private:
           label: Binafsi?
+        send-email:
+          label: Tuma Barua Pepe?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: kamwe
+            always: mara kwa mara

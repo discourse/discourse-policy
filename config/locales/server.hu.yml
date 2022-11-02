@@ -11,3 +11,7 @@ hu:
     unaccepted-policies:
       labels:
         topic_id: Témaazonosító
+  unsubscribe:
+    policy_emails:
+      never: Soha
+      always: Mindig

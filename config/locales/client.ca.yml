@@ -12,3 +12,11 @@ ca:
           label: Grups
         private:
           label: Privat?
+        send-email:
+          label: Envia un correu?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: mai
+            when_away: només quan sigui absent
+            always: sempre

@@ -9,3 +9,7 @@ cs:
     unaccepted-policies:
       labels:
         topic_id: ID tématu
+  unsubscribe:
+    policy_emails:
+      never: Nikdy
+      always: Vždy

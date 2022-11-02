@@ -12,3 +12,11 @@ zh_TW:
           label: 群組
         private:
           label: 私密?
+        send-email:
+          label: 送出電子郵件?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: 永不
+            when_away: 只在離開時
+            always: 總是

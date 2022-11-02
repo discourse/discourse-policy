@@ -12,3 +12,11 @@ pt:
           label: Grupos
         private:
           label: Privado?
+        send-email:
+          label: Enviar Email?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: nunca
+            when_away: só quando não estiver online
+            always: sempre

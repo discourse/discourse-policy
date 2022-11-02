@@ -9,3 +9,7 @@ zh_TW:
     unaccepted-policies:
       labels:
         topic_id: 話題 ID
+  unsubscribe:
+    policy_emails:
+      never: 永不
+      always: 總是

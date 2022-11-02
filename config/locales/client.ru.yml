@@ -46,3 +46,11 @@ ru:
         private:
           label: Приватные?
           description: Сохранить статус политики приватным для администраторов
+        send-email:
+          label: Отправить письмо?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: Никогда
+            when_away: Если вы находитесь офлайн
+            always: Всегда

@@ -12,3 +12,9 @@ hr:
           label: Grupe
         private:
           label: Privatno?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: nikad
+            when_away: samo kada je odstupan
+            always: uvijek

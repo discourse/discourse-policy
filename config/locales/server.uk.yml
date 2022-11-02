@@ -9,3 +9,7 @@ uk:
     unaccepted-policies:
       labels:
         topic_id: ID теми
+  unsubscribe:
+    policy_emails:
+      never: Ніколи
+      always: Завжди

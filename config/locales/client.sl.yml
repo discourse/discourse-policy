@@ -12,3 +12,11 @@ sl:
           label: Skupine
         private:
           label: Zasebno?
+        send-email:
+          label: Pošlji e-sporočilo?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: nikoli
+            when_away: samo ko sem odsoten
+            always: vedno

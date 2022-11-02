@@ -12,3 +12,8 @@ th:
           label: กลุ่ม
         private:
           label: ส่วนตัว?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: ไม่เลย
+            always: เสมอ

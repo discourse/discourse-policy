@@ -9,3 +9,7 @@ vi:
     unaccepted-policies:
       labels:
         topic_id: ID Chủ đề
+  unsubscribe:
+    policy_emails:
+      never: Không bao giờ
+      always: Luôn luôn

@@ -17,5 +17,21 @@ es:
       staff_only: "Es posible que las políticas solo se apliquen a las publicaciones del personal"
   reports:
     unaccepted-policies:
+      title: Políticas no aceptadas
       labels:
         topic_id: ID del tema
+        user_id: ID de usuario
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
+      subject: "Una política necesita su revisión: %{topic_title}"
+      visit_topic: "Visitar tema"
+      visit_link_to_respond: "%{visit_topic_link} para responder."
+      unsubscribe: "Cambia tus %{email_preferences_link}, o %{unsubscribe_link} para darte de baja."
+      your_policy_email_settings: "preferencia de frecuencia de correos electrónicos de política"
+  unsubscribe:
+    policy_emails:
+      select_title: "Establecer la frecuencia de correo electrónico de alerta de política a:"
+      never: Nunca
+      when_away: Solo cuando no esté en la página
+      always: Siempre

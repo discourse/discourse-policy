@@ -9,3 +9,7 @@ lv:
     unaccepted-policies:
       labels:
         topic_id: Tēmas ID
+  unsubscribe:
+    policy_emails:
+      never: Nekad
+      always: Vienmēr

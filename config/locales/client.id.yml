@@ -12,3 +12,9 @@ id:
           label: Grup
         private:
           label: Pribadi?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: tidak pernah
+            when_away: hanya ketika pergi
+            always: selalu

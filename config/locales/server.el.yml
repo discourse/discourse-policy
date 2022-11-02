@@ -9,3 +9,7 @@ el:
     unaccepted-policies:
       labels:
         topic_id: Topic ID
+  unsubscribe:
+    policy_emails:
+      never: Ποτέ
+      always: Πάντα

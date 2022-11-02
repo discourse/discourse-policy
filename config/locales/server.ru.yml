@@ -19,3 +19,10 @@ ru:
     unaccepted-policies:
       labels:
         topic_id: ID темы
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
+  unsubscribe:
+    policy_emails:
+      never: Никогда
+      always: Всегда

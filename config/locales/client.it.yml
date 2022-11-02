@@ -13,13 +13,18 @@ it:
       accept_policy: "Accetta informativa"
       revoke_policy: "Revoca informativa"
       edit_reason: "Le impostazioni dell'informativa sono state modificate"
+      no_possible_users: "Questa informativa non ha utenti possibili"
       builder:
         title: Informativa
         attach: Crea informativa
         save: Salva le modifiche
         insert: Inserisci
+        errors:
+          group: Il gruppo è obbligatorio
+          version: La versione è obbligatoria
         groups:
           label: Gruppi
+          description: I gruppi associati a questa informativa
         version:
           label: Versione
           description: La versione dell'informativa, il cambio della versione costringerà gli utenti a riaccettarla
@@ -41,3 +46,16 @@ it:
         private:
           label: Privato?
           description: Mantieni privato lo stato dell'informativa per gli amministratori
+        send-email:
+          label: Inviare e-mail?
+          description: Avvisa gli utenti della nuova informativa via e-mail
+      preferences:
+        title: Informative
+        policy_emails:
+          always_description: Ti invieremo un'e-mail solo se hai scelto anche di ricevere le e-mail per le nuove attività.
+          away_description: Ti invieremo un'e-mail solo se non ti sei fatto vedere negli ultimi 10 minuti quando lo stato dell'informativa cambia e solo se hai scelto anche di ricevere le e-mail per le nuove attività.
+          label: Inviami un'e-mail quando un'informativa necessita della mia revisione
+          email_frequency_options:
+            never: mai
+            when_away: solo quando non sono collegato
+            always: sempre

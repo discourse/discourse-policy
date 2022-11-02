@@ -9,3 +9,10 @@ gl:
     unaccepted-policies:
       labels:
         topic_id: ID do tema
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
+  unsubscribe:
+    policy_emails:
+      never: Nunca
+      always: Sempre

@@ -12,3 +12,11 @@ el:
           label: Ομάδες
         private:
           label: Ιδιωτική?
+        send-email:
+          label: Αποστολή Email?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: ποτέ
+            when_away: μόνο όταν είμαι μακριά
+            always: πάντα

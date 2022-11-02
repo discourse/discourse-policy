@@ -13,13 +13,18 @@ fr:
       accept_policy: "Accepter la politique"
       revoke_policy: "Refuser la politique"
       edit_reason: "Les paramètres de la politique ont été modifiés"
+      no_possible_users: "Cette politique n'a aucun utilisateur possible"
       builder:
         title: Politique
         attach: Créer une politique
         save: Enregistrer les modifications
         insert: Insérer
+        errors:
+          group: Le groupe est requis
+          version: La version est requise
         groups:
           label: Groupes
+          description: Les groupes associés à cette politique
         version:
           label: Version
           description: La version de la politique, la modification de la version forcera les utilisateurs à devoir l'accepter à nouveau
@@ -41,3 +46,16 @@ fr:
         private:
           label: Rendre privé ?
           description: Garder le statut de la politique privé pour les administrateurs
+        send-email:
+          label: Envoyer un e-mail ?
+          description: Informer les utilisateurs de la nouvelle politique par e-mail
+      preferences:
+        title: Politiques
+        policy_emails:
+          always_description: Nous ne vous enverrons un e-mail que si vous avez également choisi de recevoir de nouveaux e-mails d'activité.
+          away_description: Nous ne vous enverrons un e-mail que si nous ne vous avons pas vu au cours des 10 dernières minutes avant le changement de statut de la politique, et uniquement si vous avez également accepté de recevoir de nouveaux e-mails d'activité.
+          label: Envoyez-moi un e-mail lorsqu'une politique nécessite mon examen
+          email_frequency_options:
+            never: jamais
+            when_away: seulement en cas d'absence
+            always: toujours

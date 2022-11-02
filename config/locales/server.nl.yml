@@ -9,3 +9,10 @@ nl:
     unaccepted-policies:
       labels:
         topic_id: Topic-ID
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
+  unsubscribe:
+    policy_emails:
+      never: Nooit
+      always: Altijd

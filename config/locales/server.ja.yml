@@ -17,5 +17,21 @@ ja:
       staff_only: "ポリシーはスタッフの投稿のみに適用される場合があります"
   reports:
     unaccepted-policies:
+      title: 未承認のポリシー
       labels:
         topic_id: トピック ID
+        user_id: ユーザー ID
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
+      subject: "ポリシーをレビューする必要があります: %{topic_title}"
+      visit_topic: "トピックにアクセス"
+      visit_link_to_respond: "%{visit_topic_link} で回答します。"
+      unsubscribe: "%{email_preferences_link} を変更するか、%{unsubscribe_link} で購読を解除します。"
+      your_policy_email_settings: "ポリシーメールの頻度設定"
+  unsubscribe:
+    policy_emails:
+      select_title: "ポリシーアラートメールの頻度を次に設定する:"
+      never: なし
+      when_away: 退席中の時のみ
+      always: 常時

@@ -12,3 +12,11 @@ hy:
           label: Խմբեր
         private:
           label: Գաղտնի?
+        send-email:
+          label: Ուղարկել Էլ. նամակ?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: երբեք
+            when_away: միայն երբ հեռու եմ
+            always: միշտ

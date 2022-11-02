@@ -17,5 +17,21 @@ zh_CN:
       staff_only: "策略可能只适用于管理人员帖子"
   reports:
     unaccepted-policies:
+      title: 未接受的策略
       labels:
         topic_id: 话题 ID
+        user_id: 用户 ID
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
+      subject: "一项策略需要您的审核：%{topic_title}"
+      visit_topic: "访问话题"
+      visit_link_to_respond: "%{visit_topic_link}以回复。"
+      unsubscribe: "更改您的%{email_preferences_link}，或者%{unsubscribe_link}以取消订阅。"
+      your_policy_email_settings: "策略电子邮件频率偏好设置"
+  unsubscribe:
+    policy_emails:
+      select_title: "将接收策略提醒电子邮件的频率设为："
+      never: 从不
+      when_away: 只在离开时
+      always: 始终
