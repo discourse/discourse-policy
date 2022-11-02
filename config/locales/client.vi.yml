@@ -12,3 +12,11 @@ vi:
           label: Nhóm
         private:
           label: Riêng tư?
+        send-email:
+          label: Gửi email?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: không bao giờ
+            when_away: chỉ khi rời xa
+            always: luôn luôn

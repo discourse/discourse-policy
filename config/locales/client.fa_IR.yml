@@ -15,3 +15,9 @@ fa_IR:
           label: گروه‌ها
         private:
           label: خصوصی?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: هیچوقت
+            when_away: فقط وقتی نیستم
+            always: همیشه

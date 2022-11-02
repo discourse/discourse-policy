@@ -9,3 +9,7 @@ sr:
     unaccepted-policies:
       labels:
         topic_id: ID Teme
+  unsubscribe:
+    policy_emails:
+      never: Nikad
+      always: Uvek

@@ -9,3 +9,7 @@ ro:
     unaccepted-policies:
       labels:
         topic_id: ID discuție
+  unsubscribe:
+    policy_emails:
+      never: Niciodată
+      always: Întotdeauna

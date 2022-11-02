@@ -12,3 +12,11 @@ tr_TR:
           label: Gruplar
         private:
           label: Özel?
+        send-email:
+          label: E-posta Gönder?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: asla
+            when_away: yalnızca uzaktayken
+            always: her zaman

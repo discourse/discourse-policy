@@ -17,5 +17,21 @@ it:
       staff_only: "Le informative si possono applicare solo ai messaggi dello staff"
   reports:
     unaccepted-policies:
+      title: Informative non accettate
       labels:
         topic_id: ID dell'argomento
+        user_id: ID utente
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
+      subject: "Un'informativa richiede la tua revisione: %{topic_title}"
+      visit_topic: "Visita l'argomento"
+      visit_link_to_respond: "%{visit_topic_link} per rispondere."
+      unsubscribe: "Cambia %{email_preferences_link} o %{unsubscribe_link} per annullare l'iscrizione."
+      your_policy_email_settings: "preferenza di frequenza delle e-mail sulle informative"
+  unsubscribe:
+    policy_emails:
+      select_title: "Imposta la frequenza delle e-mail sulle informative a:"
+      never: Mai
+      when_away: Solo quando non sono collegato
+      always: Sempre

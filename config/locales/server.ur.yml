@@ -9,3 +9,7 @@ ur:
     unaccepted-policies:
       labels:
         topic_id: ٹاپک ID
+  unsubscribe:
+    policy_emails:
+      never: کبھی نہیں
+      always: ہمیشہ

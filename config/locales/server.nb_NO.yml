@@ -9,3 +9,7 @@ nb_NO:
     unaccepted-policies:
       labels:
         topic_id: Emne-ID
+  unsubscribe:
+    policy_emails:
+      never: Aldri
+      always: Alltid

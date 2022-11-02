@@ -9,3 +9,7 @@ sq:
     unaccepted-policies:
       labels:
         topic_id: ID e temës
+  unsubscribe:
+    policy_emails:
+      never: Asnjëherë
+      always: Gjithmonë

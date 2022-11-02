@@ -12,3 +12,11 @@ nb_NO:
           label: Grupper
         private:
           label: Privat?
+        send-email:
+          label: Send e-post?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: aldri
+            when_away: bare når du er borte
+            always: alltid

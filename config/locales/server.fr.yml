@@ -17,5 +17,21 @@ fr:
       staff_only: "Les politiques ne peuvent s'appliquer qu'aux messages du personnel"
   reports:
     unaccepted-policies:
+      title: Politiques non acceptées
       labels:
         topic_id: ID du sujet
+        user_id: Identifiant d'utilisateur
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
+      subject: "Une politique a besoin de votre examen : %{topic_title}"
+      visit_topic: "Consulter le sujet"
+      visit_link_to_respond: "%{visit_topic_link} pour répondre."
+      unsubscribe: "Modifiez vos %{email_preferences_link} ou %{unsubscribe_link} pour vous désabonner."
+      your_policy_email_settings: "préférences de fréquence des e-mails liés aux politiques"
+  unsubscribe:
+    policy_emails:
+      select_title: "Définissez la fréquence des e-mails d'alerte liés aux politiques sur :"
+      never: Jamais
+      when_away: Seulement en cas d'absence
+      always: Toujours

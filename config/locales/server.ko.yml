@@ -9,3 +9,10 @@ ko:
     unaccepted-policies:
       labels:
         topic_id: 토픽 ID
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
+  unsubscribe:
+    policy_emails:
+      never: 알림 받지 않기
+      always: 항상

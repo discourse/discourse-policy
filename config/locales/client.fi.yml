@@ -13,13 +13,18 @@ fi:
       accept_policy: "Hyväksy käytäntö"
       revoke_policy: "Peru käytäntö"
       edit_reason: "Käytäntöasetuksia on muutettu"
+      no_possible_users: "Tällä käytännöllä ei ole mahdollisia käyttäjiä"
       builder:
         title: Käytäntö
         attach: Luo käytäntö
         save: Tallenna muutokset
         insert: Lisää
+        errors:
+          group: Ryhmä on pakollinen
+          version: Versio on pakollinen
         groups:
           label: Ryhmät
+          description: Tähän käytäntöön liittyvät ryhmät
         version:
           label: Versio
           description: Käytännön versio, version korotus pakottaa ihmiset hyväksymään sen uudelleen
@@ -41,3 +46,16 @@ fi:
         private:
           label: Yksityinen?
           description: Pidä käytännön tila yksityisenä järjestelmänvalvojille
+        send-email:
+          label: Lähetetäänkö sähköposti?
+          description: Ilmoita käyttäjille uudesta käytännöstä sähköpostitse
+      preferences:
+        title: Käytännöt
+        policy_emails:
+          always_description: Lähetämme sinulle sähköpostin vain, jos olet valinnut vastaanottavasi sähköposteja uusista aktiviteeteista.
+          away_description: Lähetämme sinulle sähköpostin vain, jos emme ole nähneet sinua viimeisten 10 minuutin aikana käytännön tilan muuttuessa, ja jos olet valinnut vastaanottavasi sähköposteja uusista aktiviteeteista.
+          label: Lähetä minulle sähköposti, kun käytäntö tarvitsee tarkistustani
+          email_frequency_options:
+            never: ei koskaan
+            when_away: vain, kun olen poissa
+            always: aina

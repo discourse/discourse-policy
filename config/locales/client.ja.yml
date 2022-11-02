@@ -13,13 +13,18 @@ ja:
       accept_policy: "ポリシーに同意"
       revoke_policy: "ポリシーへの同意を取り消す"
       edit_reason: "ポリシーの設定が変更されました"
+      no_possible_users: "このポリシーには可能なユーザーがいません"
       builder:
         title: ポリシー
         attach: ポリシーを作成
         save: 変更を保存　
         insert: 挿入
+        errors:
+          group: グループが必要です
+          version: バージョンが必要です
         groups:
           label: グループ
+          description: このポリシーに関連付けられているグループ
         version:
           label: バージョン
           description: ポリシーのバージョン。バージョンを上げると、ユーザーはそれに同意し直する必要があります
@@ -41,3 +46,16 @@ ja:
         private:
           label: 非公開？
           description: ポリシーステータスを管理者に非公開にします
+        send-email:
+          label: メールを送信?
+          description: ユーザーにメールで新しいポリシーを通知する
+      preferences:
+        title: ポリシー
+        policy_emails:
+          always_description: 新しいアクティビティメールもオプトインしている場合にのみ、メールが送信されます。
+          away_description: ポリシーのステータスが変更された時点で 10 分以上アクセスがない場合で、新しいアクティビティメールにオプトインしている場合にのみ、メールを送信します。
+          label: ポリシーをレビューする必要がある場合にメールで通知を受け取る
+          email_frequency_options:
+            never: 送信しない
+            when_away: 退席中の時のみ
+            always: 常に

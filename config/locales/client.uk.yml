@@ -12,3 +12,11 @@ uk:
           label: Групи
         private:
           label: Приватні?
+        send-email:
+          label: Відправити лист?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: ніколи
+            when_away: тільки коли вдалині
+            always: завжди

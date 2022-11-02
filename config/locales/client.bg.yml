@@ -12,3 +12,11 @@ bg:
           label: Групи
         private:
           label: Затворени?
+        send-email:
+          label: Изпрати имейл?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: никога
+            when_away: само когато не съм на линия
+            always: винаги

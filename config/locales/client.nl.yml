@@ -12,3 +12,11 @@ nl:
           label: Groepen
         private:
           label: Privé?
+        send-email:
+          label: E-mail versturen?
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: nooit
+            when_away: alleen wanneer afwezig
+            always: altijd

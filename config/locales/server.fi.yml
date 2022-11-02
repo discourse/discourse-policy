@@ -17,5 +17,21 @@ fi:
       staff_only: "Käytännöt voivat koskea vain henkilökunnan viestejä"
   reports:
     unaccepted-policies:
+      title: Hyväksymättömät käytännöt
       labels:
         topic_id: Ketjun tunnus
+        user_id: Käyttäjätunnus
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
+      subject: "Käytäntö vaatii tarkistustasi: %{topic_title}"
+      visit_topic: "Vieraile ketjussa"
+      visit_link_to_respond: "%{visit_topic_link} vastataksesi."
+      unsubscribe: "Muuta %{email_preferences_link} tai %{unsubscribe_link} peruuttaaksesi tilauksen."
+      your_policy_email_settings: "käytäntösähköpostien tiheysasetustasi"
+  unsubscribe:
+    policy_emails:
+      select_title: "Aseta käytäntöhälytyssähköpostien tiheydeksi:"
+      never: Ei koskaan
+      when_away: Vain, kun olen poissa
+      always: Aina

@@ -9,3 +9,7 @@ sw:
     unaccepted-policies:
       labels:
         topic_id: Utambulisho wa Mada
+  unsubscribe:
+    policy_emails:
+      never: Kamwe
+      always: Mara kwa mara

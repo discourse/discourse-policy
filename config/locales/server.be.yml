@@ -9,3 +9,7 @@ be:
     unaccepted-policies:
       labels:
         topic_id: Номер тэмы
+  unsubscribe:
+    policy_emails:
+      never: ніколі
+      always: заўсёды

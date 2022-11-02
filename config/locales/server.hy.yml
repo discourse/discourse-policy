@@ -9,3 +9,7 @@ hy:
     unaccepted-policies:
       labels:
         topic_id: Թեմայի ID
+  unsubscribe:
+    policy_emails:
+      never: Երբեք
+      always: Միշտ

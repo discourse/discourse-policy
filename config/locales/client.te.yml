@@ -10,3 +10,8 @@ te:
       builder:
         groups:
           label: గుంపులు
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: ఎప్పటికీ వద్దు
+            always: ఎల్లప్పుడూ

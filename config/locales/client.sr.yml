@@ -10,3 +10,8 @@ sr:
       builder:
         groups:
           label: Grupe
+      preferences:
+        policy_emails:
+          email_frequency_options:
+            never: nikada
+            always: uvek

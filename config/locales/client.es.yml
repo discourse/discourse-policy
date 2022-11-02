@@ -13,13 +13,18 @@ es:
       accept_policy: "Aceptar política"
       revoke_policy: "Rechazar política"
       edit_reason: "Se ha modificado la configuración de la política"
+      no_possible_users: "Esta política no tiene usuarios posibles"
       builder:
         title: Política
         attach: Crear política
         save: Guardar cambios
         insert: Insertar
+        errors:
+          group: El grupo es obligatorio
+          version: La versión es obligatoria
         groups:
           label: Grupos
+          description: Los grupos asociados a esta política
         version:
           label: Versión
           description: La versión de la política, cambiar la versión obligará a las personas a volver a aceptarla
@@ -41,3 +46,16 @@ es:
         private:
           label: '¿Privado?'
           description: Mantener el estado de la política en privado para los administradores
+        send-email:
+          label: '¿Enviar correo electrónico?'
+          description: Notificar a los usuarios la nueva política por correo electrónico
+      preferences:
+        title: Políticas
+        policy_emails:
+          always_description: Solo te enviaremos un correo electrónico si también has optado por recibir correos electrónicos de nuevas actividades.
+          away_description: Solo te enviaremos un correo electrónico si no te hemos visto en los últimos 10 minutos cuando cambie el estado de la política, y solo si también has optado por recibir correos electrónicos con nuevas actividades.
+          label: Envíame un correo electrónico cuando una política necesite mi revisión
+          email_frequency_options:
+            never: nunca
+            when_away: solo cuando no esté en la página
+            always: siempre

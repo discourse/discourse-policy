@@ -13,13 +13,18 @@ de:
       accept_policy: "Richtlinie akzeptieren"
       revoke_policy: "Richtlinie widerrufen"
       edit_reason: "Richtlinieneinstellungen wurden geändert"
+      no_possible_users: "Diese Richtlinie hat keine möglichen Benutzer"
       builder:
         title: Richtlinie
         attach: Richtlinie erstellen
         save: Änderungen speichern
         insert: Einfügen
+        errors:
+          group: Gruppe ist erforderlich
+          version: Version ist erforderlich
         groups:
           label: Gruppen
+          description: Die mit dieser Richtlinie verknüpften Gruppen
         version:
           label: Version
           description: Die Version der Richtlinie. Das Erhöhen der Version zwingt die Benutzer dazu, sie erneut zu akzeptieren
@@ -41,3 +46,16 @@ de:
         private:
           label: Privat?
           description: Status der Richtlinie für Administratoren privat halten
+        send-email:
+          label: E-Mail senden?
+          description: Benutzer per E-Mail über die neue Richtlinie benachrichtigen
+      preferences:
+        title: Richtlinien
+        policy_emails:
+          always_description: Wir schicken dir nur dann eine E-Mail, wenn du dich auch für E-Mails zu neuen Aktivitäten angemeldet hast.
+          away_description: Wir schicken dir nur dann eine E-Mail, wenn wir dich in den letzten 10 Minuten nicht gesehen haben, wenn sich der Richtlinienstatus ändert, und wenn du dich auch für E-Mails zu neuen Aktivitäten angemeldet hast.
+          label: E-Mail an mich, wenn eine Richtlinie meine Überprüfung benötigt
+          email_frequency_options:
+            never: nie
+            when_away: nur bei Abwesenheit
+            always: immer
