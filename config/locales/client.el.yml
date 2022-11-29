@@ -7,14 +7,22 @@
 el:
   js:
     discourse_policy:
+      accept_policy: "Αποδοχή Πολιτικής"
+      revoke_policy: "Ανάκληση Πολιτικής"
       builder:
+        title: Πολιτική
+        attach: Δημιουργία Πολιτικής
+        save: Αποθήκευση αλλαγών
         groups:
           label: Ομάδες
+        renew:
+          label: Ανανέωση
         private:
           label: Ιδιωτική?
         send-email:
           label: Αποστολή Email?
       preferences:
+        title: Πολιτικές
         policy_emails:
           email_frequency_options:
             never: ποτέ
