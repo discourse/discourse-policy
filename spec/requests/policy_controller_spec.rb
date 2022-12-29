@@ -14,7 +14,7 @@ describe DiscoursePolicy::PolicyController do
     group.add(user2)
   end
 
-  it 'can allows users to accept/reject policy' do
+  it "can allows users to accept/reject policy" do
     raw = <<~MD
      [policy group=#{group.name}]
      I always open **doors**!
@@ -38,12 +38,10 @@ describe DiscoursePolicy::PolicyController do
     expect(post.reload.post_policy.accepted_by.map(&:id)).to eq([user1.id])
   end
 
-  describe '#accepted' do
-    before do
-      sign_in(user1)
-    end
+  describe "#accepted" do
+    before { sign_in(user1) }
 
-    it 'returns pages of users who accepted' do
+    it "returns pages of users who accepted" do
       raw = <<~MD
        [policy groups=#{group.name}]
        I always open **doors**!
@@ -56,24 +54,25 @@ describe DiscoursePolicy::PolicyController do
 
       get "/policy/accepted.json", params: { post_id: post.id, offset: 0 }
       expect(response.status).to eq(200)
-      expect(response.parsed_body['users'].map { |x| x['id'] }).to contain_exactly(user1.id, user2.id)
+      expect(response.parsed_body["users"].map { |x| x["id"] }).to contain_exactly(
+        user1.id,
+        user2.id,
+      )
 
       get "/policy/accepted.json", params: { post_id: post.id, offset: 1 }
       expect(response.status).to eq(200)
-      expect(response.parsed_body['users'].map { |x| x['id'] }).to contain_exactly(user2.id)
+      expect(response.parsed_body["users"].map { |x| x["id"] }).to contain_exactly(user2.id)
 
       get "/policy/accepted.json", params: { post_id: post.id, offset: 2 }
       expect(response.status).to eq(200)
-      expect(response.parsed_body['users'].map { |x| x['id'] }).to contain_exactly()
+      expect(response.parsed_body["users"].map { |x| x["id"] }).to contain_exactly
     end
   end
 
-  describe '#not_accepted' do
-    before do
-      sign_in(user1)
-    end
+  describe "#not_accepted" do
+    before { sign_in(user1) }
 
-    it 'returns pages of users who accepted' do
+    it "returns pages of users who accepted" do
       raw = <<~MD
        [policy group=#{group.name}]
        I always open **doors**!
@@ -84,15 +83,18 @@ describe DiscoursePolicy::PolicyController do
 
       get "/policy/not-accepted.json", params: { post_id: post.id, offset: 0 }
       expect(response.status).to eq(200)
-      expect(response.parsed_body['users'].map { |x| x['id'] }).to contain_exactly(user1.id, user2.id)
+      expect(response.parsed_body["users"].map { |x| x["id"] }).to contain_exactly(
+        user1.id,
+        user2.id,
+      )
 
       get "/policy/not-accepted.json", params: { post_id: post.id, offset: 1 }
       expect(response.status).to eq(200)
-      expect(response.parsed_body['users'].map { |x| x['id'] }).to contain_exactly(user2.id)
+      expect(response.parsed_body["users"].map { |x| x["id"] }).to contain_exactly(user2.id)
 
       get "/policy/not-accepted.json", params: { post_id: post.id, offset: 2 }
       expect(response.status).to eq(200)
-      expect(response.parsed_body['users'].map { |x| x['id'] }).to contain_exactly()
+      expect(response.parsed_body["users"].map { |x| x["id"] }).to contain_exactly
     end
   end
 end

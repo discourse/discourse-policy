@@ -20,7 +20,7 @@ class PolicyUser < ActiveRecord::Base
       post_policy_id: post_policy.id,
       user_id: user.id,
       accepted_at: Time.zone.now,
-      version: post_policy.version
+      version: post_policy.version,
     )
   end
 
@@ -36,7 +36,7 @@ class PolicyUser < ActiveRecord::Base
       post_policy_id: post_policy.id,
       user_id: user.id,
       revoked_at: Time.zone.now,
-      version: post_policy.version
+      version: post_policy.version,
     )
   end
 end

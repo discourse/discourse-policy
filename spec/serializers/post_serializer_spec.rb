@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 describe PostSerializer do
   fab!(:group) { Fabricate(:group) }
@@ -16,7 +16,7 @@ describe PostSerializer do
     group.add(user2)
   end
 
-  it 'includes users in the serializer' do
+  it "includes users in the serializer" do
     raw = <<~MD
      [policy group=#{group.name}]
      I always open **doors**!
@@ -46,7 +46,7 @@ describe PostSerializer do
     expect(accepted.map { |u| u[:id] }).to contain_exactly(user1.id)
   end
 
-  it 'works if group not found' do
+  it "works if group not found" do
     raw = <<~MD
      [policy group=#{group.name}]
      I always open **doors**!
@@ -65,7 +65,7 @@ describe PostSerializer do
     expect(not_accepted.length).to eq(0)
   end
 
-  it 'excludes inactive users' do
+  it "excludes inactive users" do
     user1.active = false
     user1.save!
 
@@ -84,7 +84,7 @@ describe PostSerializer do
     expect(json[:post][:policy_accepted_by]).to be_empty
   end
 
-  it 'excludes suspended users' do
+  it "excludes suspended users" do
     user1.suspended_till = 1.year.from_now
     user1.save!
 
@@ -103,7 +103,7 @@ describe PostSerializer do
     expect(json[:post][:policy_accepted_by]).to be_empty
   end
 
-  it 'does not include users if private' do
+  it "does not include users if private" do
     raw = <<~MD
      [policy group=#{group.name} private=true]
      I always open **doors**!
@@ -120,12 +120,15 @@ describe PostSerializer do
     expect(json[:post][:policy_accepted_by]).to eq(nil)
 
     json = PostSerializer.new(post, scope: admin.guardian).as_json
-    expect(json[:post][:policy_not_accepted_by].map { |u| u[:id] }).to contain_exactly(admin.id, user2.id)
+    expect(json[:post][:policy_not_accepted_by].map { |u| u[:id] }).to contain_exactly(
+      admin.id,
+      user2.id,
+    )
     expect(json[:post][:policy_accepted_by].map { |u| u[:id] }).to contain_exactly(user1.id)
   end
 
-  describe 'policy_easy_revoke' do
-    it 'lets user accept and revoke post at the same time if enabled' do
+  describe "policy_easy_revoke" do
+    it "lets user accept and revoke post at the same time if enabled" do
       raw = <<~MD
        [policy group=#{group.name}]
        I always open **doors**!

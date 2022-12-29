@@ -1,20 +1,13 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 describe DiscoursePolicy::CheckPolicy do
+  before { Jobs.run_immediately! }
 
-  before do
-    Jobs.run_immediately!
-  end
+  fab!(:user1) { Fabricate(:user) }
 
-  fab!(:user1) do
-    Fabricate(:user)
-  end
-
-  fab!(:user2) do
-    Fabricate(:user)
-  end
+  fab!(:user2) { Fabricate(:user) }
 
   fab!(:group) do
     group = Fabricate(:group)
@@ -24,9 +17,7 @@ describe DiscoursePolicy::CheckPolicy do
   end
 
   def accept_policy(post)
-    [user1, user2].each do |u|
-      PolicyUser.add!(u, post.post_policy)
-    end
+    [user1, user2].each { |u| PolicyUser.add!(u, post.post_policy) }
   end
 
   it "correctly renews policies with no renew-start" do
@@ -109,7 +100,6 @@ describe DiscoursePolicy::CheckPolicy do
   end
 
   it "correctly renews policies" do
-
     freeze_time Time.utc(2019)
 
     raw = <<~MD
@@ -148,15 +138,15 @@ describe DiscoursePolicy::CheckPolicy do
     expect(post.post_policy.accepted_by.sort).to eq([user2])
   end
 
-  %w(monthly quarterly yearly).each do |how_often|
+  %w[monthly quarterly yearly].each do |how_often|
     it "sets correctly next_renew_at for #{how_often} when renew-start is set" do
       period =
         case how_often
-        when 'monthly'
+        when "monthly"
           1.month
-        when 'quarterly'
+        when "quarterly"
           3.months
-        when 'yearly'
+        when "yearly"
           12.months
         end
       freeze_time Time.utc(2020, 10, 16)
@@ -188,15 +178,15 @@ describe DiscoursePolicy::CheckPolicy do
     end
   end
 
-  %w(monthly quarterly yearly).each do |how_often|
+  %w[monthly quarterly yearly].each do |how_often|
     it "expires policies when #{how_often}" do
       period =
         case how_often
-        when 'monthly'
+        when "monthly"
           1.month
-        when 'quarterly'
+        when "quarterly"
           3.months
-        when 'yearly'
+        when "yearly"
           12.months
         end
       freeze_time Time.utc(2020, 10, 16)
@@ -242,18 +232,32 @@ describe DiscoursePolicy::CheckPolicy do
 
     DiscoursePolicy::CheckPolicy.new.execute
 
-    expect(user1.notifications.where(notification_type: Notification.types[:topic_reminder]).count).to eq(0)
-    expect(user2.notifications.where(notification_type: Notification.types[:topic_reminder]).count).to eq(0)
+    expect(
+      user1.notifications.where(notification_type: Notification.types[:topic_reminder]).count,
+    ).to eq(0)
+    expect(
+      user2.notifications.where(notification_type: Notification.types[:topic_reminder]).count,
+    ).to eq(0)
 
     freeze_time 2.weeks.from_now
 
     DiscoursePolicy::CheckPolicy.new.execute
     DiscoursePolicy::CheckPolicy.new.execute
 
-    user1_notifications = user1.notifications.where(notification_type: Notification.types[:topic_reminder], topic_id: post.topic_id, post_number: 1)
+    user1_notifications =
+      user1.notifications.where(
+        notification_type: Notification.types[:topic_reminder],
+        topic_id: post.topic_id,
+        post_number: 1,
+      )
     expect(user1_notifications.count).to eq(1)
     expect(user1_notifications.first.high_priority).to eq(true)
-    user2_notifications = user2.notifications.where(notification_type: Notification.types[:topic_reminder], topic_id: post.topic_id, post_number: 1)
+    user2_notifications =
+      user2.notifications.where(
+        notification_type: Notification.types[:topic_reminder],
+        topic_id: post.topic_id,
+        post_number: 1,
+      )
     expect(user2_notifications.count).to eq(1)
     expect(user2_notifications.first.high_priority).to eq(true)
   end
@@ -272,20 +276,39 @@ describe DiscoursePolicy::CheckPolicy do
 
     DiscoursePolicy::CheckPolicy.new.execute
 
-    expect(user1.notifications.where(notification_type: Notification.types[:topic_reminder]).count).to eq(0)
+    expect(
+      user1.notifications.where(notification_type: Notification.types[:topic_reminder]).count,
+    ).to eq(0)
 
     freeze_time 2.weeks.from_now
 
     DiscoursePolicy::CheckPolicy.new.execute
 
-    user1_notification = user1.notifications.where(notification_type: Notification.types[:topic_reminder], topic_id: post.topic_id, post_number: 1).last
+    user1_notification =
+      user1
+        .notifications
+        .where(
+          notification_type: Notification.types[:topic_reminder],
+          topic_id: post.topic_id,
+          post_number: 1,
+        )
+        .last
     expect(user1_notification).not_to eq(nil)
 
     freeze_time 2.weeks.from_now
 
     DiscoursePolicy::CheckPolicy.new.execute
 
-    expect(user1.notifications.where(notification_type: Notification.types[:topic_reminder], topic_id: post.topic_id, post_number: 1).count).to eq(1)
+    expect(
+      user1
+        .notifications
+        .where(
+          notification_type: Notification.types[:topic_reminder],
+          topic_id: post.topic_id,
+          post_number: 1,
+        )
+        .count,
+    ).to eq(1)
     expect(Notification.find_by(id: user1_notification.id)).to eq(nil)
   end
 

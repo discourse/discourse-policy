@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 describe PostPolicy do
-  before do
-    Jobs.run_immediately!
-  end
+  before { Jobs.run_immediately! }
 
   fab!(:user1) { Fabricate(:user) }
   fab!(:user2) { Fabricate(:user) }
@@ -27,12 +25,12 @@ describe PostPolicy do
     group
   end
 
-  fab!(:policy) {
+  fab!(:policy) do
     policy = Fabricate(:post_policy)
     PostPolicyGroup.create!(post_policy_id: policy.id, group_id: group1.id)
     PostPolicyGroup.create!(post_policy_id: policy.id, group_id: group2.id)
     policy
-  }
+  end
 
   describe "#accepted_by" do
     it "returns empty if no policy group" do
@@ -119,7 +117,9 @@ describe PostPolicy do
 
     it "shows users who have requested emails and have not accepted yet" do
       user1.user_option.update(policy_email_frequency: UserOption.policy_email_frequencies[:always])
-      user2.user_option.update(policy_email_frequency: UserOption.policy_email_frequencies[:when_away])
+      user2.user_option.update(
+        policy_email_frequency: UserOption.policy_email_frequencies[:when_away],
+      )
 
       user2.update(last_seen_at: 30.minutes.ago)
 
@@ -147,7 +147,9 @@ describe PostPolicy do
 
   describe "#emailed_by_when_away" do
     it "shows users who have opted for emails when away" do
-      user1.user_option.update(policy_email_frequency: UserOption.policy_email_frequencies[:when_away])
+      user1.user_option.update(
+        policy_email_frequency: UserOption.policy_email_frequencies[:when_away],
+      )
       user2.user_option.update(policy_email_frequency: UserOption.policy_email_frequencies[:never])
 
       user1.update(last_seen_at: 30.minutes.ago)
@@ -156,7 +158,9 @@ describe PostPolicy do
     end
 
     it "returns empty if users who requested emails when away have accepted" do
-      user1.user_option.update(policy_email_frequency: UserOption.policy_email_frequencies[:when_away])
+      user1.user_option.update(
+        policy_email_frequency: UserOption.policy_email_frequencies[:when_away],
+      )
       user2.user_option.update(policy_email_frequency: UserOption.policy_email_frequencies[:never])
 
       PolicyUser.add!(user1, policy)

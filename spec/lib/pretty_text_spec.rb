@@ -1,11 +1,9 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 describe PrettyText do
-  before do
-    SiteSetting.queue_jobs = false
-  end
+  before { SiteSetting.queue_jobs = false }
 
   it "can properly decorate policies (legacy)" do
     raw = <<~MD
@@ -40,7 +38,6 @@ describe PrettyText do
   end
 
   it "sets the custom attribute on posts with policies" do
-
     SiteSetting.policy_restrict_to_staff_posts = false
 
     raw = <<~MD
@@ -52,7 +49,7 @@ describe PrettyText do
     post = create_post(raw: raw)
     post = Post.find(post.id)
 
-    expect(post.post_policy.groups.pluck(:name)).to eq(['staff'])
+    expect(post.post_policy.groups.pluck(:name)).to eq(["staff"])
 
     post.revise(post.user, raw: "i am new raw")
 
@@ -62,7 +59,6 @@ describe PrettyText do
   end
 
   it "allows policy to expire for end users on demand" do
-
     SiteSetting.policy_restrict_to_staff_posts = false
 
     freeze_time
@@ -85,11 +81,9 @@ describe PrettyText do
     freeze_time(2.days.from_now)
     ::DiscoursePolicy::CheckPolicy.new.execute(nil)
     expect(post.post_policy.accepted_by).to eq([])
-
   end
 
   it "resets list of accepted users if version is bumped" do
-
     SiteSetting.policy_restrict_to_staff_posts = false
 
     freeze_time
@@ -112,7 +106,7 @@ describe PrettyText do
 
     expect(post.post_policy.reminder).to eq("weekly")
     expect(post.post_policy.last_reminded_at).to eq_time(Time.zone.now)
-    expect(post.post_policy.groups.pluck(:name).sort).to eq(['staff'])
+    expect(post.post_policy.groups.pluck(:name).sort).to eq(["staff"])
 
     raw = <<~MD
      [policy groups=trust_level_1,trust_level_0 version=2 reminder=weekly]
@@ -125,6 +119,6 @@ describe PrettyText do
     post = Post.find(post.id)
     expect(post.post_policy.accepted_by).to eq([])
 
-    expect(post.post_policy.groups.pluck(:name).sort).to eq(['trust_level_0', 'trust_level_1'])
+    expect(post.post_policy.groups.pluck(:name).sort).to eq(%w[trust_level_0 trust_level_1])
   end
 end

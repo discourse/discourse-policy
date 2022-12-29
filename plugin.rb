@@ -57,9 +57,7 @@ after_initialize do
     get "/not-accepted" => "policy#not_accepted"
   end
 
-  Discourse::Application.routes.append do
-    mount ::DiscoursePolicy::Engine, at: "/policy"
-  end
+  Discourse::Application.routes.append { mount ::DiscoursePolicy::Engine, at: "/policy" }
 
   TopicView.default_post_custom_fields << DiscoursePolicy::HAS_POLICY
 
@@ -67,8 +65,7 @@ after_initialize do
     has_group = false
 
     if !SiteSetting.policy_restrict_to_staff_posts || post&.user&.staff?
-      if policy = doc.search('.policy')&.first
-
+      if policy = doc.search(".policy")&.first
         post_policy = post.post_policy || post.build_post_policy
 
         group_names = []
@@ -81,11 +78,9 @@ after_initialize do
           group_names.concat(groups.split(","))
         end
 
-        new_group_ids = Group.where('name in (?)', group_names).pluck(:id)
+        new_group_ids = Group.where("name in (?)", group_names).pluck(:id)
 
-        if new_group_ids.length > 0
-          has_group = true
-        end
+        has_group = true if new_group_ids.length > 0
 
         existing_ids = post_policy.post_policy_groups.pluck(:group_id)
 
@@ -94,9 +89,7 @@ after_initialize do
         new_relations = []
 
         post_policy.post_policy_groups.each do |relation|
-          if new_group_ids.include?(relation.group_id)
-            new_relations << relation
-          end
+          new_relations << relation if new_group_ids.include?(relation.group_id)
         end
 
         missing.each do |id|
@@ -107,7 +100,8 @@ after_initialize do
 
         renew_days = policy["data-renew"]
         if (renew_days.to_i) > 0 || PostPolicy.renew_intervals.keys.include?(renew_days)
-          post_policy.renew_days = PostPolicy.renew_intervals.keys.include?(renew_days) ? nil : renew_days
+          post_policy.renew_days =
+            PostPolicy.renew_intervals.keys.include?(renew_days) ? nil : renew_days
           post_policy.renew_interval = post_policy.renew_days.present? ? nil : renew_days
 
           post_policy.renew_start = nil
@@ -116,8 +110,7 @@ after_initialize do
             begin
               renew_start = Date.parse(renew_start)
               post_policy.renew_start = renew_start
-              if !post_policy.next_renew_at ||
-                  post_policy.next_renew_at < renew_start
+              if !post_policy.next_renew_at || post_policy.next_renew_at < renew_start
                 post_policy.next_renew_at = renew_start
               end
             rescue ArgumentError
@@ -126,7 +119,6 @@ after_initialize do
           else
             post_policy.next_renew_at = nil
           end
-
         else
           post_policy.renew_days = nil
           post_policy.renew_start = nil
@@ -162,12 +154,12 @@ after_initialize do
     end
   end
 
-  require_dependency 'post'
+  require_dependency "post"
   class ::Post
     has_one :post_policy, dependent: :destroy
   end
 
-  require_dependency 'post_serializer'
+  require_dependency "post_serializer"
   class ::PostSerializer
     attributes :policy_can_accept,
                :policy_can_revoke,
@@ -188,24 +180,26 @@ after_initialize do
       include_policy? && (scope.is_admin? || !post_policy.private?)
     end
 
-    alias :include_policy_can_accept? :include_policy?
-    alias :include_policy_can_revoke? :include_policy?
-    alias :include_policy_accepted? :include_policy?
-    alias :include_policy_revoked? :include_policy?
-    alias :include_policy_not_accepted_by? :include_policy_stats?
-    alias :include_policy_not_accepted_by_count? :include_policy_stats?
-    alias :include_policy_accepted_by? :include_policy_stats?
-    alias :include_policy_accepted_by_count? :include_policy_stats?
+    alias include_policy_can_accept? include_policy?
+    alias include_policy_can_revoke? include_policy?
+    alias include_policy_accepted? include_policy?
+    alias include_policy_revoked? include_policy?
+    alias include_policy_not_accepted_by? include_policy_stats?
+    alias include_policy_not_accepted_by_count? include_policy_stats?
+    alias include_policy_accepted_by? include_policy_stats?
+    alias include_policy_accepted_by_count? include_policy_stats?
 
     has_many :policy_not_accepted_by, embed: :object, serializer: BasicUserSerializer
     has_many :policy_accepted_by, embed: :object, serializer: BasicUserSerializer
 
     def policy_can_accept
-      scope.authenticated? && (SiteSetting.policy_easy_revoke || post_policy.not_accepted_by.exists?(id: scope.user.id))
+      scope.authenticated? &&
+        (SiteSetting.policy_easy_revoke || post_policy.not_accepted_by.exists?(id: scope.user.id))
     end
 
     def policy_can_revoke
-      scope.authenticated? && (SiteSetting.policy_easy_revoke || post_policy.accepted_by.exists?(id: scope.user.id))
+      scope.authenticated? &&
+        (SiteSetting.policy_easy_revoke || post_policy.accepted_by.exists?(id: scope.user.id))
     end
 
     def policy_accepted
