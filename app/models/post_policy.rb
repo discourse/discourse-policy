@@ -1,9 +1,8 @@
 # frozen_string_literal: true
 
 class PostPolicy < ActiveRecord::Base
-
   self.ignored_columns = [
-    "group_id" # TODO (sam) (2023-01-01) remove
+    "group_id", # TODO (sam) (2023-01-01) remove
   ]
 
   belongs_to :post
@@ -52,24 +51,30 @@ class PostPolicy < ActiveRecord::Base
   private
 
   def emails_enabled_users
-    policy_group_users
-      .joins(:user_option)
-      .where('
+    policy_group_users.joins(:user_option).where(
+      "
         (user_options.policy_email_frequency = ?)
-        OR (user_options.policy_email_frequency = ? and users.last_seen_at < ?)',
-        UserOption.policy_email_frequencies[:always],
-        UserOption.policy_email_frequencies[:when_away],
-        10.minutes.ago
-      )
+        OR (user_options.policy_email_frequency = ? and users.last_seen_at < ?)",
+      UserOption.policy_email_frequencies[:always],
+      UserOption.policy_email_frequencies[:when_away],
+      10.minutes.ago,
+    )
   end
 
   def emails_enabled_always_users
-    policy_group_users.joins(:user_option).where('user_options.policy_email_frequency = ?', UserOption.policy_email_frequencies[:always])
+    policy_group_users.joins(:user_option).where(
+      "user_options.policy_email_frequency = ?",
+      UserOption.policy_email_frequencies[:always],
+    )
   end
 
   def emails_enabled_when_away_users
     policy_group_users
-      .joins(:user_option).where('user_options.policy_email_frequency = ?', UserOption.policy_email_frequencies[:when_away])
+      .joins(:user_option)
+      .where(
+        "user_options.policy_email_frequency = ?",
+        UserOption.policy_email_frequencies[:when_away],
+      )
       .where("users.last_seen_at < ?", 10.minutes.ago)
   end
 
@@ -86,8 +91,8 @@ class PostPolicy < ActiveRecord::Base
       .activated
       .not_suspended
       .joins(:group_users)
-      .joins('JOIN post_policy_groups on post_policy_groups.group_id = group_users.group_id')
-      .where('post_policy_groups.post_policy_id = ?', id)
+      .joins("JOIN post_policy_groups on post_policy_groups.group_id = group_users.group_id")
+      .where("post_policy_groups.post_policy_id = ?", id)
       .order(:id)
       .distinct
   end

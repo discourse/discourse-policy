@@ -1,18 +1,22 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 describe DiscoursePolicy do
-  describe 'after_initialize' do
+  describe "after_initialize" do
     before { Jobs.run_immediately! }
 
     fab!(:user1) { Fabricate(:user) }
 
     it "serializes user options correctly" do
-      user1.user_option.update(policy_email_frequency: UserOption.policy_email_frequencies[:when_away])
+      user1.user_option.update(
+        policy_email_frequency: UserOption.policy_email_frequencies[:when_away],
+      )
 
       @plugin = Plugin::Instance.new
-      @plugin.add_to_serializer(:user_option, :policy_email_frequency) { object.policy_email_frequency }
+      @plugin.add_to_serializer(:user_option, :policy_email_frequency) do
+        object.policy_email_frequency
+      end
 
       json = UserSerializer.new(user1, scope: Guardian.new(user1), root: false).as_json
 
@@ -20,15 +24,15 @@ describe DiscoursePolicy do
     end
   end
 
-  describe 'post_process_cooked event' do
+  describe "post_process_cooked event" do
     before { Jobs.run_immediately! }
 
-    it 'sets next_renew_at when removing renew-start but not renew' do
+    it "sets next_renew_at when removing renew-start but not renew" do
       group = Fabricate(:group)
       renew_days = 10
       renew_start = 1.day.from_now.to_date
       raw = <<~MD
-        [policy group=#{group.name} renew="#{renew_days}" renew-start="#{renew_start.strftime('%F')}"]
+        [policy group=#{group.name} renew="#{renew_days}" renew-start="#{renew_start.strftime("%F")}"]
          Here's the new policy
         [/policy]
       MD

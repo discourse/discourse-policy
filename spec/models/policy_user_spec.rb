@@ -1,15 +1,11 @@
 # frozen_string_literal: true
 
-require 'rails_helper'
+require "rails_helper"
 
 describe PolicyUser do
-  before do
-    SiteSetting.queue_jobs = false
-  end
+  before { SiteSetting.queue_jobs = false }
 
-  fab!(:user) do
-    Fabricate(:user)
-  end
+  fab!(:user) { Fabricate(:user) }
 
   fab!(:group) do
     group = Fabricate(:group)
@@ -17,7 +13,7 @@ describe PolicyUser do
     group
   end
 
-  it 'allows to accept and revoke policy' do
+  it "allows to accept and revoke policy" do
     raw = <<~MD
      [policy group=#{group.name} renew=400]
      I always open **doors**!

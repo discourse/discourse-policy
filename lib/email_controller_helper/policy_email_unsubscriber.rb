@@ -13,7 +13,7 @@ module EmailControllerHelper
       controller.instance_variable_set(:@policy_email_frequencies, policy_email_frequencies)
       controller.instance_variable_set(
         :@current_policy_email_frequency,
-        key_owner.user_option.policy_email_frequency
+        key_owner.user_option.policy_email_frequency,
       )
     end
 
