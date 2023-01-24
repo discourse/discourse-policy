@@ -19,8 +19,8 @@ tr_TR:
     unaccepted-policies:
       title: Kabul edilmeyen politikalar
       labels:
-        topic_id: Konu ID
-        user_id: Kullanıcı Kimliği
+        topic_id: Konu kimliği
+        user_id: Kullanıcı kimliği
   user_notifications:
     policy_email:
       from: "%{site_name}"
