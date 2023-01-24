@@ -47,7 +47,7 @@ tr_TR:
           label: Özel?
           description: Politika durumunu yöneticilere gizli tutun
         send-email:
-          label: E-posta Gönder?
+          label: E-posta gönderilsin mi?
           description: Kullanıcıları yeni politikadan e-posta ile haberdar edin
       preferences:
         title: Politikalar
