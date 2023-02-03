@@ -2,6 +2,7 @@ import EmberObject from "@ember/object";
 import I18n from "I18n";
 import { withPluginApi } from "discourse/lib/plugin-api";
 import { escapeExpression } from "discourse/lib/utilities";
+import { hbs } from "ember-cli-htmlbars";
 
 const SETTINGS = [
   { name: "groups" },
@@ -67,14 +68,11 @@ function initializePolicy(api) {
 
     const post = helper.getModel();
 
-    const component = api.container.owner
-      .factoryFor("component:post-policy")
-      .create({
-        post,
-        policy: _buildPolicyAttributes(policy),
-      });
-
-    component.renderer.appendTo(component, policy);
+    helper.renderGlimmer(
+      policy,
+      hbs`<PostPolicy @post={{@data.post}} @policy={{@data.policy}} />`,
+      { post, policy: _buildPolicyAttributes(policy) }
+    );
   }
 
   api.decorateCookedElement(attachPolicy, {
