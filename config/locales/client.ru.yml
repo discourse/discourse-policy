@@ -52,5 +52,5 @@ ru:
         policy_emails:
           email_frequency_options:
             never: Никогда
-            when_away: Если вы находитесь офлайн
+            when_away: Если вы офлайн
             always: Всегда
