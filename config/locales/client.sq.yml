@@ -10,6 +10,10 @@ sq:
       builder:
         groups:
           label: Grupet
+        version:
+          label: Versioni
+        revoke:
+          label: Revoko
         send-email:
           label: Dërgo Email?
       preferences:

@@ -8,8 +8,15 @@ nb_NO:
   js:
     discourse_policy:
       builder:
+        insert: Sett inn
         groups:
           label: Grupper
+        version:
+          label: Versjon
+        accept:
+          label: Godta
+        revoke:
+          label: Trekk tilbake
         private:
           label: Privat?
         send-email:

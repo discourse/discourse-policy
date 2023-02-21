@@ -8,8 +8,15 @@ ko:
   js:
     discourse_policy:
       builder:
+        insert: 삽입
         groups:
           label: 그룹
+        version:
+          label: 버전
+        accept:
+          label: 동의
+        revoke:
+          label: 취소
         private:
           label: 비공개?
         send-email:

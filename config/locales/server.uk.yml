@@ -9,6 +9,9 @@ uk:
     unaccepted-policies:
       labels:
         topic_id: ID теми
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
   unsubscribe:
     policy_emails:
       never: Ніколи

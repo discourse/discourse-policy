@@ -8,8 +8,13 @@ sw:
   js:
     discourse_policy:
       builder:
+        insert: Weka
         groups:
           label: Vikundi
+        version:
+          label: Toleo
+        revoke:
+          label: Futa
         private:
           label: Binafsi?
         send-email:

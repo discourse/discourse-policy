@@ -8,8 +8,15 @@ bs_BA:
   js:
     discourse_policy:
       builder:
+        insert: Unesi
         groups:
           label: Grupe
+        version:
+          label: Verzija
+        accept:
+          label: Prihvati
+        revoke:
+          label: Revoke
         private:
           label: Privatno?
       preferences:

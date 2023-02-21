@@ -8,8 +8,15 @@ lv:
   js:
     discourse_policy:
       builder:
+        insert: Ievietot
         groups:
           label: Grupas
+        version:
+          label: Versij
+        accept:
+          label: Apstiprināt
+        revoke:
+          label: Atsaukt
         private:
           label: Privāts?
       preferences:

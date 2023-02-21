@@ -8,8 +8,15 @@ da:
   js:
     discourse_policy:
       builder:
+        insert: Indsæt
         groups:
           label: Grupper
+        version:
+          label: Version
+        accept:
+          label: Acceptér
+        revoke:
+          label: Tilbagekald
         private:
           label: Privat?
         send-email:

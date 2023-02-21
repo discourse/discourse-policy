@@ -8,8 +8,15 @@ uk:
   js:
     discourse_policy:
       builder:
+        insert: Вставити
         groups:
           label: Групи
+        version:
+          label: Версія
+        accept:
+          label: Схвалити
+        revoke:
+          label: Відкликати
         private:
           label: Приватні?
         send-email:

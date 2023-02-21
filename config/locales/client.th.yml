@@ -8,8 +8,15 @@ th:
   js:
     discourse_policy:
       builder:
+        insert: แทรก
         groups:
           label: กลุ่ม
+        version:
+          label: เวอร์ชัน
+        accept:
+          label: ยอมรับ
+        revoke:
+          label: เอาออก
         private:
           label: ส่วนตัว?
       preferences:

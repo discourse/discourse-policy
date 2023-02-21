@@ -10,6 +10,12 @@ bg:
       builder:
         groups:
           label: Групи
+        version:
+          label: Версия
+        accept:
+          label: Приемам
+        revoke:
+          label: Анулирай
         private:
           label: Затворени?
         send-email:

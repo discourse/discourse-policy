@@ -8,11 +8,18 @@ fa_IR:
   js:
     discourse_policy:
       builder:
+        insert: درج کردن
         errors:
           group: گروه الزامی است
           version: نسخه الزامی است
         groups:
           label: گروه‌ها
+        version:
+          label: نسخه
+        accept:
+          label: پذیرفتن
+        revoke:
+          label: ابطال
         private:
           label: خصوصی?
       preferences:

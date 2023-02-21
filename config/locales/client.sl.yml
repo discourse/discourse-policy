@@ -8,8 +8,15 @@ sl:
   js:
     discourse_policy:
       builder:
+        insert: Dodaj
         groups:
           label: Skupine
+        version:
+          label: Verzija
+        accept:
+          label: Odobri
+        revoke:
+          label: Odstrani
         private:
           label: Zasebno?
         send-email:

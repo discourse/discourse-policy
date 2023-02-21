@@ -8,8 +8,13 @@ id:
   js:
     discourse_policy:
       builder:
+        insert: Masukkan
         groups:
           label: Grup
+        accept:
+          label: Menerima
+        revoke:
+          label: Cabut
         private:
           label: Pribadi?
       preferences:

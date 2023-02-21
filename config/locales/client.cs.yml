@@ -8,8 +8,13 @@ cs:
   js:
     discourse_policy:
       builder:
+        insert: Vložit
         groups:
           label: Skupiny
+        version:
+          label: Verze
+        revoke:
+          label: zrušit
         private:
           label: Soukromé?
         send-email:
