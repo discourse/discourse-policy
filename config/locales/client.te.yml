@@ -10,6 +10,10 @@ te:
       builder:
         groups:
           label: గుంపులు
+        version:
+          label: సంచిక
+        revoke:
+          label: రివోక్
       preferences:
         policy_emails:
           email_frequency_options:

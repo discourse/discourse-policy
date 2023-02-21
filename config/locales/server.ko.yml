@@ -15,4 +15,5 @@ ko:
   unsubscribe:
     policy_emails:
       never: 알림 받지 않기
+      when_away: 자리를 비울 때만
       always: 항상

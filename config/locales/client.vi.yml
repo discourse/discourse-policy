@@ -8,8 +8,15 @@ vi:
   js:
     discourse_policy:
       builder:
+        insert: Chèn
         groups:
           label: Nhóm
+        version:
+          label: Phiên bản
+        accept:
+          label: Chấp nhận
+        revoke:
+          label: Thu hồi
         private:
           label: Riêng tư?
         send-email:

@@ -8,8 +8,15 @@ pt:
   js:
     discourse_policy:
       builder:
+        insert: Inserir
         groups:
           label: Grupos
+        version:
+          label: Versão
+        accept:
+          label: Aceitar
+        revoke:
+          label: Revogar
         private:
           label: Privado?
         send-email:

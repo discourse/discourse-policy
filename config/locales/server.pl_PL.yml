@@ -15,4 +15,5 @@ pl_PL:
   unsubscribe:
     policy_emails:
       never: Nigdy
+      when_away: Tylko gdy jesteś daleko
       always: Zawsze

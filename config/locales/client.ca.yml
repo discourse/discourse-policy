@@ -8,8 +8,15 @@ ca:
   js:
     discourse_policy:
       builder:
+        insert: Insereix
         groups:
           label: Grups
+        version:
+          label: Versió
+        accept:
+          label: Accepta
+        revoke:
+          label: Revoca
         private:
           label: Privat?
         send-email:

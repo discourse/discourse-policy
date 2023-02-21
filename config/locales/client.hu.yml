@@ -8,8 +8,15 @@ hu:
   js:
     discourse_policy:
       builder:
+        insert: Beszúrás
         groups:
           label: Csoportok
+        version:
+          label: Verzió
+        accept:
+          label: Elfogadás
+        revoke:
+          label: Visszavonás
         private:
           label: Privát?
           description: Házirend állapotának privátban tartása a rendszergazdák számára

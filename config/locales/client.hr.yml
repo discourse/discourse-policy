@@ -8,8 +8,15 @@ hr:
   js:
     discourse_policy:
       builder:
+        insert: Umetni
         groups:
           label: Grupe
+        version:
+          label: Inačica
+        accept:
+          label: Prihvati
+        revoke:
+          label: Povuci
         private:
           label: Privatno?
       preferences:

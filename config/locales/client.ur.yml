@@ -8,8 +8,15 @@ ur:
   js:
     discourse_policy:
       builder:
+        insert: شامل
         groups:
           label: گروپس
+        version:
+          label: ورژن
+        accept:
+          label: منظور
+        revoke:
+          label: منسوخ کریں
         private:
           label: ذاتی?
         send-email:

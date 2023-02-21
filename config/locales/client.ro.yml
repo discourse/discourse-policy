@@ -8,8 +8,15 @@ ro:
   js:
     discourse_policy:
       builder:
+        insert: Introdu
         groups:
           label: Grupuri
+        version:
+          label: Versiune
+        accept:
+          label: Acceptă
+        revoke:
+          label: Revocă
         private:
           label: Privat?
         send-email:

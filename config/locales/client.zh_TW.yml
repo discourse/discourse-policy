@@ -8,8 +8,15 @@ zh_TW:
   js:
     discourse_policy:
       builder:
+        insert: 插入
         groups:
           label: 群組
+        version:
+          label: 版本
+        accept:
+          label: 接受
+        revoke:
+          label: 撤回
         private:
           label: 私密?
         send-email:

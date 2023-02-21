@@ -10,6 +10,10 @@ sr:
       builder:
         groups:
           label: Grupe
+        version:
+          label: Verzija
+        revoke:
+          label: Povuci
       preferences:
         policy_emails:
           email_frequency_options:

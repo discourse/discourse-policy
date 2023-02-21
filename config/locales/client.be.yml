@@ -10,6 +10,10 @@ be:
       builder:
         groups:
           label: Групы
+        version:
+          label: версія
+        revoke:
+          label: адклікаць
         private:
           label: прыватны?
         send-email:

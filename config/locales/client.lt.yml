@@ -8,8 +8,15 @@ lt:
   js:
     discourse_policy:
       builder:
+        insert: Įterpti
         groups:
           label: Grupės
+        version:
+          label: Versija
+        accept:
+          label: Priimti
+        revoke:
+          label: Pašalinti
         private:
           label: Privati?
         send-email:

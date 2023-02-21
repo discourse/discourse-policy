@@ -25,4 +25,5 @@ ru:
   unsubscribe:
     policy_emails:
       never: Никогда
+      when_away: Если вы находитесь офлайн
       always: Всегда
