@@ -29,26 +29,17 @@ after_initialize do
 
   require_relative "app/controllers/policy_controller"
   require_relative "app/models/policy_user"
-  require_relative "app/models/post_policy"
   require_relative "app/models/post_policy_group"
+  require_relative "app/models/post_policy"
   require_relative "jobs/scheduled/check_policy"
-  require_relative "lib/extensions/user_option_extension"
+  require_relative "lib/email_controller_helper/policy_email_unsubscriber"
+  require_relative "lib/extensions/post_extension"
+  require_relative "lib/extensions/post_serializer_extension"
   require_relative "lib/extensions/user_notifications_extension"
+  require_relative "lib/extensions/user_option_extension"
   require_relative "lib/policy_mailer"
 
-  UserNotifications.append_view_path(File.expand_path("../app/views", __FILE__))
-
-  UserOption.prepend DiscoursePolicy::UserOptionExtension
-  UserNotifications.prepend DiscoursePolicy::UserNotificationsExtension
-  UserUpdater::OPTION_ATTR.push(:policy_email_frequency)
-
-  add_to_serializer(:user_option, :policy_email_frequency) { object.policy_email_frequency }
-
-  # TODO:(mark.reeves, a la chat plugin) remove `respond_to?` after the 2.9 release
-  if respond_to?(:register_email_unsubscriber)
-    load File.expand_path("../lib/email_controller_helper/policy_email_unsubscriber.rb", __FILE__)
-    register_email_unsubscriber("policy_email", EmailControllerHelper::PolicyEmailUnsubscriber)
-  end
+  Discourse::Application.routes.append { mount ::DiscoursePolicy::Engine, at: "/policy" }
 
   DiscoursePolicy::Engine.routes.draw do
     put "/accept" => "policy#accept"
@@ -57,7 +48,18 @@ after_initialize do
     get "/not-accepted" => "policy#not_accepted"
   end
 
-  Discourse::Application.routes.append { mount ::DiscoursePolicy::Engine, at: "/policy" }
+  Post.prepend DiscoursePolicy::PostExtension
+  PostSerializer.prepend DiscoursePolicy::PostSerializerExtension
+  UserNotifications.prepend DiscoursePolicy::UserNotificationsExtension
+  UserOption.prepend DiscoursePolicy::UserOptionExtension
+
+  UserUpdater::OPTION_ATTR.push(:policy_email_frequency)
+
+  UserNotifications.append_view_path(File.expand_path("../app/views", __FILE__))
+
+  add_to_serializer(:user_option, :policy_email_frequency) { object.policy_email_frequency }
+
+  register_email_unsubscriber("policy_email", EmailControllerHelper::PolicyEmailUnsubscriber)
 
   TopicView.default_post_custom_fields << DiscoursePolicy::HAS_POLICY
 
@@ -151,79 +153,6 @@ after_initialize do
       post.custom_fields.delete(DiscoursePolicy::HAS_POLICY)
       post.save_custom_fields
       PostPolicy.where(post_id: post.id).destroy_all
-    end
-  end
-
-  require_dependency "post"
-  class ::Post
-    has_one :post_policy, dependent: :destroy
-  end
-
-  require_dependency "post_serializer"
-  class ::PostSerializer
-    attributes :policy_can_accept,
-               :policy_can_revoke,
-               :policy_accepted,
-               :policy_revoked,
-               :policy_not_accepted_by,
-               :policy_not_accepted_by_count,
-               :policy_accepted_by,
-               :policy_accepted_by_count
-
-    delegate :post_policy, to: :object
-
-    def include_policy?
-      post_custom_fields[DiscoursePolicy::HAS_POLICY]
-    end
-
-    def include_policy_stats?
-      include_policy? && (scope.is_admin? || !post_policy.private?)
-    end
-
-    alias include_policy_can_accept? include_policy?
-    alias include_policy_can_revoke? include_policy?
-    alias include_policy_accepted? include_policy?
-    alias include_policy_revoked? include_policy?
-    alias include_policy_not_accepted_by? include_policy_stats?
-    alias include_policy_not_accepted_by_count? include_policy_stats?
-    alias include_policy_accepted_by? include_policy_stats?
-    alias include_policy_accepted_by_count? include_policy_stats?
-
-    has_many :policy_not_accepted_by, embed: :object, serializer: BasicUserSerializer
-    has_many :policy_accepted_by, embed: :object, serializer: BasicUserSerializer
-
-    def policy_can_accept
-      scope.authenticated? &&
-        (SiteSetting.policy_easy_revoke || post_policy.not_accepted_by.exists?(id: scope.user.id))
-    end
-
-    def policy_can_revoke
-      scope.authenticated? &&
-        (SiteSetting.policy_easy_revoke || post_policy.accepted_by.exists?(id: scope.user.id))
-    end
-
-    def policy_accepted
-      scope.authenticated? && post_policy.accepted_by.exists?(id: scope.user.id)
-    end
-
-    def policy_revoked
-      scope.authenticated? && post_policy.revoked_by.exists?(id: scope.user.id)
-    end
-
-    def policy_not_accepted_by
-      post_policy.not_accepted_by.limit(DiscoursePolicy::POLICY_USER_DEFAULT_LIMIT)
-    end
-
-    def policy_not_accepted_by_count
-      post_policy.not_accepted_by.size
-    end
-
-    def policy_accepted_by
-      post_policy.accepted_by.limit(DiscoursePolicy::POLICY_USER_DEFAULT_LIMIT)
-    end
-
-    def policy_accepted_by_count
-      post_policy.accepted_by.size
     end
   end
 
