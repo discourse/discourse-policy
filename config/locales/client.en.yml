@@ -8,6 +8,7 @@ en:
       revoke_policy: "Revoke Policy"
       edit_reason: "Policy settings have been modified"
       no_possible_users: "This policy has no possible users"
+      accept_policy_template: "I accept this policy"
       builder:
         title: Policy
         attach: Create Policy
