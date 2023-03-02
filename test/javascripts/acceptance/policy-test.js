@@ -4,10 +4,11 @@ import {
   updateCurrentUser,
 } from "discourse/tests/helpers/qunit-helpers";
 import { test } from "qunit";
-import { click, visit } from "@ember/test-helpers";
+import { click, fillIn, visit } from "@ember/test-helpers";
 import { cloneJSON } from "discourse-common/lib/object";
 import topicFixtures from "discourse/tests/fixtures/topic";
 import postFixtures from "discourse/tests/fixtures/post";
+import selectKit from "discourse/tests/helpers/select-kit-helper";
 
 acceptance("Discourse Policy - post", function (needs) {
   needs.user();
@@ -32,6 +33,31 @@ acceptance("Discourse Policy - post", function (needs) {
     server.get("/t/130.json", () => helper.response(topic));
     server.put("/policy/accept", () => helper.response(200, {}));
     server.put("/policy/unaccept", () => helper.response(200, {}));
+  });
+
+  test("insert a policy", async function (assert) {
+    updateCurrentUser({ admin: true });
+    await visit("/t/-/130");
+    await click(".actions .edit");
+
+    await fillIn("textarea.d-editor-input", "");
+
+    await selectKit(".d-editor .toolbar-popup-menu-options").expand();
+    await selectKit(".toolbar-popup-menu-options").selectRowByValue(
+      "insertPolicy"
+    );
+    await selectKit(".group-chooser").expand();
+    await selectKit(".group-chooser").fillInFilter("staff");
+    await selectKit(".group-chooser").selectRowByValue("staff");
+
+    await click(".modal-footer .btn-primary");
+
+    let raw = document.querySelector("textarea.d-editor-input").value;
+
+    assert.equal(
+      raw.trim(),
+      '[policy reminder="daily" version="1" groups="staff"]\nI accept this policy\n[/policy]'
+    );
   });
 
   test("edit email preferences", async function (assert) {

@@ -36,7 +36,9 @@ export default Controller.extend(ModalFunctionality, {
 
     const markdownParams = this._buildParams(this.policy);
     this.toolbarEvent.addText(
-      `\n\n[policy ${markdownParams.join(" ")}]\n[/policy]\n\n`
+      `\n\n[policy ${markdownParams.join(" ")}]\n${I18n.t(
+        "discourse_policy.accept_policy_template"
+      )}\n[/policy]\n\n`
     );
     this.send("closeModal");
   },
