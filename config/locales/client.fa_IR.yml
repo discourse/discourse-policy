@@ -7,7 +7,16 @@
 fa_IR:
   js:
     discourse_policy:
+      title: "خط مشی"
+      accepted_tooltip: "کاربرانی که این خط مش را پذیرفته‌اند"
+      not_accepted_tooltip: "کاربرانی که این خط مش را نپذیرفته‌اند"
+      accept_policy: "قبول کردن خط مش"
+      revoke_policy: "ابطال خط مش"
+      accept_policy_template: "من این خط مش را می‌پذیرم"
       builder:
+        title: خط مشی
+        attach: ایجاد خط مش
+        save: ذخیر تغییرات
         insert: درج کردن
         errors:
           group: گروه الزامی است
@@ -21,7 +30,7 @@ fa_IR:
         revoke:
           label: ابطال
         private:
-          label: خصوصی?
+          label: خصوصی؟
       preferences:
         policy_emails:
           email_frequency_options:

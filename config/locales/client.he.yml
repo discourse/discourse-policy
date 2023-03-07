@@ -14,6 +14,7 @@ he:
       revoke_policy: "לשלול מדיניות"
       edit_reason: "הגדרות המדיניות השתנו"
       no_possible_users: "למדיניות זאת אין משתמשים אפשריים"
+      accept_policy_template: "המדיניות הזאת מקובלת עליי"
       builder:
         title: מדיניות
         attach: יצירת מדיניות
