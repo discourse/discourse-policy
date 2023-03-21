@@ -15,38 +15,22 @@ register_svg_icon "file-signature"
 
 enabled_site_setting :policy_enabled
 
+module ::DiscoursePolicy
+  PLUGIN_NAME = "discourse_policy"
+  HAS_POLICY = "HasPolicy"
+  POLICY_USER_DEFAULT_LIMIT = 25
+end
+
+require_relative "lib/discourse_policy/engine"
+
 after_initialize do
-  module ::DiscoursePolicy
-    PLUGIN_NAME = "discourse_policy"
-    HAS_POLICY = "HasPolicy"
-    POLICY_USER_DEFAULT_LIMIT = 25
-
-    class Engine < ::Rails::Engine
-      engine_name PLUGIN_NAME
-      isolate_namespace DiscoursePolicy
-    end
-  end
-
-  require_relative "app/controllers/policy_controller"
-  require_relative "app/models/policy_user"
-  require_relative "app/models/post_policy_group"
-  require_relative "app/models/post_policy"
   require_relative "jobs/scheduled/check_policy"
-  require_relative "lib/email_controller_helper/policy_email_unsubscriber"
-  require_relative "lib/extensions/post_extension"
-  require_relative "lib/extensions/post_serializer_extension"
-  require_relative "lib/extensions/user_notifications_extension"
-  require_relative "lib/extensions/user_option_extension"
-  require_relative "lib/policy_mailer"
-
-  Discourse::Application.routes.append { mount ::DiscoursePolicy::Engine, at: "/policy" }
-
-  DiscoursePolicy::Engine.routes.draw do
-    put "/accept" => "policy#accept"
-    put "/unaccept" => "policy#unaccept"
-    get "/accepted" => "policy#accepted"
-    get "/not-accepted" => "policy#not_accepted"
-  end
+  require_relative "lib/discourse_policy/policy_email_unsubscriber"
+  require_relative "lib/discourse_policy/policy_mailer"
+  require_relative "lib/discourse_policy/post_extension"
+  require_relative "lib/discourse_policy/post_serializer_extension"
+  require_relative "lib/discourse_policy/user_notifications_extension"
+  require_relative "lib/discourse_policy/user_option_extension"
 
   Post.prepend DiscoursePolicy::PostExtension
   PostSerializer.prepend DiscoursePolicy::PostSerializerExtension
