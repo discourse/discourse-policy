@@ -17,7 +17,7 @@ enabled_site_setting :policy_enabled
 
 after_initialize do
   module ::DiscoursePolicy
-    PLUGIN_NAME = "discourse_policy"
+    PLUGIN_NAME = "discourse-policy"
     HAS_POLICY = "HasPolicy"
     POLICY_USER_DEFAULT_LIMIT = 25
 
