@@ -2,7 +2,10 @@
   @title={{concat "discourse_policy.builder.title"}}
   @class="policy-builder"
 >
-  {{policy-builder-form policy=policy onChange=(action "onChangeFormField")}}
+  <PolicyBuilderForm
+    @policy={{policy}}
+    @onChange={{action "onChangeFormField"}}
+  />
 </DModalBody>
 
 <div class="modal-footer">
