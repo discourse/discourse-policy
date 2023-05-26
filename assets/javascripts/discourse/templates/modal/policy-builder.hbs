@@ -1,25 +1,25 @@
-{{#d-modal-body
-  title=(concat "discourse_policy.builder.title")
-  class="policy-builder"
-}}
+<DModalBody
+  @title={{concat "discourse_policy.builder.title"}}
+  @class="policy-builder"
+>
   {{policy-builder-form policy=policy onChange=(action "onChangeFormField")}}
-{{/d-modal-body}}
+</DModalBody>
 
 <div class="modal-footer">
   {{#if insertMode}}
-    {{d-button
-      type="button"
+    <DButton
+      @type="button"
       class="btn-primary"
-      label="discourse_policy.builder.insert"
-      action=(action "insertPolicy")
-    }}
+      @label="discourse_policy.builder.insert"
+      @action={{action "insertPolicy"}}
+    />
   {{else}}
-    {{d-button
-      isLoading=isSaving
-      type="button"
+    <DButton
+      @isLoading={{isSaving}}
+      @type="button"
       class="btn-primary"
-      label="discourse_policy.builder.save"
-      action=(action "updatePolicy")
-    }}
+      @label="discourse_policy.builder.save"
+      @action={{action "updatePolicy"}}
+    />
   {{/if}}
 </div>

@@ -2,23 +2,23 @@
   <div class="policy-footer">
     <div class="policy-actions">
       {{#if post.policy_can_accept}}
-        {{d-button
-          isLoading=isLoading
-          action=(action "acceptPolicy")
-          class=acceptButtonClasses
-          translatedLabel=policy.accept
-          icon=(if post.policy_accepted "check")
-        }}
+        <DButton
+          @isLoading={{isLoading}}
+          @action={{action "acceptPolicy"}}
+          class={{acceptButtonClasses}}
+          @translatedLabel={{policy.accept}}
+          @icon={{if post.policy_accepted "check"}}
+        />
       {{/if}}
 
       {{#if post.policy_can_revoke}}
-        {{d-button
-          isLoading=isLoading
-          action=(action "revokePolicy")
-          class=revokeButtonClasses
-          translatedLabel=policy.revoke
-          icon=(if post.policy_revoked "check")
-        }}
+        <DButton
+          @isLoading={{isLoading}}
+          @action={{action "revokePolicy"}}
+          class={{revokeButtonClasses}}
+          @translatedLabel={{policy.revoke}}
+          @icon={{if post.policy_revoked "check"}}
+        />
       {{/if}}
     </div>
     <div class="user-lists">
@@ -102,11 +102,11 @@
     </div>
 
     {{#if canManagePolicy}}
-      {{d-button
+      <DButton
         class="no-text btn-default edit-policy-settings-btn"
-        icon="cog"
-        action=(action "editPolicy")
-      }}
+        @icon="cog"
+        @action={{action "editPolicy"}}
+      />
     {{/if}}
   </div>
 {{/if}}
