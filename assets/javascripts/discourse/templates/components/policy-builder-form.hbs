@@ -1,29 +1,29 @@
-{{#policy-form-field name="groups" required=true}}
+<PolicyFormField @name="groups" @required={{true}}>
   <PolicyGroupInput
     @groups={{policy.groups}}
     @onChangeGroup={{fn this.onChange "groups"}}
   />
-{{/policy-form-field}}
+</PolicyFormField>
 
-{{#policy-form-field name="version" required=true}}
+<PolicyFormField @name="version" @required={{true}}>
   <input
     name="version"
     type="number"
     value={{readonly policy.version}}
     {{on "input" (fn this.changeValue "version")}}
   />
-{{/policy-form-field}}
+</PolicyFormField>
 
-{{#policy-form-field name="renew"}}
+<PolicyFormField @name="renew">
   <input
     name="renew"
     type="number"
     value={{readonly policy.renew}}
     {{on "input" (fn this.changeValue "renew")}}
   />
-{{/policy-form-field}}
+</PolicyFormField>
 
-{{#policy-form-field name="renew-start"}}
+<PolicyFormField @name="renew-start">
   <input
     type="date"
     placeholder="2020-03-31"
@@ -31,38 +31,38 @@
     value={{readonly (get policy "renew-start")}}
     {{on "input" (fn this.changeValue "renew-start")}}
   />
-{{/policy-form-field}}
+</PolicyFormField>
 
-{{#policy-form-field name="reminder"}}
+<PolicyFormField @name="reminder">
   <PolicyReminderInput
     @reminder={{policy.reminder}}
     @onChangeReminder={{fn this.onChange "reminder"}}
   />
-{{/policy-form-field}}
+</PolicyFormField>
 
-{{#policy-form-field name="accept"}}
+<PolicyFormField @name="accept">
   <input
     type="text"
     name="accept"
     value={{readonly policy.accept}}
     {{on "input" (fn this.changeValue "accept")}}
   />
-{{/policy-form-field}}
+</PolicyFormField>
 
-{{#policy-form-field name="revoke"}}
+<PolicyFormField @name="revoke">
   <input
     type="text"
     name="revoke"
     value={{readonly policy.revoke}}
     {{on "input" (fn this.changeValue "revoke")}}
   />
-{{/policy-form-field}}
+</PolicyFormField>
 
-{{#policy-form-field name="private"}}
+<PolicyFormField @name="private">
   <input
     type="checkbox"
     name="private"
     checked={{readonly policy.private}}
     {{on "click" (fn this.changeBoolValue "private")}}
   />
-{{/policy-form-field}}
+</PolicyFormField>
