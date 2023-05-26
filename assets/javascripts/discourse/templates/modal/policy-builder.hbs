@@ -9,7 +9,7 @@
   {{#if insertMode}}
     <DButton
       @type="button"
-      @class="btn-primary"
+      class="btn-primary"
       @label="discourse_policy.builder.insert"
       @action={{action "insertPolicy"}}
     />
@@ -17,7 +17,7 @@
     <DButton
       @isLoading={{isSaving}}
       @type="button"
-      @class="btn-primary"
+      class="btn-primary"
       @label="discourse_policy.builder.save"
       @action={{action "updatePolicy"}}
     />

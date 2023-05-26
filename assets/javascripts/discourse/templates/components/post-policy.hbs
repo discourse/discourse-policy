@@ -5,7 +5,7 @@
         <DButton
           @isLoading={{isLoading}}
           @action={{action "acceptPolicy"}}
-          @class={{acceptButtonClasses}}
+          class={{acceptButtonClasses}}
           @translatedLabel={{policy.accept}}
           @icon={{if post.policy_accepted "check"}}
         />
@@ -15,7 +15,7 @@
         <DButton
           @isLoading={{isLoading}}
           @action={{action "revokePolicy"}}
-          @class={{revokeButtonClasses}}
+          class={{revokeButtonClasses}}
           @translatedLabel={{policy.revoke}}
           @icon={{if post.policy_revoked "check"}}
         />
@@ -103,7 +103,7 @@
 
     {{#if canManagePolicy}}
       <DButton
-        @class="no-text btn-default edit-policy-settings-btn"
+        class="no-text btn-default edit-policy-settings-btn"
         @icon="cog"
         @action={{action "editPolicy"}}
       />
