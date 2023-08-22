@@ -14,6 +14,7 @@ tr_TR:
       revoke_policy: "İptal Politikası"
       edit_reason: "Politika ayarları değiştirildi"
       no_possible_users: "Bu politikanın olası kullanıcısı yok"
+      accept_policy_template: "Bu politikayı kabul ediyorum"
       builder:
         title: Politika
         attach: Politika Oluştur

@@ -14,6 +14,7 @@ it:
       revoke_policy: "Revoca informativa"
       edit_reason: "Le impostazioni dell'informativa sono state modificate"
       no_possible_users: "Questa informativa non ha utenti possibili"
+      accept_policy_template: "Accetto questa informativa"
       builder:
         title: Informativa
         attach: Crea informativa
