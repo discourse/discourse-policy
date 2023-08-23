@@ -14,6 +14,7 @@ nl:
       revoke_policy: "Beleid intrekken"
       edit_reason: "Beleidsinstellingen zijn gewijzigd"
       no_possible_users: "Dit beleid heeft geen mogelijke gebruikers"
+      accept_policy_template: "Ik ga akkoord met dit beleid"
       builder:
         title: Beleid
         attach: Beleid maken

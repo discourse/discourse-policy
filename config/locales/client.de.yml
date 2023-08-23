@@ -14,6 +14,7 @@ de:
       revoke_policy: "Richtlinie widerrufen"
       edit_reason: "Richtlinieneinstellungen wurden geändert"
       no_possible_users: "Diese Richtlinie hat keine möglichen Benutzer"
+      accept_policy_template: "Ich akzeptiere diese Richtlinie"
       builder:
         title: Richtlinie
         attach: Richtlinie erstellen

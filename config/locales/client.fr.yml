@@ -14,6 +14,7 @@ fr:
       revoke_policy: "Refuser la politique"
       edit_reason: "Les paramètres de la politique ont été modifiés"
       no_possible_users: "Cette politique n'a aucun utilisateur possible"
+      accept_policy_template: "J'accepte cette politique"
       builder:
         title: Politique
         attach: Créer une politique

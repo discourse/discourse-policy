@@ -14,6 +14,7 @@ pt_BR:
       revoke_policy: "Revogar política"
       edit_reason: "Configurações de política foram modificadas"
       no_possible_users: "Esta política não tem usuários possíveis"
+      accept_policy_template: "Aceito esta política"
       builder:
         title: Política
         attach: Criar política

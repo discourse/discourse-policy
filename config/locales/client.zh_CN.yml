@@ -14,6 +14,7 @@ zh_CN:
       revoke_policy: "撤销策略"
       edit_reason: "策略设置已被修改"
       no_possible_users: "此策略没有可能的用户"
+      accept_policy_template: "我接受此政策"
       builder:
         title: 策略
         attach: 创建策略
