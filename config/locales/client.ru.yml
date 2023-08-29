@@ -14,6 +14,7 @@ ru:
       revoke_policy: "Отказаться от политики"
       edit_reason: "Настройки политики были изменены"
       no_possible_users: "У этой политики нет пользователей"
+      accept_policy_template: "Я принимаю эту политику"
       builder:
         title: Политика
         attach: Создать политику
