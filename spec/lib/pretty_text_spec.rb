@@ -3,7 +3,7 @@
 require "rails_helper"
 
 describe PrettyText do
-  before { SiteSetting.queue_jobs = false }
+  before { Jobs.run_immediately! }
 
   it "can properly decorate policies (legacy)" do
     raw = <<~MD
