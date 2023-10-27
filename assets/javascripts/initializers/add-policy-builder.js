@@ -32,7 +32,7 @@ export default {
   initialize(container) {
     const siteSettings = container.lookup("site-settings:main");
     if (siteSettings.policy_enabled) {
-      withPluginApi("1.15.0", (api) => initializePolicyBuilder(api, container));
+      withPluginApi("1.13.0", (api) => initializePolicyBuilder(api, container));
     }
   },
 };
