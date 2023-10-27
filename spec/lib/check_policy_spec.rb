@@ -219,7 +219,7 @@ describe DiscoursePolicy::CheckPolicy do
   end
 
   it "will correctly notify users with high priority notifications" do
-    SiteSetting.queue_jobs = false
+    Jobs.run_immediately!
     freeze_time
 
     raw = <<~MD
@@ -263,7 +263,7 @@ describe DiscoursePolicy::CheckPolicy do
   end
 
   it "will delete the existing policy reminder notification before creating a new one" do
-    SiteSetting.queue_jobs = false
+    Jobs.run_immediately!
     freeze_time
 
     raw = <<~MD

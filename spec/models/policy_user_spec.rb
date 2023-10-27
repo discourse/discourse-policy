@@ -3,7 +3,7 @@
 require "rails_helper"
 
 describe PolicyUser do
-  before { SiteSetting.queue_jobs = false }
+  before { Jobs.run_immediately! }
 
   fab!(:user) { Fabricate(:user) }
 
