@@ -1,6 +1,6 @@
 import { isPresent } from "@ember/utils";
 import I18n from "I18n";
-import { cookAsync } from "discourse/lib/text";
+import { cook } from "discourse/lib/text";
 import ModalFunctionality from "discourse/mixins/modal-functionality";
 import Controller from "@ember/controller";
 import EmberObject, { action } from "@ember/object";
@@ -65,7 +65,7 @@ export default Controller.extend(ModalFunctionality, {
             edit_reason: I18n.t("discourse_policy.edit_reason"),
           };
 
-          return cookAsync(raw).then((cooked) => {
+          return cook(raw).then((cooked) => {
             props.cooked = cooked.string;
             this.post.save(props);
           });
