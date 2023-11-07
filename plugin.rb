@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 # name: discourse-policy
-# about: Apply policies to Discourse topics
+# about: Gives the ability to confirm your users have seen or done something, with optional reminders.
+# meta_topic_id: 88557
 # version: 0.1
 # authors: Sam Saffron
 # url: https://github.com/discourse/discourse-policy
