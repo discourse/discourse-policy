@@ -7,9 +7,16 @@ import { ajax } from "discourse/lib/ajax";
 
 export default class PolicyBuilder extends Component {
   isSaving = false;
-  policy =
-    this.model.policy || EmberObject.create({ reminder: "daily", version: 1 });
+  policy;
   flash;
+
+  init() {
+    super.init(...arguments);
+    this.set(
+      "policy",
+      this.model.policy || EmberObject.create({ reminder: "daily", version: 1 })
+    );
+  }
 
   @action
   onChangeFormField(field, value) {
