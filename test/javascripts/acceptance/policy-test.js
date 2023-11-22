@@ -51,7 +51,7 @@ acceptance("Discourse Policy - post", function (needs) {
     await selectKit(".group-chooser").fillInFilter("staff");
     await selectKit(".group-chooser").selectRowByValue("staff");
 
-    await click(".modal-footer .btn-primary");
+    await click(".d-modal__footer .btn-primary");
 
     let raw = document.querySelector("textarea.d-editor-input").value;
 

@@ -4,9 +4,12 @@ import getURL from "discourse-common/lib/get-url";
 import { bind } from "discourse-common/utils/decorators";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
-import showModal from "discourse/lib/show-modal";
+import PolicyBuilder from "./modal/policy-builder";
+import { inject as service } from "@ember/service";
 
 export default class PostPolicy extends Component {
+  @service modal;
+
   layoutName = "components/post-policy";
   tagName = "";
   post = null;
@@ -221,10 +224,12 @@ export default class PostPolicy extends Component {
 
   @action
   editPolicy() {
-    showModal("policy-builder").setProperties({
-      insertMode: false,
-      post: this.post,
-      policy: this.policy,
+    this.modal.show(PolicyBuilder, {
+      model: {
+        insertMode: false,
+        post: this.post,
+        policy: this.policy,
+      },
     });
   }
 
