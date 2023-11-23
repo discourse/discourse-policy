@@ -1,26 +1,22 @@
 import { isBlank, isPresent } from "@ember/utils";
 import I18n from "I18n";
 import { cook } from "discourse/lib/text";
-import Component from "@ember/component";
-import EmberObject, { action } from "@ember/object";
+import Component from "@glimmer/component";
+import { action } from "@ember/object";
 import { ajax } from "discourse/lib/ajax";
+import { tracked } from "@glimmer/tracking";
+import { TrackedObject } from "@ember-compat/tracked-built-ins";
 
 export default class PolicyBuilder extends Component {
-  isSaving = false;
-  policy;
-  flash;
-
-  init() {
-    super.init(...arguments);
-    this.set(
-      "policy",
-      this.model.policy || EmberObject.create({ reminder: "daily", version: 1 })
-    );
-  }
+  @tracked isSaving = false;
+  @tracked flash;
+  policy =
+    this.args.model.policy ||
+    new TrackedObject({ reminder: "daily", version: 1 });
 
   @action
   onChangeFormField(field, value) {
-    this.policy.set(field, value);
+    this.policy[field] = value;
   }
 
   @action
@@ -29,7 +25,7 @@ export default class PolicyBuilder extends Component {
       return;
     }
 
-    this.model.toolbarEvent?.addText(
+    this.args.model.toolbarEvent?.addText(
       `\n\n[policy ${this.markdownParams}]\n${I18n.t(
         "discourse_policy.accept_policy_template"
       )}\n[/policy]\n\n`
@@ -43,10 +39,10 @@ export default class PolicyBuilder extends Component {
       return;
     }
 
-    this.set("isSaving", true);
+    this.isSaving = true;
 
     try {
-      const result = await ajax(`/posts/${this.model.post.id}`);
+      const result = await ajax(`/posts/${this.args.model.post.id}`);
 
       const raw = result.raw;
       const newRaw = this.replaceRaw(raw);
@@ -60,11 +56,11 @@ export default class PolicyBuilder extends Component {
         const cooked = await cook(raw);
 
         props.cooked = cooked.string;
-        this.model.post.save(props);
+        this.args.model.post.save(props);
       }
     } finally {
-      this.set("isSaving", false);
-      this.closeModal();
+      this.isSaving = false;
+      this.args.closeModal();
     }
   }
 
@@ -91,12 +87,12 @@ export default class PolicyBuilder extends Component {
 
   validateForm() {
     if (isBlank(this.policy.groups)) {
-      this.set("flash", I18n.t("discourse_policy.builder.errors.group"));
+      this.flash = I18n.t("discourse_policy.builder.errors.group");
       return false;
     }
 
     if (isBlank(this.policy.version)) {
-      this.set("flash", I18n.t("discourse_policy.builder.errors.version"));
+      this.flash = I18n.t("discourse_policy.builder.errors.version");
       return false;
     }
 

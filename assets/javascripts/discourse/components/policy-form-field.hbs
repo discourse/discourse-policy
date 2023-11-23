@@ -1,18 +1,20 @@
-<div class="policy-field {{name}}">
+<div class="policy-field {{@name}}">
   <div class="policy-field-label">
     <span class="label">
-      {{i18n (concat "discourse_policy.builder." name ".label")}}
-      {{#if required}}
+      {{i18n (concat "discourse_policy.builder." @name ".label")}}
+      {{#if @required}}
         <span class="required-field">*</span>
       {{/if}}
     </span>
   </div>
+
   <div class="policy-field-control">
     {{yield}}
   </div>
+
   <span class="policy-field-description">
     <span class="description">
-      {{i18n (concat "discourse_policy.builder." name ".description")}}
+      {{i18n (concat "discourse_policy.builder." @name ".description")}}
     </span>
   </span>
 </div>
