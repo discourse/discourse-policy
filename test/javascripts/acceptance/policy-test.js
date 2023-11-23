@@ -4,7 +4,6 @@ import postFixtures from "discourse/tests/fixtures/post";
 import topicFixtures from "discourse/tests/fixtures/topic";
 import {
   acceptance,
-  exists,
   updateCurrentUser,
 } from "discourse/tests/helpers/qunit-helpers";
 import selectKit from "discourse/tests/helpers/select-kit-helper";
@@ -63,35 +62,35 @@ acceptance("Discourse Policy - post", function (needs) {
 
   test("edit email preferences", async function (assert) {
     await visit(`/u/eviltrout/preferences/emails`);
-    assert.ok(exists("#user_policy_email_frequency"));
+    assert.dom("#user_policy_email_frequency").exists();
   });
 
   test("edit policy - staff", async function (assert) {
     await visit("/t/-/130");
     await click(".edit-policy-settings-btn");
 
-    assert.ok(exists(".policy-builder"));
+    assert.dom(".policy-builder").exists();
   });
 
   test("edit policy - not staff", async function (assert) {
     updateCurrentUser({ moderator: false, admin: false });
     await visit("/t/-/130");
 
-    assert.notOk(exists(".edit-policy-settings-btn"));
+    assert.dom(".edit-policy-settings-btn").doesNotExist();
   });
 
   test("edit policy - not staff, post owner", async function (assert) {
     updateCurrentUser({ moderator: false, admin: false, id: 1 });
     await visit("/t/-/130");
 
-    assert.ok(exists(".edit-policy-settings-btn"));
+    assert.dom(".edit-policy-settings-btn").exists();
   });
 
   test("accept a policy", async function (assert) {
     await visit("/t/-/130");
     await click(".btn-accept-policy");
 
-    assert.ok(exists(".btn-revoke-policy"));
+    assert.dom(".btn-revoke-policy").exists();
   });
 
   test("revoke a policy", async function (assert) {
@@ -99,6 +98,6 @@ acceptance("Discourse Policy - post", function (needs) {
     await click(".btn-accept-policy");
     await click(".btn-revoke-policy");
 
-    assert.ok(exists(".btn-accept-policy"));
+    assert.dom(".btn-accept-policy").exists();
   });
 });

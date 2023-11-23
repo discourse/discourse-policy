@@ -1,25 +1,22 @@
-import Component from "@ember/component";
-import { action, computed } from "@ember/object";
-import getURL from "discourse-common/lib/get-url";
+import Component from "@glimmer/component";
+import { action } from "@ember/object";
 import { bind } from "discourse-common/utils/decorators";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
 import PolicyBuilder from "./modal/policy-builder";
 import { inject as service } from "@ember/service";
+import { tracked } from "@glimmer/tracking";
 
 export default class PostPolicy extends Component {
+  @service appEvents;
+  @service currentUser;
   @service modal;
 
-  layoutName = "components/post-policy";
-  tagName = "";
-  post = null;
-  options = null;
-  showNotAccepted = false;
-  isLoading = false;
-  policy = null;
+  @tracked isLoading = false;
+  @tracked showNotAccepted = false;
 
-  didInsertElement() {
-    this._super(...arguments);
+  constructor() {
+    super(...arguments);
 
     this.post?.setProperties({
       policy_accepted_by: this.post?.policy_accepted_by || [],
@@ -29,14 +26,21 @@ export default class PostPolicy extends Component {
     this.appEvents.on("policy:changed", this, "policyChanged");
   }
 
-  willDestroyElement() {
-    this._super(...arguments);
-
+  willDestroy() {
+    super.willDestroy(...arguments);
     this.appEvents.off("policy:changed", this, "policyChanged");
   }
 
+  get post() {
+    return this.args.post;
+  }
+
+  get policy() {
+    return this.args.policy;
+  }
+
   @bind
-  policyChanged(data) {
+  async policyChanged(data) {
     if (data.message.id !== this.post.id) {
       return;
     }
@@ -45,26 +49,21 @@ export default class PostPolicy extends Component {
     const post = stream.findLoadedPost(data.message.id);
 
     if (post) {
-      const endpoint = getURL(`/posts/${post.id}.json`);
-      ajax(endpoint).then((result) => {
-        this.post.setProperties({
-          policy_can_accept: result.policy_can_accept,
-          policy_can_revoke: result.policy_can_revoke,
-          policy_accepted: result.policy_accepted,
-          policy_revoked: result.policy_revoked,
-          policy_not_accepted_by: result.policy_not_accepted_by || [],
-          policy_not_accepted_by_count: result.policy_not_accepted_by_count,
-          policy_accepted_by: result.policy_accepted_by || [],
-          policy_accepted_by_count: result.policy_accepted_by_count,
-        });
+      const result = await ajax(`/posts/${post.id}.json`);
+
+      this.post.setProperties({
+        policy_can_accept: result.policy_can_accept,
+        policy_can_revoke: result.policy_can_revoke,
+        policy_accepted: result.policy_accepted,
+        policy_revoked: result.policy_revoked,
+        policy_not_accepted_by: result.policy_not_accepted_by || [],
+        policy_not_accepted_by_count: result.policy_not_accepted_by_count,
+        policy_accepted_by: result.policy_accepted_by || [],
+        policy_accepted_by_count: result.policy_accepted_by_count,
       });
     }
   }
 
-  @computed(
-    "post.policy_not_accepted_by_count",
-    "post.policy.policy_accepted_by_count"
-  )
   get policyHasUsers() {
     return (
       (this.post?.policy_not_accepted_by_count ||
@@ -73,7 +72,6 @@ export default class PostPolicy extends Component {
     );
   }
 
-  @computed("post.policy_accepted", "post.policy_revoked")
   get acceptButtonClasses() {
     let classes = "accept btn-accept-policy";
     if (!this.post?.policy_accepted || this.post?.policy_revoked) {
@@ -82,7 +80,6 @@ export default class PostPolicy extends Component {
     return classes;
   }
 
-  @computed("post.policy_accepted", "post.policy_revoked")
   get revokeButtonClasses() {
     let classes = "revoke btn-revoke-policy";
     if (!this.post?.policy_revoked || this.post?.policy_accepted) {
@@ -91,7 +88,6 @@ export default class PostPolicy extends Component {
     return classes;
   }
 
-  @computed("post.policy_accepted_by_count", "post.policy_accepted_by.[]")
   get remainingAcceptedUsers() {
     return (
       (this.post?.policy_accepted_by_count || 0) -
@@ -99,32 +95,26 @@ export default class PostPolicy extends Component {
     );
   }
 
-  @computed("post.policy_accepted_by.[]")
   get acceptedUsers() {
     return this.post?.policy_accepted_by || [];
   }
 
-  @computed(
-    "post.policy_not_accepted_by_count",
-    "post.policy_not_accepted_by.[]"
-  )
   get remainingNotAcceptedUsers() {
     return (
-      (this.post?.policy_not_accepted_by_count || 0) -
-      (this.post?.policy_not_accepted_by || []).length
+      (this.post?.get("policy_not_accepted_by_count") || 0) -
+      (this.post?.get("policy_not_accepted_by") || []).length
     );
   }
 
-  @computed("post.policy_not_accepted_by.[]")
   get notAcceptedUsers() {
-    return this.post.policy_not_accepted_by || [];
+    return this.post?.get("policy_not_accepted_by") || [];
   }
 
-  @computed("currentUser.{id,staff}", "post.user_id")
   get canManagePolicy() {
     return (
       this.currentUser &&
-      (this.currentUser.staff || this.currentUser.id === this.post?.user_id)
+      (this.currentUser.staff ||
+        this.currentUser.id === this.post?.get("user_id"))
     );
   }
 
@@ -191,35 +181,42 @@ export default class PostPolicy extends Component {
   }
 
   @action
-  loadRemainingAcceptedUsers() {
-    ajax(getURL(`/policy/accepted`), {
-      data: {
-        post_id: this.post.id,
-        offset: this.post.policy_accepted_by.length,
-      },
-    })
-      .then((result) => {
-        result.users.forEach((user) => {
-          this.post.policy_accepted_by.pushObject(user);
-        });
-      })
-      .catch(popupAjaxError);
+  async loadRemainingAcceptedUsers(event) {
+    event.preventDefault();
+
+    try {
+      const result = await ajax(`/policy/accepted`, {
+        data: {
+          post_id: this.post.id,
+          offset: this.post.policy_accepted_by.length,
+        },
+      });
+
+      result.users.forEach((user) => {
+        this.post.policy_accepted_by.pushObject(user);
+      });
+    } catch (e) {
+      popupAjaxError(e);
+    }
   }
 
   @action
-  loadRemainingNotAcceptedUsers() {
-    ajax(getURL(`/policy/accepted`), {
-      data: {
-        post_id: this.post.id,
-        offset: this.post.policy_not_accepted_by.length,
-      },
-    })
-      .then((result) => {
-        result.users.forEach((user) => {
-          this.post.policy_not_accepted_by.pushObject(user);
-        });
-      })
-      .catch(popupAjaxError);
+  async loadRemainingNotAcceptedUsers(event) {
+    event.preventDefault();
+
+    try {
+      const result = await ajax(`/policy/accepted`, {
+        data: {
+          post_id: this.post.id,
+          offset: this.post.policy_not_accepted_by.length,
+        },
+      });
+      result.users.forEach((user) => {
+        this.post.policy_not_accepted_by.pushObject(user);
+      });
+    } catch (e) {
+      popupAjaxError(e);
+    }
   }
 
   @action
@@ -234,18 +231,23 @@ export default class PostPolicy extends Component {
   }
 
   @action
-  toggleShowUsers() {
-    this.toggleProperty("showNotAccepted");
+  toggleShowUsers(event) {
+    event.preventDefault();
+    this.showNotAccepted = !this.showNotAccepted;
   }
 
-  _updatePolicy(policyAction, id) {
-    this.set("isLoading", true);
+  async _updatePolicy(policyAction, id) {
+    this.isLoading = true;
 
-    return ajax(getURL(`/policy/${policyAction}`), {
-      type: "put",
-      data: { post_id: id },
-    })
-      .catch(popupAjaxError)
-      .finally(() => this.set("isLoading", false));
+    try {
+      await ajax(`/policy/${policyAction}`, {
+        type: "PUT",
+        data: { post_id: id },
+      });
+    } catch (e) {
+      popupAjaxError(e);
+    } finally {
+      this.isLoading = false;
+    }
   }
 }

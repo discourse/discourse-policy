@@ -1,7 +1,7 @@
 <PolicyFormField @name="groups" @required={{true}}>
   <PolicyGroupInput
-    @groups={{policy.groups}}
-    @onChangeGroup={{fn this.onChange "groups"}}
+    @groups={{@policy.groups}}
+    @onChangeGroup={{fn @onChange "groups"}}
   />
 </PolicyFormField>
 
@@ -9,7 +9,7 @@
   <input
     name="version"
     type="number"
-    value={{readonly policy.version}}
+    value={{readonly @policy.version}}
     {{on "input" (fn this.changeValue "version")}}
   />
 </PolicyFormField>
@@ -18,7 +18,7 @@
   <input
     name="renew"
     type="number"
-    value={{readonly policy.renew}}
+    value={{readonly @policy.renew}}
     {{on "input" (fn this.changeValue "renew")}}
   />
 </PolicyFormField>
@@ -28,15 +28,15 @@
     type="date"
     placeholder="2020-03-31"
     name="renew-start"
-    value={{readonly (get policy "renew-start")}}
+    value={{readonly (get @policy "renew-start")}}
     {{on "input" (fn this.changeValue "renew-start")}}
   />
 </PolicyFormField>
 
 <PolicyFormField @name="reminder">
   <PolicyReminderInput
-    @reminder={{policy.reminder}}
-    @onChangeReminder={{fn this.onChange "reminder"}}
+    @reminder={{@policy.reminder}}
+    @onChangeReminder={{fn @onChange "reminder"}}
   />
 </PolicyFormField>
 
@@ -44,7 +44,7 @@
   <input
     type="text"
     name="accept"
-    value={{readonly policy.accept}}
+    value={{readonly @policy.accept}}
     {{on "input" (fn this.changeValue "accept")}}
   />
 </PolicyFormField>
@@ -53,7 +53,7 @@
   <input
     type="text"
     name="revoke"
-    value={{readonly policy.revoke}}
+    value={{readonly @policy.revoke}}
     {{on "input" (fn this.changeValue "revoke")}}
   />
 </PolicyFormField>
@@ -62,7 +62,7 @@
   <input
     type="checkbox"
     name="private"
-    checked={{readonly policy.private}}
+    checked={{readonly @policy.private}}
     {{on "click" (fn this.changeBoolValue "private")}}
   />
 </PolicyFormField>
