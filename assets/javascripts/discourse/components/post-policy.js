@@ -101,19 +101,20 @@ export default class PostPolicy extends Component {
 
   get remainingNotAcceptedUsers() {
     return (
-      (this.post?.policy_not_accepted_by_count || 0) -
-      (this.post?.policy_not_accepted_by || []).length
+      (this.post?.get("policy_not_accepted_by_count") || 0) -
+      (this.post?.get("policy_not_accepted_by") || []).length
     );
   }
 
   get notAcceptedUsers() {
-    return this.post.policy_not_accepted_by || [];
+    return this.post?.get("policy_not_accepted_by") || [];
   }
 
   get canManagePolicy() {
     return (
       this.currentUser &&
-      (this.currentUser.staff || this.currentUser.id === this.post?.user_id)
+      (this.currentUser.staff ||
+        this.currentUser.id === this.post?.get("user_id"))
     );
   }
 
