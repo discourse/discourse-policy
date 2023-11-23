@@ -1,9 +1,10 @@
 import { withPluginApi } from "discourse/lib/plugin-api";
-import showModal from "discourse/lib/show-modal";
+import PolicyBuilder from "../discourse/components/modal/policy-builder";
 
 function initializePolicyBuilder(api, container) {
   const currentUser = api.getCurrentUser();
-  const siteSettings = container.lookup("site-settings:main");
+  const siteSettings = container.lookup("service:site-settings");
+  const modal = container.lookup("service:modal");
 
   if (currentUser) {
     api.addComposerToolbarPopupMenuOption({
@@ -11,10 +12,12 @@ function initializePolicyBuilder(api, container) {
       icon: "file-signature",
       group: "insertions",
       action: (toolbarEvent) => {
-        showModal("policy-builder").setProperties({
-          insertMode: true,
-          post: null,
-          toolbarEvent,
+        modal.show(PolicyBuilder, {
+          model: {
+            insertMode: true,
+            post: null,
+            toolbarEvent,
+          },
         });
       },
       condition: () => {
@@ -30,7 +33,7 @@ export default {
   name: "add-discourse-policy-builder",
 
   initialize(container) {
-    const siteSettings = container.lookup("site-settings:main");
+    const siteSettings = container.lookup("service:site-settings");
     if (siteSettings.policy_enabled) {
       withPluginApi("1.13.0", (api) => initializePolicyBuilder(api, container));
     }

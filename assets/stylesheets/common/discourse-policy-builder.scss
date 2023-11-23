@@ -1,21 +1,25 @@
-::-webkit-calendar-picker-indicator {
-  opacity: 1;
-}
-
-@media (prefers-color-scheme: dark) {
+.d-modal.policy-builder {
   ::-webkit-calendar-picker-indicator {
-    @if is-light-color-scheme() {
-      filter: invert(0);
-    } @else {
-      filter: invert(1);
+    opacity: 1;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    ::-webkit-calendar-picker-indicator {
+      @if is-light-color-scheme() {
+        filter: invert(0);
+      } @else {
+        filter: invert(1);
+      }
     }
   }
-}
 
-.policy-builder {
-  input,
+  input:not([type="checkbox"]),
   .select-kit {
+    margin: 0;
     width: 100%;
+  }
+
+  input[type="checkbox"] {
     margin: 0;
   }
 
@@ -29,10 +33,9 @@
     .policy-field-label {
       font-weight: 700;
     }
-    .policy-field-control {
-    }
+
     .policy-field-description {
-      font-size: $font-down-1;
+      font-size: var(--font-down-1);
     }
   }
 }

@@ -1,0 +1,31 @@
+<DModal
+  @title={{i18n "discourse_policy.builder.title"}}
+  @closeModal={{@closeModal}}
+  @flash={{this.flash}}
+  @flashType="error"
+  class="policy-builder"
+>
+  <:body>
+    <PolicyBuilderForm
+      @policy={{this.policy}}
+      @onChange={{this.onChangeFormField}}
+    />
+  </:body>
+
+  <:footer>
+    {{#if @model.insertMode}}
+      <DButton
+        @label="discourse_policy.builder.insert"
+        @action={{this.insertPolicy}}
+        class="btn-primary"
+      />
+    {{else}}
+      <DButton
+        @label="discourse_policy.builder.save"
+        @action={{this.updatePolicy}}
+        @isLoading={{this.isSaving}}
+        class="btn-primary"
+      />
+    {{/if}}
+  </:footer>
+</DModal>
