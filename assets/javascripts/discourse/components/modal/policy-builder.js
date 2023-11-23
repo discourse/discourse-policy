@@ -30,7 +30,7 @@ export default class PolicyBuilder extends Component {
         "discourse_policy.accept_policy_template"
       )}\n[/policy]\n\n`
     );
-    this.closeModal();
+    this.args.closeModal();
   }
 
   @action
