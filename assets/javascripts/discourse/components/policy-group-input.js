@@ -1,6 +1,6 @@
 import Component from "@glimmer/component";
-import { inject as service } from "@ember/service";
 import { action, computed } from "@ember/object";
+import { inject as service } from "@ember/service";
 
 export default class PolicyGroupInput extends Component {
   @service site;
