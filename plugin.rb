@@ -6,7 +6,6 @@
 # version: 0.1
 # authors: Sam Saffron
 # url: https://github.com/discourse/discourse-policy
-# transpile_js: true
 
 register_asset "stylesheets/common/discourse-policy.scss"
 register_asset "stylesheets/common/discourse-policy-builder.scss"

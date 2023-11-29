@@ -1,11 +1,11 @@
-import { isBlank, isPresent } from "@ember/utils";
-import I18n from "I18n";
-import { cook } from "discourse/lib/text";
 import Component from "@glimmer/component";
-import { action } from "@ember/object";
-import { ajax } from "discourse/lib/ajax";
 import { tracked } from "@glimmer/tracking";
+import { action } from "@ember/object";
+import { isBlank, isPresent } from "@ember/utils";
 import { TrackedObject } from "@ember-compat/tracked-built-ins";
+import { ajax } from "discourse/lib/ajax";
+import { cook } from "discourse/lib/text";
+import I18n from "I18n";
 
 export default class PolicyBuilder extends Component {
   @tracked isSaving = false;

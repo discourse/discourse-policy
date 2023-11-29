@@ -1,10 +1,10 @@
 import EmberObject from "@ember/object";
-import pretender, { response } from "discourse/tests/helpers/create-pretender";
-import I18n from "I18n";
 import { click, render } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 import { module, test } from "qunit";
 import { setupRenderingTest } from "discourse/tests/helpers/component-test";
+import pretender, { response } from "discourse/tests/helpers/create-pretender";
+import I18n from "I18n";
 
 function fabricatePost(options = {}) {
   return EmberObject.create({ id: 1, ...options });

@@ -1,8 +1,8 @@
 import EmberObject from "@ember/object";
-import I18n from "I18n";
+import { hbs } from "ember-cli-htmlbars";
 import { withPluginApi } from "discourse/lib/plugin-api";
 import { escapeExpression } from "discourse/lib/utilities";
-import { hbs } from "ember-cli-htmlbars";
+import I18n from "I18n";
 
 const SETTINGS = [
   { name: "groups" },
