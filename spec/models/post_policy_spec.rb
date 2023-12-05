@@ -2,8 +2,8 @@
 
 require "rails_helper"
 
-describe PostPolicy do
-  before { Jobs.run_immediately! }
+RSpec.describe PostPolicy do
+  include ActiveSupport::Testing::TimeHelpers
 
   fab!(:user1) { Fabricate(:user) }
   fab!(:user2) { Fabricate(:user) }
@@ -30,6 +30,28 @@ describe PostPolicy do
     PostPolicyGroup.create!(post_policy_id: policy.id, group_id: group1.id)
     PostPolicyGroup.create!(post_policy_id: policy.id, group_id: group2.id)
     policy
+  end
+
+  before { Jobs.run_immediately! }
+
+  describe "Callbacks" do
+    context "when bumping version" do
+      before { freeze_time }
+
+      after { travel_back }
+
+      it "updates the `last_bumped_at` field" do
+        expect { policy.update!(version: "2") }.to change { policy.reload.last_bumped_at }.to eq(
+          Time.current,
+        )
+      end
+    end
+
+    context "when not bumping version" do
+      it "doesn't change the `last_bumped_at` field" do
+        expect { policy.update!(private: true) }.not_to change { policy.reload.last_bumped_at }
+      end
+    end
   end
 
   describe "#accepted_by" do
