@@ -6,11 +6,14 @@ class PostPolicy < ActiveRecord::Base
   ]
 
   belongs_to :post
+
   has_many :post_policy_groups, dependent: :destroy
   has_many :groups, through: :post_policy_groups
   has_many :policy_users
 
   enum renew_interval: { monthly: 0, quarterly: 1, yearly: 2 }
+
+  before_save :bump_policy
 
   def accepted_by
     return User.none if !groups.exists?
@@ -49,6 +52,10 @@ class PostPolicy < ActiveRecord::Base
   end
 
   private
+
+  def bump_policy
+    self.last_bumped_at = Time.current if version_changed?
+  end
 
   def emails_enabled_users
     policy_group_users.joins(:user_option).where(
