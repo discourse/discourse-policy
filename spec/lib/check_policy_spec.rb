@@ -128,7 +128,7 @@ describe DiscoursePolicy::CheckPolicy do
 
     accept_policy(post)
 
-    freeze_time (Time.utc(2020, 10, 17) + 101.days)
+    freeze_time(Time.utc(2020, 10, 17) + 101.days)
 
     PolicyUser.add!(user2, post.post_policy)
 

@@ -8,7 +8,7 @@ export default {
 
   initialize(container) {
     withPluginApi("0.8.7", (api) => {
-      const siteSettings = container.lookup("site-settings:main");
+      const siteSettings = container.lookup("service:site-settings");
       if (siteSettings.policy_enabled) {
         api.addSaveableUserOptionField(SEND_EMAIL_NOTIFICATIONS_FIELD);
       }
