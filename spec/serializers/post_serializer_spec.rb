@@ -3,8 +3,8 @@
 require "rails_helper"
 
 describe PostSerializer do
-  fab!(:group) { Fabricate(:group) }
-  fab!(:admin) { Fabricate(:admin) }
+  fab!(:group)
+  fab!(:admin)
   fab!(:user1) { Fabricate(:user) }
   fab!(:user2) { Fabricate(:user) }
 
