@@ -3,8 +3,8 @@
 require "rails_helper"
 
 describe DiscoursePolicy::PolicyController do
-  fab!(:group) { Fabricate(:group) }
-  fab!(:moderator) { Fabricate(:moderator) }
+  fab!(:group)
+  fab!(:moderator)
   fab!(:user1) { Fabricate(:user) }
   fab!(:user2) { Fabricate(:user) }
 

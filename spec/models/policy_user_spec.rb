@@ -5,7 +5,7 @@ require "rails_helper"
 describe PolicyUser do
   before { Jobs.run_immediately! }
 
-  fab!(:user) { Fabricate(:user) }
+  fab!(:user)
 
   fab!(:group) do
     group = Fabricate(:group)

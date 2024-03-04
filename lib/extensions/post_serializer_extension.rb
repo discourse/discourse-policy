@@ -2,35 +2,35 @@
 
 module DiscoursePolicy
   module PostSerializerExtension
-    def self.prepended(base)
-      base.class_eval do
-        attributes :policy_can_accept,
-                   :policy_can_revoke,
-                   :policy_accepted,
-                   :policy_revoked,
-                   :policy_not_accepted_by,
-                   :policy_not_accepted_by_count,
-                   :policy_accepted_by,
-                   :policy_accepted_by_count
+    extend ActiveSupport::Concern
 
-        delegate :post_policy, to: :object
+    prepended do
+      attributes :policy_can_accept,
+                 :policy_can_revoke,
+                 :policy_accepted,
+                 :policy_revoked,
+                 :policy_not_accepted_by,
+                 :policy_not_accepted_by_count,
+                 :policy_accepted_by,
+                 :policy_accepted_by_count
 
-        alias include_policy_can_accept? include_policy?
-        alias include_policy_can_revoke? include_policy?
-        alias include_policy_accepted? include_policy?
-        alias include_policy_revoked? include_policy?
-        alias include_policy_not_accepted_by? include_policy_stats?
-        alias include_policy_not_accepted_by_count? include_policy_stats?
-        alias include_policy_accepted_by? include_policy_stats?
-        alias include_policy_accepted_by_count? include_policy_stats?
+      delegate :post_policy, to: :object
 
-        has_many :policy_not_accepted_by, embed: :object, serializer: BasicUserSerializer
-        has_many :policy_accepted_by, embed: :object, serializer: BasicUserSerializer
-      end
+      alias include_policy_can_accept? include_policy?
+      alias include_policy_can_revoke? include_policy?
+      alias include_policy_accepted? include_policy?
+      alias include_policy_revoked? include_policy?
+      alias include_policy_not_accepted_by? include_policy_stats?
+      alias include_policy_not_accepted_by_count? include_policy_stats?
+      alias include_policy_accepted_by? include_policy_stats?
+      alias include_policy_accepted_by_count? include_policy_stats?
+
+      has_many :policy_not_accepted_by, embed: :object, serializer: BasicUserSerializer
+      has_many :policy_accepted_by, embed: :object, serializer: BasicUserSerializer
     end
 
     def include_policy?
-      post_custom_fields[DiscoursePolicy::HAS_POLICY]
+      SiteSetting.policy_enabled? && post_custom_fields[DiscoursePolicy::HAS_POLICY]
     end
 
     def include_policy_stats?
