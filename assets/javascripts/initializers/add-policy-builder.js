@@ -20,11 +20,8 @@ function initializePolicyBuilder(api, container) {
           },
         });
       },
-      condition: () => {
-        return (
-          !siteSettings.policy_restrict_to_staff_posts || currentUser.staff
-        );
-      },
+      condition: () =>
+        !siteSettings.policy_restrict_to_staff_posts || currentUser.staff,
     });
   }
 }

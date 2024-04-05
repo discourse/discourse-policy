@@ -1,6 +1,7 @@
 import Component from "@glimmer/component";
-import { action, computed } from "@ember/object";
+import { action } from "@ember/object";
 import { inject as service } from "@ember/service";
+import GroupChooser from "select-kit/components/group-chooser";
 
 export default class PolicyGroupInput extends Component {
   @service site;
@@ -9,13 +10,12 @@ export default class PolicyGroupInput extends Component {
     return (this.args.groups || "").split(",").filter(Boolean);
   }
 
-  @computed("site.groups.[]")
   get availableGroups() {
     return (this.site.groups || [])
-      .map((g) => {
+      .map((g) =>
         // prevents group "everyone" to be listed
-        return g.id === 0 ? null : g.name;
-      })
+        g.id === 0 ? null : g.name
+      )
       .filter(Boolean);
   }
 
@@ -23,4 +23,14 @@ export default class PolicyGroupInput extends Component {
   onChange(values) {
     this.args.onChangeGroup?.(values.join(","));
   }
+
+  <template>
+    <GroupChooser
+      @content={{this.availableGroups}}
+      @valueProperty={{null}}
+      @nameProperty={{null}}
+      @value={{this.selectedGroups}}
+      @onChange={{this.onChange}}
+    />
+  </template>
 }

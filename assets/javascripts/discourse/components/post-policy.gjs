@@ -1,9 +1,14 @@
 import Component from "@glimmer/component";
 import { tracked } from "@glimmer/tracking";
+import { on } from "@ember/modifier";
 import { action } from "@ember/object";
 import { inject as service } from "@ember/service";
+import DButton from "discourse/components/d-button";
+import avatar from "discourse/helpers/bound-avatar-template";
 import { ajax } from "discourse/lib/ajax";
 import { popupAjaxError } from "discourse/lib/ajax-error";
+import icon from "discourse-common/helpers/d-icon";
+import i18n from "discourse-common/helpers/i18n";
 import { bind } from "discourse-common/utils/decorators";
 import PolicyBuilder from "./modal/policy-builder";
 
@@ -250,4 +255,120 @@ export default class PostPolicy extends Component {
       this.isLoading = false;
     }
   }
+
+  <template>
+    {{#if this.post}}
+      <div class="policy-footer">
+        <div class="policy-actions">
+          {{#if this.post.policy_can_accept}}
+            <DButton
+              @isLoading={{this.isLoading}}
+              @action={{this.acceptPolicy}}
+              class={{this.acceptButtonClasses}}
+              @translatedLabel={{this.policy.accept}}
+              @icon={{if this.post.policy_accepted "check"}}
+            />
+          {{/if}}
+
+          {{#if this.post.policy_can_revoke}}
+            <DButton
+              @isLoading={{this.isLoading}}
+              @action={{this.revokePolicy}}
+              class={{this.revokeButtonClasses}}
+              @translatedLabel={{this.policy.revoke}}
+              @icon={{if this.post.policy_revoked "check"}}
+            />
+          {{/if}}
+        </div>
+
+        <div class="user-lists">
+          {{#unless this.policyHasUsers}}
+            <span class="no-possible-users">
+              {{i18n "discourse_policy.no_possible_users"}}
+            </span>
+          {{/unless}}
+
+          {{#if this.post.policy_accepted_by_count}}
+            <a
+              href
+              {{on "click" this.toggleShowUsers}}
+              title={{i18n "discourse_policy.accepted_tooltip"}}
+              class="toggle toggle-accepted"
+            >
+              <span class="user-count">
+                {{this.post.policy_accepted_by_count}}
+              </span>
+              {{icon "user-check"}}
+            </a>
+
+            {{#unless this.showNotAccepted}}
+              {{#if this.acceptedUsers.length}}
+                <div class="users accepted">
+                  {{#each this.acceptedUsers as |acceptedUser|}}
+                    {{avatar acceptedUser.avatar_template "tiny"}}
+                  {{/each}}
+
+                  {{#if this.remainingAcceptedUsers}}
+                    <a
+                      href
+                      {{on "click" this.loadRemainingAcceptedUsers}}
+                      class="load-more-users"
+                    >
+                      +
+                      {{this.remainingAcceptedUsers}}
+                      {{icon "user"}}
+                    </a>
+                  {{/if}}
+                </div>
+              {{/if}}
+            {{/unless}}
+          {{/if}}
+
+          {{#if this.post.policy_not_accepted_by_count}}
+            <div class="separator"></div>
+
+            <a
+              href
+              {{on "click" this.toggleShowUsers}}
+              title={{i18n "discourse_policy.not_accepted_tooltip"}}
+              class="toggle toggle-not-accepted"
+            >
+              <span class="user-count">
+                {{this.post.policy_not_accepted_by_count}}
+              </span>
+              {{icon "user-times"}}
+            </a>
+
+            {{#if this.showNotAccepted}}
+              <div class="users not-accepted">
+                {{#each this.notAcceptedUsers as |notAcceptedUser|}}
+                  {{avatar notAcceptedUser.avatar_template "tiny"}}
+                {{/each}}
+
+                {{#if this.remainingNotAcceptedUsers}}
+                  <a
+                    href
+                    {{on "click" this.loadRemainingNotAcceptedUsers}}
+                    class="load-more-users"
+                  >
+                    +
+                    {{this.remainingNotAcceptedUsers}}
+                    {{icon "user"}}
+                  </a>
+                {{/if}}
+              </div>
+            {{/if}}
+          {{/if}}
+        </div>
+
+        {{#if this.canManagePolicy}}
+          <DButton
+            @action={{this.editPolicy}}
+            @icon="cog"
+            class="no-text btn-default edit-policy-settings-btn"
+          />
+        {{/if}}
+      </div>
+    {{/if}}
+  </template>
 }
