@@ -25,9 +25,11 @@ export default class PolicyBuilder extends Component {
     }
 
     this.args.model.toolbarEvent?.addText(
-      `\n\n[policy ${this.markdownParams}]\n${i18n(
-        "discourse_policy.accept_policy_template"
-      )}\n[/policy]\n\n`
+      "\n\n" +
+        `[policy ${this.markdownParams}]\n${i18n(
+          "discourse_policy.accept_policy_template"
+        )}\n[/policy]` +
+        "\n\n"
     );
     this.args.closeModal();
   }
