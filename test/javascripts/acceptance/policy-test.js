@@ -70,6 +70,15 @@ acceptance("Discourse Policy - post", function (needs) {
     await click(".edit-policy-settings-btn");
 
     assert.dom(".policy-builder").exists();
+    await selectKit(".group-chooser").expand();
+    await selectKit(".group-chooser").selectRowByName("admins");
+    await selectKit(".group-chooser").selectRowByName("moderators");
+    await selectKit(".group-chooser").collapse();
+
+    await assert.strictEqual(
+      selectKit(".group-chooser").header().value(),
+      "admins,moderators"
+    );
   });
 
   test("edit policy - not staff", async function (assert) {
