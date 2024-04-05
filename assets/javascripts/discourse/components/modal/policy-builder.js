@@ -1,6 +1,6 @@
 import Component from "@glimmer/component";
 import { tracked } from "@glimmer/tracking";
-import { action } from "@ember/object";
+import { action, set } from "@ember/object";
 import { isBlank, isPresent } from "@ember/utils";
 import { TrackedObject } from "@ember-compat/tracked-built-ins";
 import { ajax } from "discourse/lib/ajax";
@@ -16,7 +16,7 @@ export default class PolicyBuilder extends Component {
 
   @action
   onChangeFormField(field, value) {
-    this.policy[field] = value;
+    set(this.policy, field, value);
   }
 
   @action
