@@ -1,3 +1,4 @@
+import EmberObject from "@ember/object";
 import { click, fillIn, render } from "@ember/test-helpers";
 import { hbs } from "ember-cli-htmlbars";
 import { module, test } from "qunit";
@@ -11,14 +12,15 @@ module(
     setupRenderingTest(hooks);
 
     test("onChange", async function (assert) {
+      this.set("policy", new EmberObject());
       this.set("onChange", (key, value) => {
         query(".output").innerText = `${key}=${value}`;
       });
 
       await render(hbs`
-      <span class="output"></span>
-      <PolicyBuilderForm @onChange={{this.onChange}} />
-    `);
+        <span class="output"></span>
+        <PolicyBuilderForm @onChange={{this.onChange}} @policy={{this.policy}} />
+      `);
 
       const groupsChooser = selectKit(".group-chooser");
       await groupsChooser.expand();

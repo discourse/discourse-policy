@@ -4,7 +4,7 @@ import { hbs } from "ember-cli-htmlbars";
 import { module, test } from "qunit";
 import { setupRenderingTest } from "discourse/tests/helpers/component-test";
 import pretender, { response } from "discourse/tests/helpers/create-pretender";
-import I18n from "I18n";
+import I18n from "discourse-i18n";
 
 function fabricatePost(options = {}) {
   return EmberObject.create({ id: 1, ...options });
@@ -151,7 +151,7 @@ module(
       this.set("policy", fabricatePolicy());
 
       await render(
-        hbs`<PostPolicy @post={{this.post}} @policy={{this.policy}} currentUser=currentUs />}}`
+        hbs`<PostPolicy @post={{this.post}} @policy={{this.policy}} />`
       );
 
       pretender.put("/policy/accept", () => {
@@ -183,7 +183,7 @@ module(
       this.set("policy", fabricatePolicy());
 
       await render(
-        hbs`<PostPolicy @post={{this.post}} @policy={{this.policy}} currentUser=currentUs />}}`
+        hbs`<PostPolicy @post={{this.post}} @policy={{this.policy}} />`
       );
 
       pretender.put("/policy/unaccept", () => {

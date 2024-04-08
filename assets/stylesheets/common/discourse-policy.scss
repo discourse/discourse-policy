@@ -38,7 +38,7 @@
     }
 
     .d-icon {
-      line-height: $line-height-large;
+      line-height: var(--line-height-large);
     }
   }
 
@@ -50,7 +50,7 @@
   .user-lists {
     padding-left: 0.75em;
     display: flex;
-    font-size: $font-up-1;
+    font-size: var(--font-up-1);
 
     .users {
       margin-left: 0.5em;
@@ -142,7 +142,7 @@
   border: 1px solid var(--primary-low);
 
   .policy-preview {
-    font-size: $font-up-1;
+    font-size: var(--font-up-1);
     font-weight: 700;
   }
 }
