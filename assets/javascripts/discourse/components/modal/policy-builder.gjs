@@ -49,7 +49,7 @@ export default class PolicyBuilder extends Component {
       if (newRaw) {
         this.args.model.post.save({
           raw: newRaw,
-          cooked: (await cook(result.raw)).string,
+          cooked: (await cook(result.raw)).toString(),
           edit_reason: i18n("discourse_policy.edit_reason"),
         });
       }
