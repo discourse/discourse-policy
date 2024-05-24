@@ -6,7 +6,6 @@ describe DiscoursePolicy::CheckPolicy do
   before { Jobs.run_immediately! }
 
   fab!(:user1) { Fabricate(:user) }
-
   fab!(:user2) { Fabricate(:user) }
 
   fab!(:group) do
@@ -24,9 +23,9 @@ describe DiscoursePolicy::CheckPolicy do
     freeze_time Time.utc(2019)
 
     raw = <<~MD
-     [policy group=#{group.name} renew=400]
-     I always open **doors**!
-     [/policy]
+      [policy group=#{group.name} renew=400]
+      I always open **doors**!
+      [/policy]
     MD
 
     post = create_post(raw: raw, user: Fabricate(:admin))
@@ -38,22 +37,22 @@ describe DiscoursePolicy::CheckPolicy do
     DiscoursePolicy::CheckPolicy.new.execute
 
     post.reload
-    expect(post.post_policy.accepted_by.sort).to eq([user1, user2])
+    expect(post.post_policy.accepted_by).to contain_exactly(user1, user2)
 
     freeze_time Time.utc(2023)
     DiscoursePolicy::CheckPolicy.new.execute
 
     post.reload
-    expect(post.post_policy.accepted_by).to eq([])
+    expect(post.post_policy.accepted_by).to be_empty
   end
 
   it "expires only for user with expired policy" do
     freeze_time Time.utc(2019)
 
     raw = <<~MD
-     [policy group=#{group.name} renew=364]
-     I always open **doors**!
-     [/policy]
+      [policy group=#{group.name} renew=364]
+      I always open **doors**!
+      [/policy]
     MD
 
     post = create_post(raw: raw, user: Fabricate(:admin))
@@ -66,22 +65,22 @@ describe DiscoursePolicy::CheckPolicy do
     DiscoursePolicy::CheckPolicy.new.execute
 
     post.reload
-    expect(post.post_policy.accepted_by.sort).to eq([user2])
+    expect(post.post_policy.accepted_by).to contain_exactly(user2)
   end
 
   it "expires just for expired policy" do
     freeze_time Time.utc(2019)
 
     raw = <<~MD
-     [policy group=#{group.name} renew=364]
-     I always open **doors**!
-     [/policy]
+      [policy group=#{group.name} renew=364]
+      I always open **doors**!
+      [/policy]
     MD
 
     raw2 = <<~MD
-     [policy group=#{group.name} renew=1000]
-     I always open **doors**!
-     [/policy]
+      [policy group=#{group.name} renew=1000]
+      I always open **doors**!
+      [/policy]
     MD
 
     post = create_post(raw: raw, user: Fabricate(:admin))
@@ -95,17 +94,17 @@ describe DiscoursePolicy::CheckPolicy do
     DiscoursePolicy::CheckPolicy.new.execute
 
     post.reload
-    expect(post.post_policy.accepted_by.sort).to eq([])
-    expect(post2.post_policy.accepted_by.sort).to eq([user1, user2])
+    expect(post.post_policy.accepted_by).to be_empty
+    expect(post2.post_policy.accepted_by).to contain_exactly(user1, user2)
   end
 
   it "correctly renews policies" do
     freeze_time Time.utc(2019)
 
     raw = <<~MD
-     [policy group=#{group.name} renew=100 renew-start="17-10-2020"]
-     I always open **doors**!
-     [/policy]
+      [policy group=#{group.name} renew=100 renew-start="2020-10-17"]
+      I always open **doors**!
+      [/policy]
     MD
 
     post = create_post(raw: raw, user: Fabricate(:admin))
@@ -117,14 +116,14 @@ describe DiscoursePolicy::CheckPolicy do
 
     post.reload
     # did not hit renew start
-    expect(post.post_policy.accepted_by.sort).to eq([user1, user2])
+    expect(post.post_policy.accepted_by).to contain_exactly(user1, user2)
 
     freeze_time Time.utc(2020, 10, 18)
 
     DiscoursePolicy::CheckPolicy.new.execute
 
     post.reload
-    expect(post.post_policy.accepted_by.sort).to eq([])
+    expect(post.post_policy.accepted_by).to be_empty
 
     accept_policy(post)
 
@@ -135,7 +134,7 @@ describe DiscoursePolicy::CheckPolicy do
     DiscoursePolicy::CheckPolicy.new.execute
 
     post.reload
-    expect(post.post_policy.accepted_by.sort).to eq([user2])
+    expect(post.post_policy.accepted_by).to contain_exactly(user2)
   end
 
   %w[monthly quarterly yearly].each do |how_often|
@@ -152,9 +151,9 @@ describe DiscoursePolicy::CheckPolicy do
       freeze_time Time.utc(2020, 10, 16)
 
       raw = <<~MD
-     [policy group=#{group.name} renew=#{how_often} renew-start="17-10-2020"]
-     I always open **doors**!
-     [/policy]
+        [policy group=#{group.name} renew=#{how_often} renew-start="2020-10-17"]
+        I always open **doors**!
+        [/policy]
       MD
 
       post = create_post(raw: raw, user: Fabricate(:admin))
@@ -166,14 +165,14 @@ describe DiscoursePolicy::CheckPolicy do
       DiscoursePolicy::CheckPolicy.new.execute
 
       post.reload
-      expect(post.post_policy.accepted_by.sort).to eq([user1, user2])
+      expect(post.post_policy.accepted_by).to contain_exactly(user1, user2)
 
       freeze_time Time.utc(2020, 10, 18)
 
       DiscoursePolicy::CheckPolicy.new.execute
 
       post.reload
-      expect(post.post_policy.accepted_by.sort).to eq([])
+      expect(post.post_policy.accepted_by).to be_empty
       expect(post.post_policy.next_renew_at.to_s).to eq((Time.utc(2020, 10, 17) + period).to_s)
     end
   end
@@ -192,9 +191,9 @@ describe DiscoursePolicy::CheckPolicy do
       freeze_time Time.utc(2020, 10, 16)
 
       raw = <<~MD
-     [policy group=#{group.name} renew=#{how_often}]
-     I always open **doors**!
-     [/policy]
+        [policy group=#{group.name} renew=#{how_often}]
+        I always open **doors**!
+        [/policy]
       MD
 
       post = create_post(raw: raw, user: Fabricate(:admin))
@@ -206,14 +205,14 @@ describe DiscoursePolicy::CheckPolicy do
       DiscoursePolicy::CheckPolicy.new.execute
 
       post.reload
-      expect(post.post_policy.accepted_by.sort).to eq([user1, user2])
+      expect(post.post_policy.accepted_by).to contain_exactly(user1, user2)
 
       freeze_time Time.utc(2020, 10, 16) + period + 1.day
 
       DiscoursePolicy::CheckPolicy.new.execute
 
       post.reload
-      expect(post.post_policy.accepted_by.sort).to eq([])
+      expect(post.post_policy.accepted_by).to be_empty
       expect(post.post_policy.renew_start).to eq(nil)
     end
   end
@@ -223,9 +222,9 @@ describe DiscoursePolicy::CheckPolicy do
     freeze_time
 
     raw = <<~MD
-     [policy group=#{group.name} reminder=weekly]
-     I always open **doors**!
-     [/policy]
+      [policy group=#{group.name} reminder=weekly]
+      I always open **doors**!
+      [/policy]
     MD
 
     post = create_post(raw: raw, user: Fabricate(:admin))
@@ -267,9 +266,9 @@ describe DiscoursePolicy::CheckPolicy do
     freeze_time
 
     raw = <<~MD
-     [policy group=#{group.name} reminder=weekly]
-     I always open **doors**!
-     [/policy]
+      [policy group=#{group.name} reminder=weekly]
+      I always open **doors**!
+      [/policy]
     MD
 
     post = create_post(raw: raw, user: Fabricate(:admin))
