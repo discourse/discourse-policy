@@ -9,7 +9,12 @@ sk:
     unaccepted-policies:
       labels:
         topic_id: ID témy
+        user_id: ID používateľa
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
   unsubscribe:
     policy_emails:
       never: Nikdy
+      when_away: Len keď je preč
       always: Vždy

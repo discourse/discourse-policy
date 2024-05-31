@@ -11,6 +11,7 @@ hu:
     unaccepted-policies:
       labels:
         topic_id: Témaazonosító
+        user_id: Felhasználói azonosító
   unsubscribe:
     policy_emails:
       never: Soha

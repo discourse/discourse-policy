@@ -9,6 +9,7 @@ pl_PL:
     unaccepted-policies:
       labels:
         topic_id: ID tematu
+        user_id: ID użytkownika
   user_notifications:
     policy_email:
       from: "%{site_name}"

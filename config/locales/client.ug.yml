@@ -4,26 +4,26 @@
 # To work with us on translations, join this project:
 # https://translate.discourse.org/
 
-sk:
+ug:
   js:
     discourse_policy:
       builder:
-        insert: Vložiť
+        insert: قىستۇر
         groups:
-          label: Skupiny
+          label: گۇرۇپپا
         version:
-          label: Verzia
+          label: نەشرى
         accept:
-          label: Prijať
+          label: قوشۇل
         revoke:
-          label: Zrušiť
+          label: بىكار قىل
         private:
-          label: Súkromné?
+          label: شەخسىي?
         send-email:
-          label: Poslať email?
+          label: ئېلخەت يوللا?
       preferences:
         policy_emails:
           email_frequency_options:
-            never: nikdy
-            when_away: len keď je preč
-            always: vždy
+            never: ھەرگىز
+            when_away: ئايرىلغاندىلا
+            always: ھەمىشە

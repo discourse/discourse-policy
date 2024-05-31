@@ -9,6 +9,9 @@ hr:
     unaccepted-policies:
       labels:
         topic_id: ID teme
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
   unsubscribe:
     policy_emails:
       never: Nikad

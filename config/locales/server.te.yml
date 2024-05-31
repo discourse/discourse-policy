@@ -9,6 +9,11 @@ te:
     unaccepted-policies:
       labels:
         topic_id: విషయపు ఐడీ
+        user_id: సభ్యుని ID
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
   unsubscribe:
     policy_emails:
+      never: ఎప్పటికీ వద్దు
       always: ఎల్లప్పుడూ
