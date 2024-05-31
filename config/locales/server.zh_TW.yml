@@ -9,6 +9,9 @@ zh_TW:
     unaccepted-policies:
       labels:
         topic_id: 話題 ID
+  user_notifications:
+    policy_email:
+      from: "%{site_name}"
   unsubscribe:
     policy_emails:
       never: 永不

@@ -9,10 +9,12 @@ uk:
     unaccepted-policies:
       labels:
         topic_id: ID теми
+        user_id: ID користувача
   user_notifications:
     policy_email:
       from: "%{site_name}"
   unsubscribe:
     policy_emails:
       never: Ніколи
+      when_away: Тільки коли офлайн
       always: Завжди

@@ -19,6 +19,7 @@ sv:
     unaccepted-policies:
       labels:
         topic_id: Ämnes-ID
+        user_id: Användar-ID
   user_notifications:
     policy_email:
       from: "%{site_name}"

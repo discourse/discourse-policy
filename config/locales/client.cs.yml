@@ -13,6 +13,8 @@ cs:
           label: Skupiny
         version:
           label: Verze
+        accept:
+          label: Přijmout
         revoke:
           label: zrušit
         private:
@@ -23,4 +25,5 @@ cs:
         policy_emails:
           email_frequency_options:
             never: nikdy
+            when_away: jen v nepřítomnosti
             always: vždy
