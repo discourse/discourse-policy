@@ -6,18 +6,14 @@ const rule = {
       return false;
     }
 
-    token.attrs = [
-      ["class", "policy"],
-      info.attrs.group && ["data-group", info.attrs.group],
-      info.attrs.groups && ["data-groups", info.attrs.groups],
-      ["data-version", info.attrs.version || 1],
-      info.attrs.renew && ["data-renew", info.attrs.renew],
-      info.attrs.reminder && ["data-reminder", info.attrs.reminder],
-      info.attrs.accept && ["data-accept", info.attrs.accept],
-      info.attrs.revoke && ["data-revoke", info.attrs.revoke],
-      info.attrs.start && ["data-renew-start", info.attrs.start],
-      info.attrs.private && ["data-private", info.attrs.private],
-    ].filter(Boolean);
+    token.attrs = [["class", "policy"]];
+
+    // defaults to version 1 of the policy
+    info.attrs.version ||= 1;
+
+    for (let key of Object.keys(info.attrs).sort()) {
+      token.attrs.push([`data-${key}`, info.attrs[key]]);
+    }
 
     return true;
   },
