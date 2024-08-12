@@ -28,7 +28,7 @@ module Jobs
           .find_each do |post|
             post.post_policy.update(last_reminded_at: Time.zone.now)
 
-            missing_users(post).each do |user|
+            missing_users(post).find_each do |user|
               clear_existing_notification(user, post)
               user.notifications.create!(
                 notification_type: Notification.types[:topic_reminder],
