@@ -30,7 +30,7 @@ class PostPolicy < ActiveRecord::Base
   def not_accepted_by
     return User.none if !groups.exists?
 
-    policy_group_users.where.not(id: accepted_policy_users.select(:user_id))
+    policy_group_users(should_order: false).where.not(id: accepted_policy_users.select(:user_id))
   end
 
   def emailed_by
@@ -58,7 +58,7 @@ class PostPolicy < ActiveRecord::Base
   end
 
   def emails_enabled_users
-    policy_group_users.joins(:user_option).where(
+    policy_group_users(should_order: false).joins(:user_option).where(
       "
         (user_options.policy_email_frequency = ?)
         OR (user_options.policy_email_frequency = ? and users.last_seen_at < ?)",
@@ -93,15 +93,18 @@ class PostPolicy < ActiveRecord::Base
     policy_users.revoked.with_version(version)
   end
 
-  def policy_group_users
-    User
-      .activated
-      .not_suspended
-      .joins(:group_users)
-      .joins("JOIN post_policy_groups on post_policy_groups.group_id = group_users.group_id")
-      .where("post_policy_groups.post_policy_id = ?", id)
-      .order(:id)
-      .distinct
+  def policy_group_users(should_order: true)
+    query =
+      User
+        .activated
+        .not_suspended
+        .joins(:group_users)
+        .joins("JOIN post_policy_groups on post_policy_groups.group_id = group_users.group_id")
+        .where("post_policy_groups.post_policy_id = ?", id)
+        .distinct
+
+    query = query.order(:id) if should_order
+    query
   end
 end
 
