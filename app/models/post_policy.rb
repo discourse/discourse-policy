@@ -120,9 +120,9 @@ end
 #  reminder         :string
 #  last_reminded_at :datetime
 #  version          :string
-#  group_id         :integer          not null
 #  created_at       :datetime         not null
 #  updated_at       :datetime         not null
 #  renew_interval   :integer
 #  private          :boolean          default(FALSE), not null
+#  last_bumped_at   :datetime
 #
