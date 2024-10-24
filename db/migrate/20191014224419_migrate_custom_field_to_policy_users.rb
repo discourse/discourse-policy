@@ -14,4 +14,8 @@ class MigrateCustomFieldToPolicyUsers < ActiveRecord::Migration[5.2]
     DELETE FROM post_custom_fields WHERE name = 'PolicyAcceptedBy'
     SQL
   end
+
+  def down
+    raise ActiveRecord::IrreversibleMigration
+  end
 end
