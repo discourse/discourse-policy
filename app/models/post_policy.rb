@@ -11,7 +11,7 @@ class PostPolicy < ActiveRecord::Base
   has_many :groups, through: :post_policy_groups
   has_many :policy_users
 
-  enum renew_interval: { monthly: 0, quarterly: 1, yearly: 2 }
+  enum :renew_interval, { monthly: 0, quarterly: 1, yearly: 2 }
 
   before_save :bump_policy
 
