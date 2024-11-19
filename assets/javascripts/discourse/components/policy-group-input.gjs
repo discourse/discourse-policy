@@ -1,6 +1,6 @@
 import Component from "@glimmer/component";
 import { action } from "@ember/object";
-import { inject as service } from "@ember/service";
+import { service } from "@ember/service";
 import GroupChooser from "select-kit/components/group-chooser";
 
 export default class PolicyGroupInput extends Component {
