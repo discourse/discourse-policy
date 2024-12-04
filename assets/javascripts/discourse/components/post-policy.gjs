@@ -336,7 +336,7 @@ export default class PostPolicy extends Component {
               <span class="user-count">
                 {{this.post.policy_not_accepted_by_count}}
               </span>
-              {{icon "user-times"}}
+              {{icon "user-xmark"}}
             </a>
 
             {{#if this.showNotAccepted}}
