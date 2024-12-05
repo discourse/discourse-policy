@@ -364,7 +364,7 @@ export default class PostPolicy extends Component {
         {{#if this.canManagePolicy}}
           <DButton
             @action={{this.editPolicy}}
-            @icon="cog"
+            @icon="gear"
             class="no-text btn-default edit-policy-settings-btn"
           />
         {{/if}}
