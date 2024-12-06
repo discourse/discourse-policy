@@ -52,6 +52,7 @@
     display: flex;
     font-size: var(--font-up-1);
     gap: 0.5rem;
+    justify-content: end;
 
     .users {
       display: flex;
@@ -93,12 +94,10 @@
   .policy-actions {
     display: flex;
     gap: 0.5rem;
-    max-width: 50%;
     flex-wrap: wrap;
 
     @include breakpoint("medium") {
       width: 100%;
-      max-width: 100%;
     }
 
     .btn {
