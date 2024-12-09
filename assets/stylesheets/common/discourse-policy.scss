@@ -13,9 +13,10 @@
     align-items: center;
     display: flex;
     justify-content: space-between;
+    gap: 1rem;
 
-    .btn {
-      white-space: nowrap;
+    @include breakpoint("tablet") {
+      flex-direction: column;
     }
   }
 
@@ -48,12 +49,12 @@
   }
 
   .user-lists {
-    padding-left: 0.75em;
     display: flex;
     font-size: var(--font-up-1);
+    gap: 0.5rem;
+    justify-content: end;
 
     .users {
-      margin-left: 0.5em;
       display: flex;
       align-items: center;
       flex-wrap: wrap;
@@ -66,8 +67,6 @@
 
   .separator {
     border-right: 2px solid var(--primary-low);
-    margin: 0 0.5em;
-    padding: 0.75em 0em;
   }
 
   .see-policy-settings-btn,
@@ -94,9 +93,20 @@
 .cooked .policy {
   .policy-actions {
     display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+
+    @include breakpoint("medium") {
+      width: 100%;
+    }
 
     .btn {
-      margin-right: 0.25em;
+      white-space: nowrap;
+
+      @include breakpoint("large") {
+        width: 100%;
+        white-space: inherit;
+      }
     }
   }
 
