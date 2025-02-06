@@ -1,5 +1,5 @@
 import { concat } from "@ember/helper";
-import i18n from "discourse-common/helpers/i18n";
+import { i18n } from "discourse-i18n";
 
 const PolicyFormFields = <template>
   <div class="policy-field {{@name}}">

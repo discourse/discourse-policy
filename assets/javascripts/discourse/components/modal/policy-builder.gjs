@@ -8,7 +8,7 @@ import DButton from "discourse/components/d-button";
 import DModal from "discourse/components/d-modal";
 import { ajax } from "discourse/lib/ajax";
 import { cook } from "discourse/lib/text";
-import i18n from "discourse-common/helpers/i18n";
+import { i18n } from "discourse-i18n";
 import PolicyBuilderForm from "../policy-builder-form";
 
 export default class PolicyBuilder extends Component {
