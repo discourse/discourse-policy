@@ -4,7 +4,7 @@ import { hbs } from "ember-cli-htmlbars";
 import { module, test } from "qunit";
 import { setupRenderingTest } from "discourse/tests/helpers/component-test";
 import pretender, { response } from "discourse/tests/helpers/create-pretender";
-import I18n from "discourse-i18n";
+import { i18n } from "discourse-i18n";
 
 function fabricatePost(options = {}) {
   return EmberObject.create({ id: 1, ...options });
@@ -89,7 +89,7 @@ module(
 
       assert
         .dom(".no-possible-users")
-        .hasText(I18n.t("discourse_policy.no_possible_users"));
+        .hasText(i18n("discourse_policy.no_possible_users"));
     });
 
     test("toggle state", async function (assert) {

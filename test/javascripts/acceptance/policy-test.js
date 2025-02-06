@@ -1,5 +1,6 @@
 import { click, fillIn, visit } from "@ember/test-helpers";
 import { test } from "qunit";
+import { cloneJSON } from "discourse/lib/object";
 import postFixtures from "discourse/tests/fixtures/post";
 import topicFixtures from "discourse/tests/fixtures/topic";
 import {
@@ -7,8 +8,7 @@ import {
   updateCurrentUser,
 } from "discourse/tests/helpers/qunit-helpers";
 import selectKit from "discourse/tests/helpers/select-kit-helper";
-import { cloneJSON } from "discourse-common/lib/object";
-import I18n from "discourse-i18n";
+import { i18n } from "discourse-i18n";
 
 acceptance("Discourse Policy - post", function (needs) {
   needs.user();
@@ -44,7 +44,7 @@ acceptance("Discourse Policy - post", function (needs) {
 
     await selectKit(".d-editor .toolbar-popup-menu-options").expand();
     await selectKit(".toolbar-popup-menu-options").selectRowByName(
-      I18n.t("discourse_policy.builder.attach")
+      i18n("discourse_policy.builder.attach")
     );
     await selectKit(".group-chooser").expand();
     await selectKit(".group-chooser").fillInFilter("staff");

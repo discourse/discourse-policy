@@ -2,7 +2,7 @@ import EmberObject from "@ember/object";
 import { hbs } from "ember-cli-htmlbars";
 import { withPluginApi } from "discourse/lib/plugin-api";
 import { escapeExpression } from "discourse/lib/utilities";
-import I18n from "discourse-i18n";
+import { i18n } from "discourse-i18n";
 
 const SETTINGS = [
   { name: "groups" },
@@ -15,12 +15,12 @@ const SETTINGS = [
   { name: "reminder" },
   {
     name: "accept",
-    default: I18n.t("discourse_policy.accept_policy"),
+    default: i18n("discourse_policy.accept_policy"),
     escape: true,
   },
   {
     name: "revoke",
-    default: I18n.t("discourse_policy.revoke_policy"),
+    default: i18n("discourse_policy.revoke_policy"),
     escape: true,
   },
 ];
@@ -60,7 +60,7 @@ function attachPolicy(cooked, helper) {
     // if no helper it means we are decorating the preview, make it clear it's a policy
     const policyPreview = document.createElement("div");
     policyPreview.classList.add("policy-preview");
-    policyPreview.innerText = I18n.t("discourse_policy.title");
+    policyPreview.innerText = i18n("discourse_policy.title");
     policy.prepend(policyPreview);
     return;
   }

@@ -1,14 +1,14 @@
-import I18n from "discourse-i18n";
+import { i18n } from "discourse-i18n";
 import ComboBox from "select-kit/components/combo-box";
 
 const VALID_REMINDERS = [
   {
     id: "daily",
-    name: I18n.t("daily"),
+    name: i18n("daily"),
   },
   {
     id: "weekly",
-    name: I18n.t("weekly"),
+    name: i18n("weekly"),
   },
 ];
 
