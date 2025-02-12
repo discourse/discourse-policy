@@ -1,8 +1,8 @@
 import EmberObject from "@ember/object";
-import { hbs } from "ember-cli-htmlbars";
 import { withPluginApi } from "discourse/lib/plugin-api";
 import { escapeExpression } from "discourse/lib/utilities";
 import { i18n } from "discourse-i18n";
+import PostPolicy from "../components/post-policy";
 
 const SETTINGS = [
   { name: "groups" },
@@ -24,6 +24,10 @@ const SETTINGS = [
     escape: true,
   },
 ];
+
+const PolicyWrapper = <template>
+  <PostPolicy @post={{@data.post}} @policy={{@data.policy}} />
+</template>;
 
 function _buildPolicyAttributes(policy) {
   const form = {};
@@ -56,8 +60,10 @@ function attachPolicy(cooked, helper) {
 
   policy.innerHTML = `<div class="policy-body">${policy.innerHTML}</div>`;
 
-  if (!helper) {
-    // if no helper it means we are decorating the preview, make it clear it's a policy
+  const post = helper?.getModel();
+
+  if (!post) {
+    // if no post it means we are decorating the preview, make it clear it's a policy
     const policyPreview = document.createElement("div");
     policyPreview.classList.add("policy-preview");
     policyPreview.innerText = i18n("discourse_policy.title");
@@ -65,13 +71,10 @@ function attachPolicy(cooked, helper) {
     return;
   }
 
-  const post = helper.getModel();
-
-  helper.renderGlimmer(
-    policy,
-    hbs`<PostPolicy @post={{@data.post}} @policy={{@data.policy}} />`,
-    { post, policy: _buildPolicyAttributes(policy) }
-  );
+  helper.renderGlimmer(policy, PolicyWrapper, {
+    post,
+    policy: _buildPolicyAttributes(policy),
+  });
 }
 
 export default {
