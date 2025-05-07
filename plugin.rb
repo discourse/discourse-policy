@@ -27,6 +27,7 @@ module ::DiscoursePolicy
 end
 
 after_initialize do
+  require_relative "app/controllers/discourse_policy/policy_controller"
   require_relative "jobs/scheduled/check_policy"
   require_relative "lib/email_controller_helper/policy_email_unsubscriber"
   require_relative "lib/extensions/post_extension"
