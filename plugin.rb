@@ -15,22 +15,18 @@ register_svg_icon "file-signature"
 
 enabled_site_setting :policy_enabled
 
-after_initialize do
-  module ::DiscoursePolicy
-    PLUGIN_NAME = "discourse-policy"
-    HAS_POLICY = "HasPolicy"
-    POLICY_USER_DEFAULT_LIMIT = 25
+module ::DiscoursePolicy
+  PLUGIN_NAME = "discourse-policy"
+  HAS_POLICY = "HasPolicy"
+  POLICY_USER_DEFAULT_LIMIT = 25
 
-    class Engine < ::Rails::Engine
-      engine_name PLUGIN_NAME
-      isolate_namespace DiscoursePolicy
-    end
+  class Engine < ::Rails::Engine
+    engine_name PLUGIN_NAME
+    isolate_namespace DiscoursePolicy
   end
+end
 
-  require_relative "app/controllers/policy_controller"
-  require_relative "app/models/policy_user"
-  require_relative "app/models/post_policy_group"
-  require_relative "app/models/post_policy"
+after_initialize do
   require_relative "jobs/scheduled/check_policy"
   require_relative "lib/email_controller_helper/policy_email_unsubscriber"
   require_relative "lib/extensions/post_extension"
@@ -48,10 +44,12 @@ after_initialize do
     get "/not-accepted" => "policy#not_accepted"
   end
 
-  Post.prepend DiscoursePolicy::PostExtension
-  PostSerializer.prepend DiscoursePolicy::PostSerializerExtension
-  UserNotifications.prepend DiscoursePolicy::UserNotificationsExtension
-  UserOption.prepend DiscoursePolicy::UserOptionExtension
+  reloadable_patch do |plugin|
+    Post.prepend DiscoursePolicy::PostExtension
+    PostSerializer.prepend DiscoursePolicy::PostSerializerExtension
+    UserNotifications.prepend DiscoursePolicy::UserNotificationsExtension
+    UserOption.prepend DiscoursePolicy::UserOptionExtension
+  end
 
   UserUpdater::OPTION_ATTR.push(:policy_email_frequency)
 
