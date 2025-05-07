@@ -36,13 +36,13 @@ after_initialize do
   require_relative "lib/extensions/user_option_extension"
   require_relative "lib/policy_mailer"
 
-  Discourse::Application.routes.append { mount ::DiscoursePolicy::Engine, at: "/policy" }
-
-  DiscoursePolicy::Engine.routes.draw do
-    put "/accept" => "policy#accept"
-    put "/unaccept" => "policy#unaccept"
-    get "/accepted" => "policy#accepted"
-    get "/not-accepted" => "policy#not_accepted"
+  Discourse::Application.routes.append do
+    scope module: 'discourse_policy' do
+      put "/policy/accept" => "policy#accept"
+      put "/policy/unaccept" => "policy#unaccept"
+      get "/policy/accepted" => "policy#accepted"
+      get "/policy/not-accepted" => "policy#not_accepted"
+    end
   end
 
   reloadable_patch do |plugin|
