@@ -15,6 +15,8 @@ register_svg_icon "file-signature"
 
 enabled_site_setting :policy_enabled
 
+require_relative "lib/site_settings/policy_groups_json_schema"
+
 after_initialize do
   module ::DiscoursePolicy
     PLUGIN_NAME = "discourse-policy"
