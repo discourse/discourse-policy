@@ -5,30 +5,30 @@ module Jobs
     every 15.minutes
 
     def execute(args = nil)
-      return unless SiteSetting.policy_add_to_group_enabled
-
       begin
-        if JSON.parse(SiteSetting.policy_add_to_group_groups).size > 0
-          policy_groups_settings = JSON.parse(SiteSetting.policy_add_to_group_groups)
+          # find policies with "add to group" setting
+          add_user_to_group_policies = PostPolicy.where.not(add_users_to_group: nil)
+            # for each policy, find the group
+            add_user_to_group_policies.each do |policy|
+              # should probably ensure this can work for more than one group
+              user_group_to_join = policy.add_users_to_group
 
-          policy_groups_settings.each do |setting|
-            binding.pry
+              # find users that have accepted the policy but aren't in the group yet
+              users_to_add = policy.accepted_by - Group.find_by(name: user_group_to_join).users
+              # find users that are in the group but haven't accepted the policy
+              users_to_remove = Group.find_by(name: user_group_to_join).users - policy.accepted_by
 
-            policy_group = Group.find_by(name: setting['group_name'])
-            policy = PostPolicy.find(setting['policy'])
+              # for each accepting user, add user to group
+              users_to_add.each do |user|
+                Rails.logger.warn("PolicyGroupAdd: Adding user #{user.username} to group #{policy_group}")
+                Group.find_by(name: policy_group).add(user)
+              end
 
-            users_to_add = policy.accepted_by - Group.find_by(name: policy_group.users)
-            users_to_remove = Group.find_by(name: policy_group.users) - policy.accepted_by
-
-
-            users_to_add.each do |user|
-              Rails.logger.warn("PolicyGroupAdd: Adding user #{user.username} to group #{policy_group}")
-              Group.find_by(name: policy_group).add(user)
-            end
-
-            users_to_remove.each do |user|
-              Rails.logger.warn("PolicyGroupAdd: Removing user #{user.username} from group #{policy_group}")
-              Group.find_by(name: policy_group).remove(user)
+              # for each user in the group that hasn't accepted the policy, remove user from group
+              users_to_remove.each do |user|
+                Rails.logger.warn("PolicyGroupAdd: Removing user #{user.username} from group #{policy_group}")
+                Group.find_by(name: policy_group).remove(user)
+              end
             end
           end
         end
