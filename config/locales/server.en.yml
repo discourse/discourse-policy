@@ -3,8 +3,6 @@ en:
     policy_enabled: "Allow policies?"
     policy_restrict_to_staff_posts: "Policies may only appear on staff posts"
     policy_easy_revoke: "Show the accept and revoke buttons at the same time"
-    policy_group_add_enabled: "Add users who accept policies to groups"
-    policy_group_add_groups: "Groups to add users to when they accept policies"
   discourse_policy:
     errors:
       user_missing: "User does not exist in group"
@@ -31,3 +29,4 @@ en:
       never: Never
       when_away: Only when away
       always: Always
+

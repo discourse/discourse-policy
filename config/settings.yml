@@ -7,9 +7,3 @@ plugins:
     default: true
   policy_easy_revoke:
     default: false
-  policy_add_to_group_enabled:
-    default: false
-  policy_add_to_group_groups:
-    client: true
-    default: "[]"
-    json_schema: DiscoursePolicy::SiteSettings::PolicyGroupsJsonSchema
