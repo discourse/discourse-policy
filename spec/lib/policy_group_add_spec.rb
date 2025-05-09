@@ -12,42 +12,72 @@ describe DiscoursePolicy::PolicyGroupAdd do
     PolicyUser.add!(user, post.post_policy)
   end
 
-  it "adds user to group if they have accepted the policy" do
-    freeze_time Time.utc(2025)
+  context "when a user has accepted the policy" do
+    before do
+      SiteSetting.policy_add_to_group_enabled = true
+      SiteSetting.policy_add_to_group_groups =
+      [
+        {
+          group_name: group.name,
+          policy: 1,
+        },
+      ].to_json
+    end
 
-    raw = <<~MD
-      [policy group=#{group.name} renew=400]
-      I always open **doors**!
-      [/policy]
-    MD
 
-    post = create_post(raw: raw, user: Fabricate(:admin))
-    accept_policy(post)
+    it "adds user to the group" do
+      freeze_time Time.utc(2025)
 
-    DiscoursePolicy::PolicyGroupAdd.new.execute
+      raw = <<~MD
+        [policy group=#{group.name} renew=400]
+        I always open **doors**!
+        [/policy]
+      MD
 
-    expect(post.post_policy.accepted_by).to contain_exactly(user)
-    expect(Group.find_by(name: group.name).users).to include(user)
+      post = create_post(raw: raw, user: Fabricate(:admin))
+      accept_policy(post)
+      post.reload
+
+
+      DiscoursePolicy::PolicyGroupAdd.new.execute
+      group.reload
+
+      expect(post.post_policy.accepted_by).to contain_exactly(user)
+      expect(Group.find_by(name: group.name).users).to contain_exactly(user)
+    end
   end
 
-  it "does not add user to group if they have not accepted the policy" do
-    freeze_time Time.utc(2025)
+  context "when a user in the group has not accepted the policy" do
+    before do
+      SiteSetting.policy_add_to_group_enabled = true
+      SiteSetting.policy_add_to_group_groups =
+      [
+        {
+          group_name: group.name,
+          policy: 1,
+        },
+      ].to_json
 
-    raw = <<~MD
-      [policy group=#{group.name} renew=400]
-      I always open **doors**!
-      [/policy]
-    MD
+      group.add(user)
+    end
 
-    post = create_post(raw: raw, user: Fabricate(:admin))
+    it "removes user from the group" do
+      freeze_time Time.utc(2025)
 
-    DiscoursePolicy::PolicyGroupAdd.new.execute
+      raw = <<~MD
+        [policy group=#{group.name} renew=400]
+        I always open **doors**!
+        [/policy]
+      MD
 
-    expect(post.post_policy.accepted_by).not_to include(user)
-    expect(Group.find_by(name: group.name).users).not_to include(user)
+      post = create_post(raw: raw, user: Fabricate(:admin))
+      post.reload
+
+      DiscoursePolicy::PolicyGroupAdd.new.execute
+      group.reload
+
+      expect(post.post_policy.accepted_by).to eq([])
+      expect(Group.find_by(name: group.name).users).to eq([])
+    end
   end
-
-  # it "" do
-  #   removes users from selected groups if they have not accepted the policy upon enabling this feature?
-  # end
 end

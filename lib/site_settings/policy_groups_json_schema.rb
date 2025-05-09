@@ -16,8 +16,8 @@ module DiscoursePolicy
                 description: "Name of the group that users will be added to",
               },
               policy: {
-                type: "string",
-                description: "Policy that the user group will be associated with",
+                type: "integer",
+                description: "Policy ID that the user group will be associated with",
               },
             }
           }
