@@ -78,6 +78,13 @@ export default class PolicyBuilderForm extends Component {
       />
     </PolicyFormField>
 
+    <PolicyFormField @name="add-user-to-group">
+      <PolicyGroupInput
+        @groups={{@policy.add-user-to-groups}}
+        @onChangeUserGroup={{fn @onChange "add-user-to-group"}}
+      />
+    </PolicyFormField>
+
     <PolicyFormField @name="private">
       <input
         type="checkbox"
