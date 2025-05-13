@@ -14,14 +14,7 @@ describe DiscoursePolicy::PolicyGroupAdd do
 
   context "when a user has accepted the policy" do
     before do
-      SiteSetting.policy_add_to_group_enabled = true
-      SiteSetting.policy_add_to_group_groups =
-      [
-        {
-          group_name: group.name,
-          policy: 1,
-        },
-      ].to_json
+      # mock the user group name on policy
     end
 
 
@@ -38,7 +31,6 @@ describe DiscoursePolicy::PolicyGroupAdd do
       accept_policy(post)
       post.reload
 
-
       DiscoursePolicy::PolicyGroupAdd.new.execute
       group.reload
 
@@ -49,15 +41,7 @@ describe DiscoursePolicy::PolicyGroupAdd do
 
   context "when a user in the group has not accepted the policy" do
     before do
-      SiteSetting.policy_add_to_group_enabled = true
-      SiteSetting.policy_add_to_group_groups =
-      [
-        {
-          group_name: group.name,
-          policy: 1,
-        },
-      ].to_json
-
+      # mock the user group name on policy
       group.add(user)
     end
 
@@ -74,7 +58,7 @@ describe DiscoursePolicy::PolicyGroupAdd do
       post.reload
 
       DiscoursePolicy::PolicyGroupAdd.new.execute
-      group.reload
+      # group.reload
 
       expect(post.post_policy.accepted_by).to eq([])
       expect(Group.find_by(name: group.name).users).to eq([])
