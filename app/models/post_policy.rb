@@ -51,6 +51,12 @@ class PostPolicy < ActiveRecord::Base
     emails_enabled_when_away_users.where.not(id: accepted_policy_users.select(:user_id))
   end
 
+  def add_users_group
+    return if add_users_to_group.nil?
+
+    group = Group.find_by(id: add_users_to_group)
+  end
+
   private
 
   def bump_policy
@@ -125,4 +131,4 @@ end
 #  renew_interval   :integer
 #  private          :boolean          default(FALSE), not null
 #  last_bumped_at   :datetime
-#
+#  add_users_to_group :integer

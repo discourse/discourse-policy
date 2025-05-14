@@ -6,10 +6,12 @@ module Jobs
 
     def execute(args = nil)
       begin
+        binding.pry
         # find policies with "add to group" setting
         add_user_to_group_policies = PostPolicy.where.not(add_users_to_group: nil)
 
         # for each policy, find the group
+        # errors with the following:
         add_user_to_group_policies.each do |policy|
           # should probably ensure this can work for more than one group
           user_group_to_join = policy.add_users_to_group
