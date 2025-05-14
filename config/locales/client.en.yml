@@ -44,9 +44,9 @@ en:
         send-email:
           label: Send Email?
           description: Notify users of the new policy by email
-        add-user-to-group:
+        add-users-to-group:
           label: Add users to group
-          description: Add users to the following group(s) when they accept this policy
+          description: Add users to the following group when they accept this policy
       preferences:
         title: Policies
         policy_emails:

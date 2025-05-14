@@ -32,7 +32,7 @@ after_initialize do
   require_relative "app/models/post_policy_group"
   require_relative "app/models/post_policy"
   require_relative "jobs/scheduled/check_policy"
-  require_relative "jobs/scheduled/policy_group_add"
+  require_relative "jobs/scheduled/policy_group_add_users"
   require_relative "lib/email_controller_helper/policy_email_unsubscriber"
   require_relative "lib/extensions/post_extension"
   require_relative "lib/extensions/post_serializer_extension"

@@ -2,7 +2,7 @@
 
 require "rails_helper"
 
-describe DiscoursePolicy::PolicyGroupAdd do
+describe DiscoursePolicy::PolicyGroupAddUsers do
   before { Jobs.run_immediately! }
 
   fab!(:user)
@@ -18,7 +18,7 @@ describe DiscoursePolicy::PolicyGroupAdd do
     policy = Fabricate(:post_policy, add_users_to_group: add_user_group)
     PostPolicyGroup.create!(post_policy_id: policy.id, group_id: group.id)
 
-    policy
+    policy.reload
   end
 
   def accept_policy(policy)
@@ -33,25 +33,22 @@ describe DiscoursePolicy::PolicyGroupAdd do
       Jobs.run_immediately!
 
       expect(policy.accepted_by).to contain_exactly(user)
-      expect(Group.find_by(name: group.name).users).to contain_exactly(user)
+      expect(Group.find_by(name: add_user_group.name).users).to contain_exactly(user)
     end
   end
 
   context "when a user in the group has not accepted the policy" do
     before do
-      group.add(user)
+      add_user_group.add(user)
     end
 
     it "removes user from the group" do
       freeze_time Time.utc(2025)
 
-      policy.reload
-
-      DiscoursePolicy::PolicyGroupAdd.new.execute
-      group.reload
+      DiscoursePolicy::PolicyGroupAddUsers.new.execute
 
       expect(policy.accepted_by).to eq([])
-      expect(Group.find_by(name: group.name).users).to eq([])
+      expect(Group.find_by(name: add_user_group.name).users).to eq([])
     end
   end
 end
