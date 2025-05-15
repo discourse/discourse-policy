@@ -32,7 +32,6 @@ after_initialize do
   require_relative "app/models/post_policy_group"
   require_relative "app/models/post_policy"
   require_relative "jobs/scheduled/check_policy"
-  require_relative "jobs/scheduled/policy_group_add_users"
   require_relative "lib/email_controller_helper/policy_email_unsubscriber"
   require_relative "lib/extensions/post_extension"
   require_relative "lib/extensions/post_serializer_extension"
@@ -130,7 +129,15 @@ after_initialize do
 
         if version = policy["data-version"]
           old_version = post_policy.version || "1"
-          post_policy.version = version if version != old_version
+          if version != old_version
+            post_policy.version = version
+
+            if post_policy.add_users_to_group.present?
+              previously_accepted_users = post_policy.accepted_policy_users(old_version)
+
+              Group.find_by(id: post_policy.add_users_to_group).remove(accepted_policy_users)
+            end
+          end
         end
 
         if reminder = policy["data-reminder"]
