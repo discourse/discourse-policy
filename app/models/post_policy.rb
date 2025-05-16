@@ -57,6 +57,10 @@ class PostPolicy < ActiveRecord::Base
     Group.find_by(id: add_users_to_group)
   end
 
+  def accepted_policy_users
+    policy_users.accepted.with_version(version)
+  end
+
   private
 
   def bump_policy
@@ -89,10 +93,6 @@ class PostPolicy < ActiveRecord::Base
         UserOption.policy_email_frequencies[:when_away],
       )
       .where("users.last_seen_at < ?", 10.minutes.ago)
-  end
-
-  def accepted_policy_users
-    policy_users.accepted.with_version(version)
   end
 
   def revoked_policy_users

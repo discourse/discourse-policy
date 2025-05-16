@@ -133,9 +133,9 @@ after_initialize do
             post_policy.version = version
 
             if post_policy.add_users_to_group.present?
-              previously_accepted_users = post_policy.accepted_policy_users(old_version)
+              previously_accepted_users = post_policy.accepted_policy_users
 
-              Group.find_by(id: post_policy.add_users_to_group).remove(accepted_policy_users)
+              Group.find(post_policy.add_users_to_group).remove(previously_accepted_users)
             end
           end
         end

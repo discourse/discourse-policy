@@ -14,11 +14,11 @@ describe DiscoursePolicy::PolicyController do
     group.add(user2)
   end
 
-  it "can allows users to accept/reject policy" do
+  it "allows users to accept/reject policy" do
     raw = <<~MD
-     [policy group=#{group.name}]
-     I always open **doors**!
-     [/policy]
+      [policy group=#{group.name}]
+      I always open **doors**!
+      [/policy]
     MD
 
     post = create_post(raw: raw, user: moderator)
@@ -38,14 +38,39 @@ describe DiscoursePolicy::PolicyController do
     expect(post.reload.post_policy.accepted_by.map(&:id)).to eq([user1.id])
   end
 
+  context "when add_users_to_group is present" do
+    fab!(:group2) { Fabricate(:group) }
+    fab!(:post) { Fabricate(:post, user: moderator) }
+    fab!(:policy666) do
+      policy = Fabricate(:post_policy, post: post, add_users_to_group: group2.id)
+      PostPolicyGroup.create!(post_policy_id: policy.id, group_id: group.id)
+      policy
+    end
+
+    it "adds/removes users to the group when they accept the policy" do
+      sign_in(user1)
+      put "/policy/accept.json", params: { post_id: post.id }
+
+      expect(response.status).to eq(200)
+      expect(post.reload.post_policy.accepted_by.map(&:id)).to eq([user1.id])
+      expect(group2.users.pluck(:id)).to contain_exactly(user1.id)
+
+      put "/policy/unaccept.json", params: { post_id: post.id }
+
+      expect(response.status).to eq(200)
+      expect(post.reload.post_policy.accepted_by.map(&:id)).to eq([])
+      expect(group2.users.pluck(:id)).to contain_exactly
+    end
+  end
+
   describe "#accepted" do
     before { sign_in(user1) }
 
     it "returns pages of users who accepted" do
       raw = <<~MD
-       [policy groups=#{group.name}]
-       I always open **doors**!
-       [/policy]
+        [policy groups=#{group.name}]
+        I always open **doors**!
+        [/policy]
       MD
 
       post = create_post(raw: raw, user: moderator)
@@ -74,9 +99,9 @@ describe DiscoursePolicy::PolicyController do
 
     it "returns pages of users who accepted" do
       raw = <<~MD
-       [policy group=#{group.name}]
-       I always open **doors**!
-       [/policy]
+        [policy group=#{group.name}]
+        I always open **doors**!
+        [/policy]
       MD
 
       post = create_post(raw: raw, user: moderator)
