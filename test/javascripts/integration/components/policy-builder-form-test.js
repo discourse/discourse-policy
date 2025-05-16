@@ -47,6 +47,11 @@ module(
       await fillIn("input[name='revoke']", "bar");
       assert.dom(".output").hasText("revoke=bar");
 
+      const addGroupsChooser = selectKit(".group-chooser");
+      await addGroupsChooser.expand();
+      await addGroupsChooser.selectRowByValue("moderators");
+      assert.dom(".output").hasText("add-user-to-groups=moderators");
+
       await click("input[name='private']");
       assert.dom(".output").hasText("private=true");
     });

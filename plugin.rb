@@ -129,7 +129,15 @@ after_initialize do
 
         if version = policy["data-version"]
           old_version = post_policy.version || "1"
-          post_policy.version = version if version != old_version
+          if version != old_version
+            post_policy.version = version
+
+            if post_policy.add_users_to_group.present?
+              previously_accepted_users = post_policy.accepted_policy_users
+
+              Group.find(post_policy.add_users_to_group).remove(previously_accepted_users)
+            end
+          end
         end
 
         if reminder = policy["data-reminder"]
