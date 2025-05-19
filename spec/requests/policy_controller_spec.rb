@@ -14,13 +14,15 @@ describe DiscoursePolicy::PolicyController do
     group.add(user2)
   end
 
-  it "allows users to accept/reject policy" do
-    raw = <<~MD
+  def raw
+    <<~MD
       [policy group=#{group.name}]
       I always open **doors**!
       [/policy]
     MD
+  end
 
+  it "allows users to accept/reject policy" do
     post = create_post(raw: raw, user: moderator)
 
     sign_in(user1)
@@ -67,12 +69,6 @@ describe DiscoursePolicy::PolicyController do
     before { sign_in(user1) }
 
     it "returns pages of users who accepted" do
-      raw = <<~MD
-        [policy groups=#{group.name}]
-        I always open **doors**!
-        [/policy]
-      MD
-
       post = create_post(raw: raw, user: moderator)
       PolicyUser.add!(user1, post.post_policy)
       PolicyUser.add!(user2, post.post_policy)
@@ -98,12 +94,6 @@ describe DiscoursePolicy::PolicyController do
     before { sign_in(user1) }
 
     it "returns pages of users who accepted" do
-      raw = <<~MD
-        [policy group=#{group.name}]
-        I always open **doors**!
-        [/policy]
-      MD
-
       post = create_post(raw: raw, user: moderator)
 
       get "/policy/not-accepted.json", params: { post_id: post.id, offset: 0 }

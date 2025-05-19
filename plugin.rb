@@ -135,7 +135,7 @@ after_initialize do
             if post_policy.add_users_to_group.present?
               previously_accepted_users = post_policy.accepted_policy_users
 
-              Group.find(post_policy.add_users_to_group).remove(previously_accepted_users)
+              Group.find(post_policy.add_users_to_group)&.remove(previously_accepted_users)
             end
           end
         end

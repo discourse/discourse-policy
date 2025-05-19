@@ -50,7 +50,7 @@ module(
       const addGroupsChooser = selectKit(".group-chooser");
       await addGroupsChooser.expand();
       await addGroupsChooser.selectRowByValue("moderators");
-      assert.dom(".output").hasText("add-user-to-groups=moderators");
+      assert.dom(".output").hasText("add-users-to-group=moderators");
 
       await click("input[name='private']");
       assert.dom(".output").hasText("private=true");

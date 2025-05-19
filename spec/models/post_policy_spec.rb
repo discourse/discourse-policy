@@ -208,7 +208,6 @@ RSpec.describe PostPolicy do
       policy
     end
 
-    # are these even worth testing?
     it "returns the group if add_users_to_group is set" do
       expect(policy_user_add.add_users_group).to eq group1
     end
