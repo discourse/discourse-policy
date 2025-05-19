@@ -47,6 +47,7 @@ module(
       await fillIn("input[name='revoke']", "bar");
       assert.dom(".output").hasText("revoke=bar");
 
+      // how to select the _second_ group chooser attribute on the page?
       const addGroupsChooser = selectKit(".group-chooser");
       await addGroupsChooser.expand();
       await addGroupsChooser.selectRowByValue("moderators");

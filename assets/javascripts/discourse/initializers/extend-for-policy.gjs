@@ -23,6 +23,9 @@ const SETTINGS = [
     default: i18n("discourse_policy.revoke_policy"),
     escape: true,
   },
+  {
+    name: "add-users-to-group",
+  },
 ];
 
 const PolicyWrapper = <template>
