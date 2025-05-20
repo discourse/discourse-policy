@@ -135,7 +135,7 @@ after_initialize do
             if post_policy.add_users_to_group.present?
               previously_accepted_users = post_policy.accepted_policy_users
 
-              Group.find(post_policy.add_users_to_group)&.remove(previously_accepted_users)
+              Group.find_by(id: post_policy.add_users_to_group)&.remove(previously_accepted_users)
             end
           end
         end
@@ -146,6 +146,8 @@ after_initialize do
         end
 
         post_policy.private = policy["data-private"] == "true"
+
+        post_policy.add_users_to_group = policy["data-add-users-to-group"] if policy["add-users-to-group"].present?
 
         if has_group
           if !post.custom_fields[DiscoursePolicy::HAS_POLICY]

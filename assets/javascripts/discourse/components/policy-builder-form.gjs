@@ -80,7 +80,7 @@ export default class PolicyBuilderForm extends Component {
 
     <PolicyFormField @name="add-users-to-group">
       <PolicyGroupInput
-        @groups={{@policy.add-users-to-group}}
+        @groups={{get @policy "add-users-to-group"}}
         @onChangeGroup={{fn @onChange "add-users-to-group"}}
       />
     </PolicyFormField>
