@@ -147,7 +147,9 @@ after_initialize do
 
         post_policy.private = policy["data-private"] == "true"
 
-        post_policy.add_users_to_group = policy["data-add-users-to-group"] if policy["add-users-to-group"].present?
+        if policy["data-add-users-to-group"].present?
+          post_policy.add_users_to_group = Group.find_by_name(policy["data-add-users-to-group"])&.id
+        end
 
         if has_group
           if !post.custom_fields[DiscoursePolicy::HAS_POLICY]
