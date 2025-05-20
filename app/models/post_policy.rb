@@ -51,6 +51,16 @@ class PostPolicy < ActiveRecord::Base
     emails_enabled_when_away_users.where.not(id: accepted_policy_users.select(:user_id))
   end
 
+  def add_users_group
+    return if add_users_to_group.nil?
+
+    Group.find_by(id: add_users_to_group)
+  end
+
+  def accepted_policy_users
+    policy_users.accepted.with_version(version)
+  end
+
   private
 
   def bump_policy
@@ -85,10 +95,6 @@ class PostPolicy < ActiveRecord::Base
       .where("users.last_seen_at < ?", 10.minutes.ago)
   end
 
-  def accepted_policy_users
-    policy_users.accepted.with_version(version)
-  end
-
   def revoked_policy_users
     policy_users.revoked.with_version(version)
   end
@@ -112,17 +118,18 @@ end
 #
 # Table name: post_policies
 #
-#  id               :bigint           not null, primary key
-#  post_id          :bigint           not null
-#  renew_start      :datetime
-#  renew_days       :integer
-#  next_renew_at    :datetime
-#  reminder         :string
-#  last_reminded_at :datetime
-#  version          :string
-#  created_at       :datetime         not null
-#  updated_at       :datetime         not null
-#  renew_interval   :integer
-#  private          :boolean          default(FALSE), not null
-#  last_bumped_at   :datetime
+#  id                 :bigint           not null, primary key
+#  post_id            :bigint           not null
+#  renew_start        :datetime
+#  renew_days         :integer
+#  next_renew_at      :datetime
+#  reminder           :string
+#  last_reminded_at   :datetime
+#  version            :string
+#  created_at         :datetime         not null
+#  updated_at         :datetime         not null
+#  renew_interval     :integer
+#  private            :boolean          default(FALSE), not null
+#  last_bumped_at     :datetime
+#  add_users_to_group :integer
 #

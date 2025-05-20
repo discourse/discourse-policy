@@ -44,6 +44,9 @@ en:
         send-email:
           label: Send Email?
           description: Notify users of the new policy by email
+        add-users-to-group:
+          label: Add users to group
+          description: Add users to the following group when they accept this policy
       preferences:
         title: Policies
         policy_emails:
@@ -54,5 +57,3 @@ en:
             never: never
             when_away: only when away
             always: always
-
-

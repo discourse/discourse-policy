@@ -192,4 +192,34 @@ RSpec.describe PostPolicy do
       expect(policy.emailed_by_when_away).to eq []
     end
   end
+
+  describe "#add_users_group" do
+    fab!(:policy_no_user_add) do
+      policy = Fabricate(:post_policy, add_users_to_group: nil)
+      PostPolicyGroup.create!(post_policy_id: policy.id, group_id: group1.id)
+
+      policy
+    end
+
+    fab!(:policy_user_add) do
+      policy = Fabricate(:post_policy, add_users_to_group: group1.id)
+      PostPolicyGroup.create!(post_policy_id: policy.id, group_id: group1.id)
+
+      policy
+    end
+
+    it "returns the group if add_users_to_group is set" do
+      expect(policy_user_add.add_users_group).to eq group1
+    end
+
+    it "returns nil if add_users_to_group is not set" do
+      expect(policy_no_user_add.add_users_group).to be_nil
+    end
+
+    it "returns nil if group does not exist" do
+      policy.update(add_users_to_group: 42069)
+
+      expect(policy.add_users_group).to be_nil
+    end
+  end
 end

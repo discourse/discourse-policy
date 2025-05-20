@@ -22,7 +22,7 @@ module(
         <PolicyBuilderForm @onChange={{this.onChange}} @policy={{this.policy}} />
       `);
 
-      const groupsChooser = selectKit(".group-chooser");
+      const groupsChooser = selectKit(".groups .group-chooser");
       await groupsChooser.expand();
       await groupsChooser.selectRowByValue("admins");
       assert.dom(".output").hasText("groups=admins");
@@ -46,6 +46,11 @@ module(
 
       await fillIn("input[name='revoke']", "bar");
       assert.dom(".output").hasText("revoke=bar");
+
+      const addGroupsChooser = selectKit(".add-users-to-group .group-chooser");
+      await addGroupsChooser.expand();
+      await addGroupsChooser.selectRowByValue("moderators");
+      assert.dom(".output").hasText("add-users-to-group=moderators");
 
       await click("input[name='private']");
       assert.dom(".output").hasText("private=true");

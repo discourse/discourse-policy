@@ -10,12 +10,20 @@ class DiscoursePolicy::PolicyController < ::ApplicationController
     PolicyUser.add!(current_user, @post.post_policy)
     @post.publish_change_to_clients!(:policy_change)
 
+    if @post.post_policy.add_users_to_group.present?
+      @post.post_policy.add_users_group.add(current_user)
+    end
+
     render json: success_json
   end
 
   def unaccept
     PolicyUser.remove!(current_user, @post.post_policy)
     @post.publish_change_to_clients!(:policy_change)
+
+    if @post.post_policy.add_users_to_group.present?
+      @post.post_policy.add_users_group.remove(current_user)
+    end
 
     render json: success_json
   end
