@@ -25,6 +25,7 @@ const SETTINGS = [
   },
   {
     name: "add-users-to-group",
+    camelName: "addUsersToGroup",
   },
 ];
 
