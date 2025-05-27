@@ -50,6 +50,9 @@ de:
         send-email:
           label: E-Mail senden?
           description: Benutzer per E-Mail über die neue Richtlinie benachrichtigen
+        add-users-to-group:
+          label: Benutzer zu Gruppe hinzufügen
+          description: Füge Benutzer zu der folgenden Gruppe hinzu, wenn sie diese Richtlinie akzeptieren
       preferences:
         title: Richtlinien
         policy_emails:

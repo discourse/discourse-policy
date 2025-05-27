@@ -50,6 +50,9 @@ he:
         send-email:
           label: שליחת דוא״ל?
           description: להודיע למשתמשים על מדיניות חדשה דרך דוא״ל
+        add-users-to-group:
+          label: הוספת משתמשים לקבוצה
+          description: הוספת משתמשים לקבוצה הבאה כשהם מאשרים את המדיניות הזאת
       preferences:
         title: מסמכי מדיניות
         policy_emails:
