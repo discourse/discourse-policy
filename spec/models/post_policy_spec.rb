@@ -217,7 +217,7 @@ RSpec.describe PostPolicy do
     end
 
     it "returns nil if group does not exist" do
-      policy.update(add_users_to_group: 42069)
+      policy.update(add_users_to_group: 42_069)
 
       expect(policy.add_users_group).to be_nil
     end
