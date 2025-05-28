@@ -34,7 +34,12 @@ module DiscoursePolicy
     end
 
     def include_policy_stats?
-      include_policy? && (scope.is_admin? || !post_policy.private?)
+      return false unless include_policy?
+      return true if scope.is_admin?
+      return false if post_policy.private?
+      groups = post_policy.groups
+      return false if groups.blank?
+      Guardian.new(scope.user).can_see_groups_members?(groups)
     end
 
     def policy_can_accept

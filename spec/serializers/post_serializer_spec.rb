@@ -59,10 +59,11 @@ describe PostSerializer do
     group.destroy!
 
     json = PostSerializer.new(post, scope: Guardian.new).as_json
+    puts json.inspect
 
     not_accepted = json[:post][:policy_not_accepted_by]
 
-    expect(not_accepted.length).to eq(0)
+    expect(not_accepted).to eq(nil)
   end
 
   it "excludes inactive users" do
@@ -125,6 +126,33 @@ describe PostSerializer do
       user2.id,
     )
     expect(json[:post][:policy_accepted_by].map { |u| u[:id] }).to contain_exactly(user1.id)
+  end
+
+  it "does not include users if group members are not visible to the user" do
+    group.update!(members_visibility_level: Group.visibility_levels[:owners])
+    owner = Fabricate(:user)
+    group.add_owner(owner)
+
+    raw = <<~MD
+     [policy group=#{group.name}]
+     I always open **doors**!
+     [/policy]
+    MD
+
+    post = create_post(raw: raw, user: Fabricate(:admin))
+    post.reload
+
+    PolicyUser.add!(user1, post.post_policy)
+
+    # A non-owner, non-admin user should not see the user lists
+    json = PostSerializer.new(post, scope: Guardian.new(user2)).as_json
+    expect(json[:post][:policy_not_accepted_by]).to eq(nil)
+    expect(json[:post][:policy_accepted_by]).to eq(nil)
+
+    # The owner should see the user lists
+    json = PostSerializer.new(post, scope: Guardian.new(owner)).as_json
+    expect(json[:post][:policy_not_accepted_by].map { |u| u[:id] }).to include(admin.id, user2.id)
+    expect(json[:post][:policy_accepted_by].map { |u| u[:id] }).to include(user1.id)
   end
 
   describe "policy_easy_revoke" do
