@@ -112,4 +112,46 @@ describe DiscoursePolicy::PolicyController do
       expect(response.parsed_body["users"].map { |x| x["id"] }).to contain_exactly
     end
   end
+
+  describe "group member visibility restrictions" do
+    fab!(:owner) { Fabricate(:user) }
+    let!(:post) do
+      raw = <<~MD
+        [policy group=#{group.name}]
+        I always open **doors**!
+        [/policy]
+      MD
+      create_post(raw: raw, user: moderator)
+    end
+
+    before do
+      group.update!(members_visibility_level: Group.visibility_levels[:owners])
+      group.add_owner(owner)
+    end
+
+    it "returns 422 and error if user cannot see group members (accepted endpoint)" do
+      sign_in(user2)
+      get "/policy/accepted.json", params: { post_id: post.id, offset: 0 }
+      expect(response.status).to eq(422)
+      expect(response.parsed_body["errors"]).to include(
+        I18n.t("discourse_policy.error.no_permission"),
+      )
+    end
+
+    it "returns 422 and error if user cannot see group members (not_accepted endpoint)" do
+      sign_in(user2)
+      get "/policy/not-accepted.json", params: { post_id: post.id, offset: 0 }
+      expect(response.status).to eq(422)
+      expect(response.parsed_body["errors"]).to include(
+        I18n.t("discourse_policy.error.no_permission"),
+      )
+    end
+
+    it "allows owner to see group members" do
+      sign_in(owner)
+      get "/policy/accepted.json", params: { post_id: post.id, offset: 0 }
+      expect(response.status).to eq(200)
+      expect(response.parsed_body["users"]).to be_an(Array)
+    end
+  end
 end

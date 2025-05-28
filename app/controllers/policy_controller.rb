@@ -29,6 +29,15 @@ class DiscoursePolicy::PolicyController < ::ApplicationController
   end
 
   def accepted
+    # Check if user has permission to see group members
+    groups = @post.post_policy.groups
+    return render_json_error(I18n.t("discourse_policy.error.group_not_found")) if groups.blank?
+
+    guardian = Guardian.new(current_user)
+    unless guardian.can_see_groups_members?(groups)
+      return render_json_error(I18n.t("discourse_policy.error.no_permission"))
+    end
+
     users =
       @post
         .post_policy
@@ -41,6 +50,16 @@ class DiscoursePolicy::PolicyController < ::ApplicationController
 
   def not_accepted
     @post = Post.find(params[:post_id])
+
+    # Check if user has permission to see group members
+    groups = @post.post_policy.groups
+    return render_json_error(I18n.t("discourse_policy.error.group_not_found")) if groups.blank?
+
+    guardian = Guardian.new(current_user)
+    unless guardian.can_see_groups_members?(groups)
+      return render_json_error(I18n.t("discourse_policy.error.no_permission"))
+    end
+
     users =
       @post
         .post_policy
