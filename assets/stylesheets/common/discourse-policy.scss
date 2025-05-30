@@ -1,3 +1,5 @@
+@use "lib/viewport";
+
 // Policy in post styles
 .cooked .policy {
   position: relative;
@@ -16,7 +18,7 @@
     justify-content: space-between;
     gap: 1rem;
 
-    @include breakpoint("tablet") {
+    @include viewport.until(md) {
       flex-direction: column;
     }
   }
@@ -94,14 +96,14 @@
     gap: 0.5rem;
     flex-wrap: wrap;
 
-    @include breakpoint("medium") {
+    @include viewport.until(lg) {
       width: 100%;
     }
 
     .btn {
       white-space: nowrap;
 
-      @include breakpoint("large") {
+      @include viewport.until(lg) {
         width: 100%;
         white-space: inherit;
       }
