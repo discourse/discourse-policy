@@ -1,10 +1,10 @@
 import EmberObject from "@ember/object";
 import { click, render } from "@ember/test-helpers";
-import { hbs } from "ember-cli-htmlbars";
 import { module, test } from "qunit";
 import { setupRenderingTest } from "discourse/tests/helpers/component-test";
 import pretender, { response } from "discourse/tests/helpers/create-pretender";
 import { i18n } from "discourse-i18n";
+import PostPolicy from "discourse/plugins/discourse-policy/discourse/components/post-policy";
 
 function fabricatePost(options = {}) {
   return EmberObject.create({ id: 1, ...options });
@@ -20,19 +20,27 @@ module(
     setupRenderingTest(hooks);
 
     test("empty post", async function (assert) {
+      const self = this;
+
       await render(
-        hbs`<PostPolicy @post={{this.post}} @policy={{this.policy}} />`
+        <template>
+          <PostPolicy @post={{self.post}} @policy={{self.policy}} />
+        </template>
       );
 
       assert.dom(".policy-footer").doesNotExist();
     });
 
     test("post#policy_can_accept", async function (assert) {
+      const self = this;
+
       this.set("post", fabricatePost({ policy_can_accept: true }));
       this.set("policy", fabricatePolicy());
 
       await render(
-        hbs`<PostPolicy @post={{this.post}} @policy={{this.policy}} />`
+        <template>
+          <PostPolicy @post={{self.post}} @policy={{self.policy}} />
+        </template>
       );
 
       assert.dom(".btn-accept-policy").exists();
@@ -40,11 +48,15 @@ module(
     });
 
     test("post#policy_can_revoke", async function (assert) {
+      const self = this;
+
       this.set("post", fabricatePost({ policy_can_revoke: true }));
       this.set("policy", fabricatePolicy());
 
       await render(
-        hbs`<PostPolicy @post={{this.post}} @policy={{this.policy}} />`
+        <template>
+          <PostPolicy @post={{self.post}} @policy={{self.policy}} />
+        </template>
       );
 
       assert.dom(".btn-revoke-policy").exists();
@@ -52,28 +64,38 @@ module(
     });
 
     test("post#policy_accepted_by_count", async function (assert) {
+      const self = this;
+
       this.set("post", fabricatePost({ policy_accepted_by_count: 10 }));
       this.set("policy", fabricatePolicy());
 
       await render(
-        hbs`<PostPolicy @post={{this.post}} @policy={{this.policy}} />`
+        <template>
+          <PostPolicy @post={{self.post}} @policy={{self.policy}} />
+        </template>
       );
 
       assert.dom(".toggle-accepted .user-count").hasText("10");
     });
 
     test("post#policy_not_accepted_by_count", async function (assert) {
+      const self = this;
+
       this.set("post", fabricatePost({ policy_not_accepted_by_count: 10 }));
       this.set("policy", fabricatePolicy());
 
       await render(
-        hbs`<PostPolicy @post={{this.post}} @policy={{this.policy}} />`
+        <template>
+          <PostPolicy @post={{self.post}} @policy={{self.policy}} />
+        </template>
       );
 
       assert.dom(".toggle-not-accepted .user-count").hasText("10");
     });
 
     test("no possible users", async function (assert) {
+      const self = this;
+
       this.set(
         "post",
         fabricatePost({
@@ -84,7 +106,9 @@ module(
       this.set("policy", fabricatePolicy());
 
       await render(
-        hbs`<PostPolicy @post={{this.post}} @policy={{this.policy}} />`
+        <template>
+          <PostPolicy @post={{self.post}} @policy={{self.policy}} />
+        </template>
       );
 
       assert
@@ -93,6 +117,8 @@ module(
     });
 
     test("toggle state", async function (assert) {
+      const self = this;
+
       const acceptedByUsers = [
         { id: 1, username: "jeanne", avatar_template: "/images/avatar.png" },
       ];
@@ -114,7 +140,9 @@ module(
       this.set("policy", fabricatePolicy());
 
       await render(
-        hbs`<PostPolicy @post={{this.post}} @policy={{this.policy}} />`
+        <template>
+          <PostPolicy @post={{self.post}} @policy={{self.policy}} />
+        </template>
       );
 
       assert.dom(".users.accepted .avatar").exists({ count: 1 });
@@ -135,6 +163,8 @@ module(
     });
 
     test("accept policy", async function (assert) {
+      const self = this;
+
       this.set("currentUser", {
         id: 1,
         username: "bob",
@@ -151,7 +181,9 @@ module(
       this.set("policy", fabricatePolicy());
 
       await render(
-        hbs`<PostPolicy @post={{this.post}} @policy={{this.policy}} />`
+        <template>
+          <PostPolicy @post={{self.post}} @policy={{self.policy}} />
+        </template>
       );
 
       pretender.put("/policy/accept", () => {
@@ -167,6 +199,8 @@ module(
     });
 
     test("revoke policy", async function (assert) {
+      const self = this;
+
       this.set("currentUser", {
         id: 1,
         username: "bob",
@@ -183,7 +217,9 @@ module(
       this.set("policy", fabricatePolicy());
 
       await render(
-        hbs`<PostPolicy @post={{this.post}} @policy={{this.policy}} />`
+        <template>
+          <PostPolicy @post={{self.post}} @policy={{self.policy}} />
+        </template>
       );
 
       pretender.put("/policy/unaccept", () => {

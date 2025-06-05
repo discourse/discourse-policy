@@ -1,10 +1,10 @@
 import EmberObject from "@ember/object";
 import { click, fillIn, render } from "@ember/test-helpers";
-import { hbs } from "ember-cli-htmlbars";
 import { module, test } from "qunit";
 import { setupRenderingTest } from "discourse/tests/helpers/component-test";
 import { query } from "discourse/tests/helpers/qunit-helpers";
 import selectKit from "discourse/tests/helpers/select-kit-helper";
+import PolicyBuilderForm from "discourse/plugins/discourse-policy/discourse/components/policy-builder-form";
 
 module(
   "Discourse Policy | Integration | Component | policy-builder-form",
@@ -12,15 +12,22 @@ module(
     setupRenderingTest(hooks);
 
     test("onChange", async function (assert) {
+      const self = this;
+
       this.set("policy", new EmberObject());
       this.set("onChange", (key, value) => {
         query(".output").innerText = `${key}=${value}`;
       });
 
-      await render(hbs`
-        <span class="output"></span>
-        <PolicyBuilderForm @onChange={{this.onChange}} @policy={{this.policy}} />
-      `);
+      await render(
+        <template>
+          <span class="output"></span>
+          <PolicyBuilderForm
+            @onChange={{self.onChange}}
+            @policy={{self.policy}}
+          />
+        </template>
+      );
 
       const groupsChooser = selectKit(".groups .group-chooser");
       await groupsChooser.expand();
