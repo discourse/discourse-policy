@@ -5,6 +5,7 @@ import { setupRenderingTest } from "discourse/tests/helpers/component-test";
 import { query } from "discourse/tests/helpers/qunit-helpers";
 import selectKit from "discourse/tests/helpers/select-kit-helper";
 import PolicyBuilderForm from "discourse/plugins/discourse-policy/discourse/components/policy-builder-form";
+import { i18n } from "discourse-i18n";
 
 module(
   "Discourse Policy | Integration | Component | policy-builder-form",
@@ -44,6 +45,13 @@ module(
       assert.dom(".output").hasText("renew-start=2022-06-07");
 
       const reminderChooser = selectKit(".combo-box");
+      assert
+        .dom(".select-kit-selected-name", reminderChooser.el())
+        .hasText(
+          i18n("discourse_policy.builder.reminder.no-reminder"),
+          "should be set by default"
+        );
+
       await reminderChooser.expand();
       await reminderChooser.selectRowByValue("weekly");
       assert.dom(".output").hasText("reminder=weekly");
