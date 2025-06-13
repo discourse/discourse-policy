@@ -15,8 +15,7 @@ export default class PolicyBuilder extends Component {
   @tracked isSaving = false;
   @tracked flash;
   policy =
-    this.args.model.policy ||
-    new TrackedObject({ reminder: null, version: 1 });
+    this.args.model.policy || new TrackedObject({ reminder: null, version: 1 });
 
   @action
   insertPolicy() {
