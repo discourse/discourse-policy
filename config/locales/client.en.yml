@@ -32,6 +32,7 @@ en:
         reminder:
           label: Reminder
           description: How often a reminder notification to accept the policy should be sent
+          no-reminder: (no reminder)
         accept:
           label: Accept
           description: Text used on the accept button

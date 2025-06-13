@@ -49,6 +49,10 @@ acceptance("Discourse Policy - post", function (needs) {
     await selectKit(".group-chooser").expand();
     await selectKit(".group-chooser").fillInFilter("staff");
     await selectKit(".group-chooser").selectRowByValue("staff");
+    await selectKit(".group-chooser").collapse();
+
+    await selectKit(".combo-box").expand();
+    await selectKit(".combo-box").selectRowByIndex(0);
 
     await click(".d-modal__footer .btn-primary");
 
