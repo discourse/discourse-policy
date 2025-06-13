@@ -4,8 +4,8 @@ import { module, test } from "qunit";
 import { setupRenderingTest } from "discourse/tests/helpers/component-test";
 import { query } from "discourse/tests/helpers/qunit-helpers";
 import selectKit from "discourse/tests/helpers/select-kit-helper";
-import PolicyBuilderForm from "discourse/plugins/discourse-policy/discourse/components/policy-builder-form";
 import { i18n } from "discourse-i18n";
+import PolicyBuilderForm from "discourse/plugins/discourse-policy/discourse/components/policy-builder-form";
 
 module(
   "Discourse Policy | Integration | Component | policy-builder-form",
