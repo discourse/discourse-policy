@@ -46,7 +46,7 @@ module(
 
       const reminderChooser = selectKit(".combo-box");
       assert
-        .dom(".select-kit-selected-name", reminderChooser.el())
+        .dom(reminderChooser.header().el())
         .hasText(
           i18n("discourse_policy.builder.reminder.no-reminder"),
           "should be set by default"
