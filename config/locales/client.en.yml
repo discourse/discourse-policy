@@ -55,6 +55,6 @@ en:
           away_description: We'll only email you if we haven't seen you in the last 10 minutes when the policy status changes, and only if you've also opted in for new activity emails.
           label: Email me when a policy needs my review
           email_frequency_options:
-            never: never
-            when_away: only when away
-            always: always
+            never: Never
+            when_away: Only when away
+            always: Always
