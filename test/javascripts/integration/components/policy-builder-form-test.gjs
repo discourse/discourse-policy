@@ -48,7 +48,7 @@ module(
       assert
         .dom(reminderChooser.header().el())
         .hasText(
-          i18n("discourse_policy.builder.reminder.no-reminder"),
+          i18n("discourse_policy.builder.reminder.no_reminder"),
           "should be set by default"
         );
 
