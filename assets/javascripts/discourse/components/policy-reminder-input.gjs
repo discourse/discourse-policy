@@ -17,7 +17,7 @@ const PolicyReminderInput = <template>
   <ComboBox
     @value={{@reminder}}
     @content={{VALID_REMINDERS}}
-    @options={{hash none="discourse_policy.builder.reminder.no-reminder"}}
+    @options={{hash none="discourse_policy.builder.reminder.no_reminder"}}
     @onChange={{@onChangeReminder}}
   />
 </template>;
