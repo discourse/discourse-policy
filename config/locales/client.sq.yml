@@ -19,5 +19,5 @@ sq:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: asnjëherë
-            always: gjithmonë
+            never: Asnjëherë
+            always: Gjithmonë

@@ -23,6 +23,5 @@ bg:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: никога
-            when_away: само когато не съм на линия
-            always: винаги
+            never: Никога
+            always: Винаги

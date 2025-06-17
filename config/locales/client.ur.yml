@@ -25,5 +25,4 @@ ur:
         policy_emails:
           email_frequency_options:
             never: کبھی نہیں
-            when_away: صرف جب غیر حاضر
             always: ہمیشہ

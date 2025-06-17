@@ -24,6 +24,5 @@ vi:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: không bao giờ
-            when_away: chỉ khi rời xa
-            always: luôn luôn
+            never: Không bao giờ
+            always: Luôn luôn

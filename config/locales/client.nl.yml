@@ -57,6 +57,6 @@ nl:
           away_description: We sturen je alleen een e-mail als we je de afgelopen 10 minuten niet hebben gezien wanneer de beleidsstatus wijzigt en alleen als je je ook hebt aangemeld voor e-mails over nieuwe activiteit.
           label: E-mail mij als een beleid mijn beoordeling vereist
           email_frequency_options:
-            never: nooit
-            when_away: alleen wanneer afwezig
-            always: altijd
+            never: Nooit
+            when_away: Alleen wanneer afwezig
+            always: Altijd

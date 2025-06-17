@@ -22,6 +22,5 @@ bs_BA:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: nikad
-            when_away: samo kad je odsutan
-            always: uvijek
+            never: Nikad
+            always: Uvijek

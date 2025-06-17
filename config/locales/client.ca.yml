@@ -24,6 +24,5 @@ ca:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: mai
-            when_away: només quan sigui absent
-            always: sempre
+            never: Mai
+            always: Sempre

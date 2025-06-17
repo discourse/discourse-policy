@@ -24,6 +24,5 @@ sl:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: nikoli
-            when_away: samo ko sem odsoten
-            always: vedno
+            never: Nikoli
+            always: Vedno

@@ -24,6 +24,6 @@ pl_PL:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: nigdy
-            when_away: tylko kiedy jest daleko
-            always: zawsze
+            never: Nigdy
+            when_away: Tylko gdy jesteś daleko
+            always: Zawsze

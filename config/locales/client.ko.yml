@@ -24,6 +24,6 @@ ko:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: 알림 받지 않음
-            when_away: 방문이 없을때 알림 받기
-            always: 항상 알림 받기
+            never: 알림 받지 않기
+            when_away: 자리를 비울 때만
+            always: 항상

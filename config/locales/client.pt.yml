@@ -24,6 +24,5 @@ pt:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: nunca
-            when_away: só quando não estiver online
-            always: sempre
+            never: Nunca
+            always: Sempre

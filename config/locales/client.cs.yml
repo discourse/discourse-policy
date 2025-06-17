@@ -24,6 +24,6 @@ cs:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: nikdy
-            when_away: jen v nepřítomnosti
-            always: vždy
+            never: Nikdy
+            when_away: Jen v nepřítomnosti
+            always: Vždy

@@ -58,5 +58,5 @@ ru:
           label: Отправлять письмо, когда политика нуждается в проверке
           email_frequency_options:
             never: Никогда
-            when_away: Если вы офлайн
+            when_away: Если вы находитесь офлайн
             always: Всегда

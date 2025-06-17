@@ -24,6 +24,6 @@ uk:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: ніколи
-            when_away: тільки коли вдалині
-            always: завжди
+            never: Ніколи
+            when_away: Тільки коли офлайн
+            always: Завжди

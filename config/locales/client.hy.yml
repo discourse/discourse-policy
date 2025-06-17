@@ -24,6 +24,5 @@ hy:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: երբեք
-            when_away: միայն երբ հեռու եմ
-            always: միշտ
+            never: Երբեք
+            always: Միշտ

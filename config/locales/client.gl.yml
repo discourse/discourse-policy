@@ -24,6 +24,5 @@ gl:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: nunca
-            when_away: só cando ausente
-            always: sempre
+            never: Nunca
+            always: Sempre
