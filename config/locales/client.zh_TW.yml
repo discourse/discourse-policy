@@ -25,5 +25,4 @@ zh_TW:
         policy_emails:
           email_frequency_options:
             never: 永不
-            when_away: 只在離開時
             always: 總是

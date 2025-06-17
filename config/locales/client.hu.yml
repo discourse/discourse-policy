@@ -25,6 +25,5 @@ hu:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: soha
-            when_away: csak ha távol van
-            always: mindig
+            never: Soha
+            always: Mindig

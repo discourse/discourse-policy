@@ -57,6 +57,6 @@ it:
           away_description: Ti invieremo un'e-mail solo se non ti sei fatto vedere negli ultimi 10 minuti quando lo stato dell'informativa cambia e solo se hai scelto anche di ricevere le e-mail per le nuove attività.
           label: Inviami un'e-mail quando un'informativa necessita della mia revisione
           email_frequency_options:
-            never: mai
-            when_away: solo quando non sono collegato
-            always: sempre
+            never: Mai
+            when_away: Solo quando non sono collegato
+            always: Sempre

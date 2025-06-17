@@ -17,5 +17,5 @@ sr:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: nikada
-            always: uvek
+            never: Nikad
+            always: Uvek

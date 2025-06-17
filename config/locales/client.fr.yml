@@ -57,6 +57,6 @@ fr:
           away_description: Nous ne vous enverrons un e-mail que si nous ne vous avons pas vu au cours des 10 dernières minutes avant le changement de statut de la politique, et uniquement si vous avez également accepté de recevoir de nouveaux e-mails d'activité.
           label: Envoyez-moi un e-mail lorsqu'une politique nécessite mon examen
           email_frequency_options:
-            never: jamais
-            when_away: seulement en cas d'absence
-            always: toujours
+            never: Jamais
+            when_away: Seulement en cas d'absence
+            always: Toujours

@@ -57,6 +57,6 @@ zh_CN:
           away_description: 仅当我们在策略状态发生更改的 10 分钟内没有看到您，并且您还选择了接收新的活动电子邮件时，我们才会给您发送电子邮件。
           label: 当策略需要我审核时给我发送电子邮件
           email_frequency_options:
-            never: 从不
-            when_away: 只在离开时
+            never: 永不
+            when_away: 仅在离开时
             always: 始终

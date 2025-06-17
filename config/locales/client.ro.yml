@@ -24,6 +24,5 @@ ro:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: niciodată
-            when_away: numai atunci când nu sunt activ
-            always: întotdeauna
+            never: Niciodată
+            always: Întotdeauna

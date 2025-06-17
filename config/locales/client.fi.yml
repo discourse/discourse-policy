@@ -57,6 +57,6 @@ fi:
           away_description: Lähetämme sinulle sähköpostin vain, jos emme ole nähneet sinua viimeisten 10 minuutin aikana käytännön tilan muuttuessa, ja jos olet valinnut vastaanottavasi sähköposteja uusista aktiviteeteista.
           label: Lähetä minulle sähköposti, kun käytäntö tarvitsee tarkistustani
           email_frequency_options:
-            never: ei koskaan
-            when_away: vain, kun olen poissa
-            always: aina
+            never: Ei koskaan
+            when_away: Vain poissa ollessa
+            always: Aina

@@ -20,5 +20,4 @@ te:
         policy_emails:
           email_frequency_options:
             never: ఎప్పటికీ వద్దు
-            when_away: నేను కొంతకాలం సందర్శించనప్పుడు మాత్రమే
             always: ఎల్లప్పుడూ

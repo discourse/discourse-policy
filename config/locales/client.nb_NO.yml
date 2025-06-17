@@ -24,6 +24,5 @@ nb_NO:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: aldri
-            when_away: bare når du er borte
-            always: alltid
+            never: Aldri
+            always: Alltid

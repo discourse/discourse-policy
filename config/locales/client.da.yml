@@ -24,6 +24,5 @@ da:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: aldrig
-            when_away: kun når du er væk
-            always: altid
+            never: Aldrig
+            always: Altid

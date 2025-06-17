@@ -57,6 +57,6 @@ es:
           away_description: Solo te enviaremos un correo electrónico si no te hemos visto en los últimos 10 minutos cuando cambie el estado de la política, y solo si también has optado por recibir correos electrónicos con nuevas actividades.
           label: Envíame un correo electrónico cuando una política necesite mi revisión
           email_frequency_options:
-            never: nunca
-            when_away: solo cuando no esté en la página
-            always: siempre
+            never: Nunca
+            when_away: Solo cuando estés ausente
+            always: Siempre

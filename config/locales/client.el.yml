@@ -33,6 +33,5 @@ el:
         title: Πολιτικές
         policy_emails:
           email_frequency_options:
-            never: ποτέ
-            when_away: μόνο όταν είμαι μακριά
-            always: πάντα
+            never: Ποτέ
+            always: Πάντα

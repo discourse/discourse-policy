@@ -57,6 +57,6 @@ tr_TR:
           away_description: Sadece politika durumu değiştiğinde sizi son 10 dakika içinde görmediysek ve sadece yeni etkinlik e-postalarını da seçtiyseniz size e-posta göndeririz.
           label: İncelemem gereken bir politika olduğunda bana e-posta gönderin
           email_frequency_options:
-            never: asla
-            when_away: yalnızca uzaktayken
-            always: her zaman
+            never: Asla
+            when_away: Yalnızca uzaktayken
+            always: Her zaman

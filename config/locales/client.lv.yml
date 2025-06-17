@@ -22,6 +22,5 @@ lv:
       preferences:
         policy_emails:
           email_frequency_options:
-            never: nekad
-            when_away: tikai tad, kad prom
-            always: vienmēr
+            never: Nekad
+            always: Vienmēr
