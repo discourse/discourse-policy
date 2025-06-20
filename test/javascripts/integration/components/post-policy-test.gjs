@@ -101,6 +101,7 @@ module(
         fabricatePost({
           policy_accepted_by_count: 0,
           policy_not_accepted_by_count: 0,
+          policy_stats: true,
         })
       );
       this.set("policy", fabricatePolicy());
@@ -114,6 +115,27 @@ module(
       assert
         .dom(".no-possible-users")
         .hasText(i18n("discourse_policy.no_possible_users"));
+    });
+
+    test("does not show 'no possible users' when no access to stats", async function (assert) {
+      const self = this;
+
+      this.set(
+        "post",
+        fabricatePost({
+          policy_accepted_by_count: 0,
+          policy_not_accepted_by_count: 0,
+        })
+      );
+      this.set("policy", fabricatePolicy());
+
+      await render(
+        <template>
+          <PostPolicy @post={{self.post}} @policy={{self.policy}} />
+        </template>
+      );
+
+      assert.dom(".no-possible-users").doesNotExist();
     });
 
     test("toggle state", async function (assert) {

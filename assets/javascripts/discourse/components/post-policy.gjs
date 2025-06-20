@@ -3,6 +3,7 @@ import { tracked } from "@glimmer/tracking";
 import { on } from "@ember/modifier";
 import { action } from "@ember/object";
 import { service } from "@ember/service";
+import { and, not } from "truth-helpers";
 import DButton from "discourse/components/d-button";
 import avatar from "discourse/helpers/bound-avatar-template";
 import icon from "discourse/helpers/d-icon";
@@ -282,11 +283,11 @@ export default class PostPolicy extends Component {
         </div>
 
         <div class="user-lists">
-          {{#unless this.policyHasUsers}}
+          {{#if (and (not this.policyHasUsers) this.post.policy_stats)}}
             <span class="no-possible-users">
               {{i18n "discourse_policy.no_possible_users"}}
             </span>
-          {{/unless}}
+          {{/if}}
 
           {{#if this.post.policy_accepted_by_count}}
             <a

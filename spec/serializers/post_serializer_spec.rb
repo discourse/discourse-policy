@@ -119,6 +119,7 @@ describe PostSerializer do
     json = PostSerializer.new(post, scope: Guardian.new).as_json
     expect(json[:post][:policy_not_accepted_by]).to eq(nil)
     expect(json[:post][:policy_accepted_by]).to eq(nil)
+    expect(json[:post][:policy_stats]).to eq(nil)
 
     json = PostSerializer.new(post, scope: admin.guardian).as_json
     expect(json[:post][:policy_not_accepted_by].map { |u| u[:id] }).to contain_exactly(
