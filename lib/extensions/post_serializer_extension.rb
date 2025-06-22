@@ -12,7 +12,8 @@ module DiscoursePolicy
                  :policy_not_accepted_by,
                  :policy_not_accepted_by_count,
                  :policy_accepted_by,
-                 :policy_accepted_by_count
+                 :policy_accepted_by_count,
+                 :policy_stats
 
       delegate :post_policy, to: :object
 
@@ -31,6 +32,10 @@ module DiscoursePolicy
 
     def include_policy?
       SiteSetting.policy_enabled? && post_custom_fields[DiscoursePolicy::HAS_POLICY]
+    end
+
+    def policy_stats
+      true
     end
 
     def include_policy_stats?
