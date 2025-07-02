@@ -15,6 +15,8 @@ de:
       group_not_found: "Gruppe für Richtlinie nicht gefunden"
       no_policy: "Keine Richtlinie für Beitrag vorhanden"
       staff_only: "Richtlinien dürfen nur auf Team-Beiträge angewendet werden"
+    error:
+      no_permission: "Nicht autorisiert"
   reports:
     unaccepted-policies:
       title: Nicht akzeptierte Richtlinien

@@ -38,6 +38,7 @@ de:
         reminder:
           label: Erinnerung
           description: Wie oft eine Erinnerungsbenachrichtigung zur Annahme der Richtlinie gesendet werden soll
+          no_reminder: (Keine Erinnerung)
         accept:
           label: Akzeptieren
           description: Text für die Schaltfläche „Akzeptieren“
