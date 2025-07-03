@@ -42,10 +42,8 @@ acceptance("Discourse Policy - post", function (needs) {
 
     await fillIn("textarea.d-editor-input", "");
 
-    await selectKit(".d-editor .toolbar-popup-menu-options").expand();
-    await selectKit(".toolbar-popup-menu-options").selectRowByName(
-      i18n("discourse_policy.builder.attach")
-    );
+    await click(".toolbar-menu__options-trigger");
+    await click(`button[title="${i18n("discourse_policy.builder.attach")}"]`);
     await selectKit(".group-chooser").expand();
     await selectKit(".group-chooser").fillInFilter("staff");
     await selectKit(".group-chooser").selectRowByValue("staff");
