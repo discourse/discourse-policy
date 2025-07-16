@@ -31,7 +31,7 @@ class DiscoursePolicy::PolicyController < ::ApplicationController
   def accepted
     # Check if user has permission to see group members
     groups = @post.post_policy.groups
-    return render_json_error(I18n.t("discourse_policy.error.group_not_found")) if groups.blank?
+    return render_json_error(I18n.t("discourse_policy.errors.group_not_found")) if groups.blank?
 
     guardian = Guardian.new(current_user)
     unless guardian.can_see_groups_members?(groups)
@@ -53,7 +53,7 @@ class DiscoursePolicy::PolicyController < ::ApplicationController
 
     # Check if user has permission to see group members
     groups = @post.post_policy.groups
-    return render_json_error(I18n.t("discourse_policy.error.group_not_found")) if groups.blank?
+    return render_json_error(I18n.t("discourse_policy.errors.group_not_found")) if groups.blank?
 
     guardian = Guardian.new(current_user)
     unless guardian.can_see_groups_members?(groups)
@@ -78,7 +78,7 @@ class DiscoursePolicy::PolicyController < ::ApplicationController
          group_ids: @group_ids,
          user_id: current_user.id,
        ).exists?
-      return render_json_error(I18n.t("discourse_policy.error.user_missing"))
+      return render_json_error(I18n.t("discourse_policy.errors.user_missing"))
     end
 
     true
@@ -96,7 +96,7 @@ class DiscoursePolicy::PolicyController < ::ApplicationController
 
     @group_ids = @post.post_policy.groups.pluck(:id)
 
-    return render_json_error(I18n.t("discourse_policy.error.group_not_found")) if @group_ids.blank?
+    return render_json_error(I18n.t("discourse_policy.errors.group_not_found")) if @group_ids.blank?
 
     if SiteSetting.policy_restrict_to_staff_posts && !@post.user&.staff?
       return render_json_error(I18n.t("discourse_policy.errors.staff_only"))
