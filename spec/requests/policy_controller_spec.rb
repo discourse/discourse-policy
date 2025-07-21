@@ -9,6 +9,7 @@ describe DiscoursePolicy::PolicyController do
   fab!(:user2) { Fabricate(:user) }
 
   before do
+    enable_current_plugin
     Jobs.run_immediately!
     group.add(user1)
     group.add(user2)

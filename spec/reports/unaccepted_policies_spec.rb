@@ -19,7 +19,10 @@ RSpec.describe Report do
     policy
   end
 
-  before { PolicyUser.add!(user1, policy) }
+  before do
+    enable_current_plugin
+    PolicyUser.add!(user1, policy)
+  end
 
   it "reports users who have not accepted" do
     report = Report.find("unaccepted-policies")

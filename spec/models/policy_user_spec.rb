@@ -3,7 +3,10 @@
 require "rails_helper"
 
 describe PolicyUser do
-  before { Jobs.run_immediately! }
+  before do
+    enable_current_plugin
+    Jobs.run_immediately!
+  end
 
   fab!(:user)
 

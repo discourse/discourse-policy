@@ -3,7 +3,10 @@
 require "rails_helper"
 
 describe DiscoursePolicy::CheckPolicy do
-  before { Jobs.run_immediately! }
+  before do
+    enable_current_plugin
+    Jobs.run_immediately!
+  end
 
   fab!(:user1) { Fabricate(:user) }
   fab!(:user2) { Fabricate(:user) }

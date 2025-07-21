@@ -5,6 +5,8 @@ require "rails_helper"
 describe DiscoursePolicy do
   fab!(:user1) { Fabricate(:user) }
 
+  before { enable_current_plugin }
+
   describe "after_initialize" do
     before { Jobs.run_immediately! }
 
