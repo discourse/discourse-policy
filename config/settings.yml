@@ -1,6 +1,6 @@
 plugins:
   policy_enabled:
-    default: true
+    default: false
     client: true
   policy_restrict_to_staff_posts:
     client: true

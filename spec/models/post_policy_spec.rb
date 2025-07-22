@@ -32,7 +32,10 @@ RSpec.describe PostPolicy do
     policy
   end
 
-  before { Jobs.run_immediately! }
+  before do
+    enable_current_plugin
+    Jobs.run_immediately!
+  end
 
   describe "Callbacks" do
     context "when bumping version" do

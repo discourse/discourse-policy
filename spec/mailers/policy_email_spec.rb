@@ -11,6 +11,8 @@ describe Jobs::UserEmail do
     group
   end
 
+  before { enable_current_plugin }
+
   it "sends a policy alert email to users who have opted in" do
     raw = <<~MD
       [policy group=#{group1.name} reminder=weekly]
